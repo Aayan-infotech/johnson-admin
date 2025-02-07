@@ -12,7 +12,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
-const ForgotPassword = () => {
+const ChangePassword = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     oldPassword: "",
@@ -159,4 +159,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default ChangePassword;

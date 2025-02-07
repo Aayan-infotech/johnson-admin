@@ -5,17 +5,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 import OverlaySpinner from "./utils/Spinner";
 import Dashboard from "./Dashboard";
 
-// Lazy load pages
 const AdminLogin = React.lazy(() => import("./Pages/Login"));
-const ForgotPassword = React.lazy(() => import("./Pages/ForgotPassword"));
+const ChangePassword = React.lazy(() => import("./Pages/ChangePassword"));
 const ManageUsers = React.lazy(() => import("./ProtectedPages/ManageUsers"));
 
-// Context for theme toggling and authentication
 export const ColorModeContext = createContext();
 
 function App() {
   const [mode, setMode] = useState("light");
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token")); // Track authentication status
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -30,7 +28,6 @@ function App() {
     },
   };
 
-  // Theme configuration
   const theme = createTheme({
     palette: {
       mode: mode,
@@ -52,7 +49,7 @@ function App() {
           <Suspense fallback={<OverlaySpinner />}>
             <Routes>
               <Route  path="/login" element={<AdminLogin setIsAuthenticated={setIsAuthenticated} />}/>
-              <Route  path="/forgot-password" element={<ForgotPassword />}/>
+              <Route  path="/ChangePassword" element={<ChangePassword />}/>
               <Route
                 path="/"
                 element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
