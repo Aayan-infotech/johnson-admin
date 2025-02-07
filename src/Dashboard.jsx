@@ -96,7 +96,7 @@ Dashboard() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            On Demand Admin Dashboard
+            Social Community Admin Dashboard
           </Typography>
           <IconButton onClick={colorMode.toggleColorMode} color="inherit" sx={{ mr: 2 }}>
             {colorMode.toggleColorMode ? <Brightness7Icon /> : <Brightness4Icon />}

@@ -7,6 +7,7 @@ import Dashboard from "./Dashboard";
 
 // Lazy load pages
 const AdminLogin = React.lazy(() => import("./Pages/Login"));
+const ForgotPassword = React.lazy(() => import("./Pages/ForgotPassword"));
 const ManageUsers = React.lazy(() => import("./ProtectedPages/ManageUsers"));
 
 // Context for theme toggling and authentication
@@ -51,6 +52,7 @@ function App() {
           <Suspense fallback={<OverlaySpinner />}>
             <Routes>
               <Route  path="/login" element={<AdminLogin setIsAuthenticated={setIsAuthenticated} />}/>
+              <Route  path="/forgot-password" element={<ForgotPassword />}/>
               <Route
                 path="/"
                 element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}

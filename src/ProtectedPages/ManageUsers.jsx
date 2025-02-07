@@ -20,7 +20,6 @@ import {
   Box,
   Switch,
 } from "@mui/material";
-import { RideModal } from "../Modal/RideModal";
 import {
   Visibility as VisibilityIcon,
   Edit as EditIcon,
@@ -88,20 +87,7 @@ export default function ManageUsers() {
       console.log("Error updating user", error);
     }
   };
-  const ViewAllRides = async (userId) => {
-    try {
-      const res = await axios.get(
-        `http://44.196.64.110:3211/api/rideRequest/completed/user/count/${userId}`
-      );
-      console.log(res.data.data.completedRides);
-      setViewAllRideModal({
-        isOpen: true,
-        rides: res.data.data.completedRides || [], // Ensure it's an array
-      });
-    } catch (error) {
-      console.log("Error getting data of user", error);
-    }
-  };
+
 
   const handleDelete = async (id) => {
     try {
@@ -215,18 +201,6 @@ export default function ManageUsers() {
                       >
                         <DeleteIcon />
                       </IconButton>
-                      <IconButton
-                        color="primary"
-                        onClick={() => ViewAllRides(user._id)}
-                      >
-                        <BikeIcon />
-                      </IconButton>
-                      <IconButton
-                        color="primary"
-                        onClick={() => ViewAllDeliveryBydriver(driver._id)}
-                      >
-                        <BagIcon />
-                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -334,11 +308,6 @@ export default function ManageUsers() {
           <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
-      <RideModal
-        open={viewAllRideModal.isOpen}
-        onClose={() => setViewAllRideModal({ isOpen: false, rides: [] })}
-        rides={viewAllRideModal.rides}
-      />
     </>
   );
 }

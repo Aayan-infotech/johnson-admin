@@ -55,7 +55,7 @@ const Login = ({ setIsAuthenticated }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://44.196.64.110:3211/api/admin/login",
+        "http://44.196.64.110:5050/api/admin/login",
         formData
       );
       localStorage.setItem("token", response.data.token);
@@ -173,6 +173,16 @@ const Login = ({ setIsAuthenticated }) => {
         >
           {loading ? <CircularProgress size={24} color="inherit" /> : "Sign In"}
         </Button>
+
+        {/* Forgot Password Link */}
+        <Typography align="center" sx={{ mt: 2 }}>
+          <a
+            href="/forgot-password"
+            style={{ textDecoration: "none", color: "blue" }}
+          >
+            Forgot Password?
+          </a>
+        </Typography>
       </Box>
     </Container>
   );
