@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast"; // ✅ Import react-hot-toast
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
@@ -61,13 +61,13 @@ const Login = ({ setIsAuthenticated }) => {
       localStorage.setItem("token", response.data.token);
       setIsAuthenticated(true);
 
-      toast.success("✅ Login Successful!"); // ✅ Success toast
+      toast.success("✅ Login Successful!");
       navigate("/");
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || "❌ Login failed. Please try again.";
       setError(errorMessage);
-      toast.error(errorMessage); // ❌ Error toast
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -94,18 +94,16 @@ const Login = ({ setIsAuthenticated }) => {
         bgcolor: "#cfe8fc",
       }}
     >
-      {/* ✅ Toast Notification Renderer */}
       <Toaster
         position="top-right"
         toastOptions={{
           style: {
-            marginTop: "20px", // Adjust margin from bottom
+            marginTop: "20px",
             padding: "2px",
             borderRadius: "4px",
           },
           duration: 2000,
         }}
-        // reverseOrder={false}
       />
 
       <Box
@@ -173,16 +171,6 @@ const Login = ({ setIsAuthenticated }) => {
         >
           {loading ? <CircularProgress size={24} color="inherit" /> : "Sign In"}
         </Button>
-
-        {/* Forgot Password Link */}
-        <Typography align="center" sx={{ mt: 2 }}>
-          <a
-            href="/forgot-password"
-            style={{ textDecoration: "none", color: "blue" }}
-          >
-            Forgot Password?
-          </a>
-        </Typography>
       </Box>
     </Container>
   );
