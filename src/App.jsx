@@ -8,6 +8,7 @@ import Dashboard from "./Dashboard";
 const AdminLogin = React.lazy(() => import("./Pages/Login"));
 const ChangePassword = React.lazy(() => import("./Pages/ChangePassword"));
 const ManageUsers = React.lazy(() => import("./ProtectedPages/ManageUsers"));
+const Category = React.lazy(() => import("./ProtectedPages/Category"));
 
 export const ColorModeContext = createContext();
 
@@ -57,6 +58,10 @@ function App() {
                 <Route
                   path="/manage-users"
                   element={<ManageUsers />}
+                />
+                <Route
+                  path="/category"
+                  element={<Category />}
                 />
               </Route>
             </Routes>
