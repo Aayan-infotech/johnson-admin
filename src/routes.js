@@ -1,7 +1,7 @@
 // routes.js
 export const drawerItems = [
     { text: "Manage Users", icon: "ManageAccounts", path: "/manage-users" },
-    // { text: "Manage Drivers", icon: "Person4", path: "/manage-drivers" },
+    { text: "Category", icon: "Person4", path: "/category" },
     // { text: "Manage Ride ", icon: "DirectionsCar", path: "/ride-management" },
     // { text: "Manage Delivery", icon: "LocalMall", path: "/manage-delivery" },
     // { text: "Manage Payment", icon: "AttachMoney", path: "/manage-payment" },
