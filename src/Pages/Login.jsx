@@ -55,14 +55,14 @@ const Login = ({ setIsAuthenticated }) => {
     try {
       setLoading(true);
       const response = await axios.post(
-        "http://44.196.64.110:5050/api/admin/login",
+        "http://54.236.98.193:5050/api/admin/login",
         formData
       );
       localStorage.setItem("token", response.data.token);
       setIsAuthenticated(true);
 
       toast.success("✅ Login Successful!");
-      navigate("/");
+      navigate("/dashboard");
     } catch (err) {
       const errorMessage =
         err.response?.data?.message || "❌ Login failed. Please try again.";
@@ -121,7 +121,7 @@ const Login = ({ setIsAuthenticated }) => {
           boxShadow: 3,
         }}
       >
-        <Typography variant="h4" align="center" sx={{ mb: 2 }}>
+        <Typography variant="h4" align="center" sx={{ mb: 2, fontWeight: "bold" }}>
           Admin Login
         </Typography>
 
@@ -133,28 +133,28 @@ const Login = ({ setIsAuthenticated }) => {
 
         <TextField
           fullWidth
-          label="Email"
           name="email"
-          variant="outlined"
+          placeholder="email"
           type="email"
           value={formData.email}
           onChange={handleInputChange}
           error={!!emailError}
           helperText={emailError}
           disabled={loading}
+          size="small"
         />
 
         <TextField
           fullWidth
-          label="Password"
           name="password"
-          variant="outlined"
+          placeholder="password"
           type="password"
           value={formData.password}
           onChange={handleInputChange}
           error={!!passwordError}
           helperText={passwordError}
           disabled={loading}
+          size="small"
         />
 
         <Button
@@ -163,10 +163,10 @@ const Login = ({ setIsAuthenticated }) => {
           variant="contained"
           sx={{
             mt: 2,
-            backgroundColor: "yellow",
-            color: "black",
-            font: "bold",
-          }}
+            backgroundColor: "primary",
+            color: "white",
+            fontWeight: "bold",
+            textTransform:"none"}}
           disabled={loading}
         >
           {loading ? <CircularProgress size={24} color="inherit" /> : "Sign In"}
