@@ -1,7 +1,5 @@
-import React, { useContext, useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useContext } from 'react';
 import {
-  AppBar,
   Toolbar,
   IconButton,
   Typography,
@@ -16,21 +14,108 @@ import {
   ListItemText,
   Divider,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import { styled, useTheme } from '@mui/material/styles';
+// import Drawer from '@mui/material/Drawer';
+import CssBaseline from '@mui/material/CssBaseline';
+import MuiAppBar from '@mui/material/AppBar';
+// import Toolbar from '@mui/material/Toolbar';
+// import List from '@mui/material/List';
+// import Typography from '@mui/material/Typography';
+// import Divider from '@mui/material/Divider';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+// import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+// import ListItemIcon from '@mui/material/ListItemIcon';
+// import ListItemText from '@mui/material/ListItemText';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import MailIcon from '@mui/icons-material/Mail';
+import Category from './ProtectedPages/Category/Category'
+import Home from './components/Home';
+import ManageUsers from './ProtectedPages/User/ManageUsers';
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { ColorModeContext } from "./App";
-import { drawerItems } from "./routes"; // Ensure these have { text, path, icon }
-import * as Icons from "@mui/icons-material";
+import drawerItems from './routes';
+import { useNavigate, useLocation } from "react-router-dom";
+import * as MuiIcons from "@mui/icons-material";
 
-export default function 
-Dashboard() {
+const drawerWidth = 240;
+
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: `-${drawerWidth}px`,
+    variants: [
+      {
+        props: ({ open }) => open,
+        style: {
+          transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+          }),
+          marginLeft: 0,
+        },
+      },
+    ],
+  }),
+);
+
+const AppBar = styled(MuiAppBar, {
+  shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme }) => ({
+  transition: theme.transitions.create(['margin', 'width'], {
+    easing: theme.transitions.easing.sharp,
+    duration: theme.transitions.duration.leavingScreen,
+  }),
+  variants: [
+    {
+      props: ({ open }) => open,
+      style: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: `${drawerWidth}px`,
+        transition: theme.transitions.create(['margin', 'width'], {
+          easing: theme.transitions.easing.easeOut,
+          duration: theme.transitions.duration.enteringScreen,
+        }),
+      },
+    },
+  ],
+}));
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  padding: theme.spacing(0, 1),
+  // necessary for content to be below app bar
+  ...theme.mixins.toolbar,
+  justifyContent: 'flex-end',
+}));
+
+const Dashboard = () => {
   const colorMode = useContext(ColorModeContext);
-  const [anchorEl, setAnchorEl] = useState(null);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const isMenuOpen = Boolean(anchorEl);
+  const [selectedPage, setSelectedPage] = React.useState("home");
+  const theme = useTheme();
+  const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); 
+  const location = useLocation();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const isMenuOpen = Boolean(anchorEl);
+
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,62 +127,36 @@ Dashboard() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login");
+    navigate("/");
     console.log("User logged out");
     handleMenuClose();
   };
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-
-  const getIconComponent = (iconName) => {
-    return Icons[iconName] || null;
-  };
-
-  const drawer = (
-    <div>
-      <Toolbar />
-      <Divider />
-      <List>
-        {drawerItems.map((item) => {
-          const isActive = location.pathname.startsWith(item.path); // ✅ Check if path starts with item.path
-          const IconComponent = getIconComponent(item.icon);
-
-          return (
-            <ListItem
-              button
-              key={item.text}
-              onClick={() => navigate(item.path)}
-              selected={isActive}
-              sx={{
-                backgroundColor: isActive ? "yellow" : "transparent", // ✅ Active item background yellow
-                color: isActive ? "black" : "inherit",
-                "& .MuiListItemIcon-root": {
-                  color: isActive ? "black" : "inherit",
-                },
-                cursor: "pointer",
-              }}
-            >
-              <ListItemIcon>{IconComponent ? <IconComponent /> : null}</ListItemIcon>
-              <ListItemText primary={item.text} />
-            </ListItem>
-          );
-        })}
-      </List>
-    </div>
-  );
-
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }} onClick={handleDrawerToggle}>
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            Social Community Admin Dashboard
-          </Typography>
+    <Box sx={{ display: 'flex' }}>
+      <CssBaseline />
+      <AppBar position="fixed" open={open}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Toolbar >
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              sx={[
+                {
+                  mr: 2,
+                },
+                open && { display: 'none' },
+              ]}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" noWrap component="div">
+              Robert Johnson | Admin Panel
+            </Typography>
+          </Toolbar>
+          <Box>
           <IconButton onClick={colorMode.toggleColorMode} color="inherit" sx={{ mr: 2 }}>
             {colorMode.toggleColorMode ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
@@ -113,47 +172,59 @@ Dashboard() {
           >
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
+        </Box>
         </Toolbar>
       </AppBar>
 
-      <Box component="nav" sx={{ width: { sm: 240 }, flexShrink: { sm: 0 } }} aria-label="mailbox folders">
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{ keepMounted: true }}
-          sx={{
-            display: { xs: "block", sm: "none" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
-          }}
-        >
-          {drawer}
-        </Drawer>
-
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: "none", sm: "block" },
-            "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-
-      <Box
-        component="main"
+      <Drawer
         sx={{
-          flexGrow: 1,
-          bgcolor: "background.default",
-          color: "text.primary",
-          p: 3,
-          mt: 8,
+          width: drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+          },
         }}
+        variant="persistent"
+        anchor="left"
+        open={open}
       >
-        <Outlet />
-      </Box>
+        <div style={{ display: "flex", justifyContent: "flex-end", padding: 10 }}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
+        </div>
+        <Divider />
+        <List>
+          {drawerItems.map(({ text, icon, path, page }) => {
+            const IconComponent = MuiIcons[icon] || MuiIcons["Menu"]; // Fallback icon
+            const isActive = selectedPage === page;
+
+            return (
+              <ListItem key={text} disablePadding>
+                <ListItemButton onClick={() => setSelectedPage(page)}
+                  sx={{ backgroundColor: isActive ? "#f0f0f0" : "transparent" }}>
+                  <ListItemIcon>
+                    <IconComponent />
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
+        </List>
+      </Drawer>
+
+      <Main open={open}>
+        <DrawerHeader />
+        <Box>
+          {selectedPage === "home" && <Home setSelectedPage={setSelectedPage} />}
+          {selectedPage === "manage-users" && <ManageUsers setSelectedPage={setSelectedPage} />}
+          {selectedPage === "category" && <Category setSelectedPage={setSelectedPage} />}
+          {selectedPage === "dashboard" && <Dashboard />}
+        </Box>
+      </Main>
     </Box>
   );
 }
+export default Dashboard;
