@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5050/api/subcategory";
+const API_BASE_URL = "http://54.236.98.193:5050/api/subcategory";
 
 // Category APIs
 export const fetchSubcategories = async () => {
