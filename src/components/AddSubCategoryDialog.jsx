@@ -69,9 +69,9 @@ const AddSubCategoryDialog = ({
           categoryId: parentId,
           name: subCategoryName,
         },
-        {
-          withCredentials: true, // if you're using cookies/auth
-        }
+        // {
+        //   withCredentials: true, // if you're using cookies/auth
+        // }
       );
 
       console.log("Subcategory added:", response.data);
