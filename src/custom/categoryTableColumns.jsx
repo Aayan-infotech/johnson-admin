@@ -42,7 +42,7 @@ export const categoryTableColumns = ({
         <CustomIconButton
           icon={<PlusCircle size={20} color="white" />}
           color="green"
-          onClick={() => handleAddSubCategory(params.row.id)}
+          onClick={() => handleAddSubCategory(params.row.categoryId)}
         />
       ),
     },

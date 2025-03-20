@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Grid, Box, Button, Typography } from "@mui/material";
+import { Grid, Box, Button, Typography, CircularProgress  } from "@mui/material";
 import { Email, Visibility, VisibilityOff, Lock } from "@mui/icons-material";
 import logo from "../assets/images/logo1.png";
 import watermark from "../assets/images/watermark1.png";
@@ -13,6 +13,7 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
 
     // const handleLogin = () => {
@@ -25,6 +26,8 @@ const Login = () => {
     // };
 
     const handleLogin = async () => {
+        if (loading) return; // prevent multiple clicks
+        setLoading(true);
         try {
             const response = await axios.post("http://3.223.253.106:5050/api/admin/login",
                 { email, password }
@@ -41,6 +44,9 @@ const Login = () => {
         }
         catch (error) {
             return console.log(error)
+        }
+        finally {
+            setLoading(false);
         }
     }
 
@@ -75,7 +81,13 @@ const Login = () => {
                 </Grid>
                 <Grid item xs={12} md={5} className="right-column" sx={{ bgcolor: "white" }}>
                     <Box className="login-form"
-                        sx={{ mx: "auto", mt: 10, p: 4, }}>
+                        sx={{ mx: "auto", mt: 10, p: 4, }}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                handleLogin();
+                            }
+                        }}
+                        tabIndex={0}>
                         <Typography variant="h5" gutterBottom sx={{ fontWeight: "bold", textAlign: "center" }}>
                             ADMIN LOGIN
                         </Typography>
@@ -92,8 +104,8 @@ const Login = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             icon={<Lock />}
-                            endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
-                            onEndIconClick={() => setShowPassword(!showPassword)}
+                        // endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
+                        // onEndIconClick={() => setShowPassword(!showPassword)}
                         />
                         <Button
                             variant="contained"
@@ -106,7 +118,11 @@ const Login = () => {
                             }}
                             onClick={handleLogin}
                         >
-                            Login
+                            {loading ? (
+                                <CircularProgress size={24} sx={{ color: "white" }} />
+                            ) : (
+                                "Login"
+                            )}
                         </Button>
                         {/* <Typography
                             sx={{ mt: 2, fontSize: "14px", color: "gray", cursor: "pointer" }}

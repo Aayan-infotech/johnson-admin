@@ -20,6 +20,8 @@ import { showErrorToast, showSuccessToast } from "../../Toast";
 
 const Category = () => {
   const [allCategoriesList, setAllCategoriesList] = useState([]);
+  const [selectedParentId, setSelectedParentId] = useState(null);
+// const [selectedParentName, setSelectedParentName] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [showCategoryDetails, setShowCategoryDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -115,8 +117,10 @@ const Category = () => {
   };
   
 
-  const handleAddSubCategory = (id) => {
-    console.log("Adding subcategory for:", id);
+  const handleAddSubCategory = (id, name) => {
+    console.log("Opening Add Subcategory Dialog for:", id, name);
+    setSelectedParentId(id);
+    // setSelectedParentName(name);
     setOpenDialog(true);
   };
 
@@ -218,7 +222,7 @@ const Category = () => {
         onStatusToggle={handleToggleStatus}
         checkboxSelection
       />
-      <AddSubCategoryDialog open={openDialog} handleClose={handleCloseDialog} />
+      <AddSubCategoryDialog open={openDialog} parentId={selectedParentId} handleClose={handleCloseDialog} />
       <AddCategory
         open={openCategoryDialog}
         handleClose={handleCloseCategoryDialog}

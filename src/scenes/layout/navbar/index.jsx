@@ -124,7 +124,7 @@ const Navbar = () => {
           horizontal: "right",
         }}
       >
-        <MenuItem onClick={handleClose}>
+        {/* <MenuItem onClick={handleClose}>
           <Settings fontSize="small" sx={{ mr: 1 }} />
           Settings
         </MenuItem>
@@ -135,7 +135,7 @@ const Navbar = () => {
         <MenuItem onClick={handleClose}>
           <Notifications fontSize="small" sx={{ mr: 1 }} />
           Notifications
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={handleLogout}>
           <Logout fontSize="small" sx={{ mr: 1 }} />
           Logout
