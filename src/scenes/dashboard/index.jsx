@@ -48,7 +48,7 @@ function Dashboard() {
   const handleStatClick = (stat) => {
     // Map your stat to its route here
     if (stat.title === "Category Management") {
-      navigate("/category");
+      navigate("/menu");
     } else if (stat.title === "User Management") {
       navigate("/customers");
     } else if (stat.type === "orders") {
