@@ -33,7 +33,7 @@ const statData = [
   // { title: "", subtitle: "Email Sent", progress: "0.75", increase: "+14%", icon: <Email sx={{ fontSize: "26px" }} /> },
   { title: "User Management", subtitle: "Add, Edit, Delete User", icon: <PersonAdd sx={{ fontSize: "26px" }} /> },
   { title: "Category Management", subtitle: "Add, Edit, Delete Category, Subcategory and more", icon: <PointOfSale sx={{ fontSize: "26px" }} /> },
-  // { title: "1,325,134", subtitle: "Traffic Received", progress: "0.80", increase: "+43%", icon: <Traffic sx={{ fontSize: "26px" }} /> },
+  { title: "Product Management", subtitle: "Add, Update, Delete product and more...", progress: "0.80",  icon: <Traffic sx={{ fontSize: "26px" }} /> },
 ];
 
 function Dashboard() {
@@ -51,8 +51,8 @@ function Dashboard() {
       navigate("/menu");
     } else if (stat.title === "User Management") {
       navigate("/customers");
-    } else if (stat.type === "orders") {
-      navigate("/orders");
+    } else if (stat.title === "Product Management") {
+      navigate("/products");
     } else {
       // fallback or default navigation
       navigate("/");
@@ -97,7 +97,7 @@ function Dashboard() {
         display="grid"
         gridTemplateColumns={
           isXlDevices
-            ? "repeat(12, 1fr)"
+            ? "repeat(16, 1fr)"
             : isMdDevices
               ? "repeat(6, 1fr)"
               : "repeat(3, 1fr)"

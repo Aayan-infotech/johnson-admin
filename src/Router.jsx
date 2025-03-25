@@ -25,6 +25,7 @@ import Category from "./scenes/category";
 import Login from "./components/Login";
 import MenuTabs from "./custom/multipleTabs";
 import PrivateRoute from "./utils/PrivateRoute";
+import Products from "./scenes/products/Products";
 
 const AppRouter = () => {
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
@@ -44,6 +45,7 @@ const AppRouter = () => {
             <Route path="/category" element={<Category />} />
             <Route path="/customers" element={<UserDetails />} />
             <Route path="/contacts" element={<Contacts />} />
+            <Route path="/products" element={<Products />} />
           </Route>
         </Route>
       </Routes>

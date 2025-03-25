@@ -28,6 +28,8 @@ import {
   WavesOutlined,
   CategoryOutlined,
 } from "@mui/icons-material";
+import HandymanSharpIcon from '@mui/icons-material/HandymanSharp';
+
 import Item from "./Item";
 import { ToggledContext } from "../../../App";
 
@@ -154,12 +156,12 @@ const SideBar = () => {
             colors={colors}
             icon={<CategoryOutlined />}
           />
-          {/* <Item
-            title="Contacts Information"
-            path="/contacts"
+          <Item
+            title="Products"
+            path="/products"
             colors={colors}
-            icon={<ContactsOutlined />}
-          /> */}
+            icon={<HandymanSharpIcon />}
+          />
           {/* <Item
             title="Invoices Balances"
             path="/invoices"
