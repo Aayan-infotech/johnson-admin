@@ -24,7 +24,7 @@ const Products = () => {
             const response = await axios.get(`${API_BASE_URL}/product/getAllProducts`);
             console.log(response, "response");
 
-            const formattedData = response?.data.map((product) => ({
+            const formattedData = response?.data.products.map((product) => ({
                 id: product._id,
                 productId: product._id || "N/A",
                 name: product.name || "N/A",
