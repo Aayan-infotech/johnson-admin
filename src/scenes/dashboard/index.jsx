@@ -23,6 +23,7 @@ import {
   PointOfSale,
   Traffic,
 } from "@mui/icons-material";
+import HandymanSharpIcon from '@mui/icons-material/HandymanSharp';
 import { useNavigate } from "react-router-dom";
 import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
@@ -33,7 +34,7 @@ const statData = [
   // { title: "", subtitle: "Email Sent", progress: "0.75", increase: "+14%", icon: <Email sx={{ fontSize: "26px" }} /> },
   { title: "User Management", subtitle: "Add, Edit, Delete User", icon: <PersonAdd sx={{ fontSize: "26px" }} /> },
   { title: "Category Management", subtitle: "Add, Edit, Delete Category, Subcategory and more", icon: <PointOfSale sx={{ fontSize: "26px" }} /> },
-  { title: "Product Management", subtitle: "Add, Update, Delete product and more...", progress: "0.80",  icon: <Traffic sx={{ fontSize: "26px" }} /> },
+  { title: "Product Management", subtitle: "Add, Update, Delete product and more...", progress: "0.80",  icon: <HandymanSharpIcon sx={{ fontSize: "26px" }} /> },
 ];
 
 function Dashboard() {
