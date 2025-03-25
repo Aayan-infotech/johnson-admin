@@ -1,4 +1,4 @@
-import { Box, Container, IconButton, InputBase, useTheme } from "@mui/material";
+import { Box, Container, IconButton, InputBase, useTheme, Modal, TextField, Button } from "@mui/material";
 import { Header } from "../../components";
 import { SearchOutlined } from "@mui/icons-material";
 import { useEffect, useState } from "react";
@@ -13,6 +13,8 @@ const Products = () => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchText, setSearchText] = useState("");
+    const [editModalOpen, setEditModalOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -20,7 +22,7 @@ const Products = () => {
         try {
             setLoading(true);
             const response = await axios.get(`${API_BASE_URL}/product/getAllProducts`);
-            console.log(response,"response")
+            console.log(response, "response");
 
             const formattedData = response?.data.map((product) => ({
                 id: product._id,
@@ -30,7 +32,7 @@ const Products = () => {
                 discount: product.price?.discountPercent || "N/A",
                 stock: product.quantity || "N/A",
             }));
-            console.log(formattedData)
+            console.log(formattedData);
             setAllProducts(formattedData);
             setFilteredProducts(formattedData);
         } catch (error) {
@@ -58,6 +60,30 @@ const Products = () => {
         }
     };
 
+    const handleEdit = (product) => {
+        console.log(product);
+        setSelectedProduct(product);
+        setEditModalOpen(true);
+    };
+
+    const handleEditChange = (e) => {
+        const { name, value } = e.target;
+        setSelectedProduct((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleSaveEdit = async () => {
+        try {
+            const response = await axios.put(`${API_BASE_URL}/product/updateProduct/${selectedProduct.id}`, selectedProduct);
+            console.log("Edited product response:", response.data);
+            setFilteredProducts((prevProducts) => prevProducts.map((product) =>
+                product.id === selectedProduct.id ? { ...product, ...selectedProduct } : product
+            ));
+            setEditModalOpen(false);
+        } catch (error) {
+            console.error("Error updating product:", error);
+        }
+    };
+
     const handleDelete = (id) => {
         setFilteredProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
     };
@@ -66,7 +92,7 @@ const Products = () => {
         alert(`Product Details:\n\nID: ${product.productId}\nName: ${product.name}\nPrice: ${product.price}`);
     };
 
-    const columns = productTableColumns({ handleDelete, handleView });
+    const columns = productTableColumns({ handleEdit, handleDelete, handleView });
 
     return (
         <Container maxWidth={false}>
@@ -85,6 +111,20 @@ const Products = () => {
                 </Box>
             </Box>
             <CustomTable columns={columns} rows={filteredProducts} loading={loading} checkboxSelection />
+
+            <Modal open={editModalOpen} onClose={() => setEditModalOpen(false)}>
+                <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 400, bgcolor: "background.paper", p: 4, borderRadius: 2 }}>
+                    <h2>Edit Product</h2>
+                    <TextField label="Name" fullWidth margin="normal" name="name" value={selectedProduct?.name || ""} onChange={handleEditChange} />
+                    <TextField label="Price" fullWidth margin="normal" name="price" value={selectedProduct?.price || ""} onChange={handleEditChange} />
+                    <TextField label="Stock" fullWidth margin="normal" name="stock" value={selectedProduct?.stock || ""} onChange={handleEditChange} />
+                    <TextField label="Discount" fullWidth margin="normal" name="discount" value={selectedProduct?.discount || ""} onChange={handleEditChange} />
+                    <Box display="flex" justifyContent="flex-end" mt={2}>
+                        <Button onClick={() => setEditModalOpen(false)} sx={{ mr: 2 }}>Cancel</Button>
+                        <Button variant="contained" color="primary" onClick={handleSaveEdit}>Save</Button>
+                    </Box>
+                </Box>
+            </Modal>
         </Container>
     );
 };
