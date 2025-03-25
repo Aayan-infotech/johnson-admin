@@ -11,39 +11,40 @@ import {
   import { useEffect, useState } from "react";
   import axios from "axios";
   import CustomTable from "../../custom/Table";
-  import subCategoryTableColumns from "../../custom/subcategoryTableColumns"; // Create this file
+  import { subSubCategoryTableColumns } from "../../custom/subsubcategoryTableColumn/subsubcategoryTableColumn"; // Create this file
   import { API_BASE_URL } from "../../utils/apiConfig";
 //   import AddSubCategoryDialog from "../../components/AddSubCategoryDialog"; // Modify to support both add/edit
   import { tokens } from "../../theme";
   import { showErrorToast, showSuccessToast } from "../../Toast";
   
-  const SubCategory = () => {
-    const [subCategories, setSubCategories] = useState([]);
+  const SubSubCategory = () => {
+    const [subSubCategories, setSubSubCategories] = useState([]);
     const [filteredSubCategories, setFilteredSubCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchText, setSearchText] = useState("");
     const [openDialog, setOpenDialog] = useState(false);
-    const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+    const [selectedSubSubCategory, setSelectedSubSubCategory] = useState(null);
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
   
-    const fetchAllSubCategories = async () => {
+    const fetchAllSubSubCategories = async () => {
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/subcategory/admin/get-all-subcategories`
+          `${API_BASE_URL}/subsubcategory/admin/get-all-subsubcategories`
         );
         if (response?.data?.status === 200) {
           const formattedData = response.data.data.map((sub) => ({
             id: sub._id,
-            subCategoryId: sub.subcategoryId || "N/A",
+            subsubCategoryId: sub.subsubcategoryId || "N/A",
             name: sub.name.en || "N/A",
             // parentCategory: sub.categoryId?.name?.en || "N/A",
+            parentSubCategory: sub.subcategoryId || "N/A",
             parentCategory: sub.categoryId || "N/A",
             slug: sub.slug || "N/A",
-            status: sub?.isActive || "N/A",
+            isActive: sub.isActive ? "Active" : "Inactive",
             createdAt: new Date(sub.createdAt).toLocaleDateString(),
           }));
-          setSubCategories(formattedData);
+          setSubSubCategories(formattedData);
           setFilteredSubCategories(formattedData);
         } else {
           showErrorToast("Failed to fetch subcategories");
@@ -57,17 +58,17 @@ import {
     };
   
     useEffect(() => {
-      fetchAllSubCategories();
+      fetchAllSubSubCategories();
     }, []);
   
     const handleOpenDialog = () => {
-      setSelectedSubCategory(null);
+      setSelectedSubSubCategory(null);
       setOpenDialog(true);
     };
   
     const handleCloseDialog = () => {
       setOpenDialog(false);
-      setSelectedSubCategory(null);
+      setSelectedSubSubCategory(null);
     };
   
     const handleSearch = (e) => {
@@ -75,28 +76,12 @@ import {
       setSearchText(value);
   
       if (!value) {
-        setFilteredSubCategories(subCategories);
+        setFilteredSubCategories(subSubCategories);
       } else {
-        const filtered = subCategories.filter((sub) =>
+        const filtered = subSubCategories.filter((sub) =>
           sub.name.toLowerCase().includes(value)
         );
         setFilteredSubCategories(filtered);
-      }
-    };
-
-    const handleToggleStatus = async (row) => {
-      console.log(row, "row");
-      
-      const newStatus = row.status === "Active" ? "Blocked" : "Active";
-    
-      try {
-        await axios.put(`${API_BASE_URL}/subcategory/admin/activate-subcategory/${row}`, {
-          status: newStatus,
-        });
-  
-        await fetchAllSubCategories()
-      } catch (error) {
-        console.error("Failed to update status", error);
       }
     };
   
@@ -106,12 +91,12 @@ import {
   
       try {
         const response = await axios.delete(
-          `${API_BASE_URL}/subcategory/admin/delete-subcategory/${id}`
+          `${API_BASE_URL}/subsubcategory/admin/delete-subsubcategory/${id}`
         );
   
         if (response?.data?.status === 200) {
           showSuccessToast(response?.data?.message || "Subcategory deleted");
-          setSubCategories((prev) => prev.filter((item) => item.id !== id));
+          setSubSubCategories((prev) => prev.filter((item) => item.id !== id));
           setFilteredSubCategories((prev) => prev.filter((item) => item.id !== id));
         } else {
           showErrorToast("Failed to delete subcategory");
@@ -123,12 +108,11 @@ import {
     };
   
     const handleView = (row) => {
-      setSelectedSubCategory(row);
+      setSelectedSubSubCategory(row);
       setOpenDialog(true);
     };
   
-    const columns = subCategoryTableColumns({
-      handleToggleStatus,
+    const columns = subSubCategoryTableColumns({
       handleDelete,
       handleView,
     });
@@ -178,7 +162,7 @@ import {
               size="large"
               onClick={handleOpenDialog}
             >
-              Add Subcategory
+              Add Sub-Subcategory
             </Button>
           </Box>
         </Box>
@@ -200,5 +184,5 @@ import {
     );
   };
   
-  export default SubCategory;
+  export default SubSubCategory;
   

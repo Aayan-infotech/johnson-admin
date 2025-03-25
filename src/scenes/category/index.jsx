@@ -136,7 +136,7 @@ const Category = () => {
     try {
       const response = await axios.delete(`${API_BASE_URL}/category/admin/delete-category/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Sending token in headers
+          // Authorization: `Bearer ${token}`, // Sending token in headers
           "Content-Type": "application/json",
         },
       });
@@ -144,6 +144,7 @@ const Category = () => {
         showSuccessToast(response?.data?.message || "Category deleted successfully");
         setAllCategoriesList((prevList) => prevList.filter(category => category.id !== id));
         setFilteredUsers((prevList) => prevList.filter(category => category.id !== id));
+        fetchAllCategoryDetails();
   
       } else {
         showErrorToast("Failed to delete category.");

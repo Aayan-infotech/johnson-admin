@@ -1,8 +1,9 @@
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, Button } from "@mui/material";
 import { Eye, Trash2 } from "lucide-react";
 import { CustomIconButton } from "./Button";
 
-export const subCategoryTableColumns = ({
+const subCategoryTableColumns = ({
+  handleToggleStatus,
   handleDelete,
   handleView,
 }) => [
@@ -27,16 +28,24 @@ export const subCategoryTableColumns = ({
   //   width: 200,
   // },
   {
-    field: "isActive",
+    field: "status",
     headerName: "Status",
     width: 180,
-    renderCell: (params) => (
-      <Chip  
-        label={params.row.isActive}
-        color={params.row.isActive === "Active" ? "success" : "error"}
+    renderCell: (params) => {
+      // return <Chip label="Active" color="success" size="small" />;
+      return  <Button
+        variant="contained"
+        color={params.row.status === true ? "success" : "error"}
         size="small"
-      />
-    ),
+        onClick={(event) => {
+          event.stopPropagation();
+          console.log(params.row);
+          handleToggleStatus(params.row.subCategoryId);
+        }}
+      >
+        {params.row.status === true ? "Active" : "Inactive"}
+      </Button>
+    },
   },
   // {
   //   field: "createdAt",
@@ -61,15 +70,19 @@ export const subCategoryTableColumns = ({
         <CustomIconButton
           icon={<Eye size={20} color="white" />}
           color="rgb(77 141 225)"
-          onClick={() => handleView(params.row)}
+          onClick={() => {
+            // {console.log(params.row);
+            handleView(params.row)}}
         />
         <CustomIconButton
           icon={<Trash2 size={18} />}
           color="hsl(0 84.2% 60.2%)"
-          onClick={() => handleDelete(params.row.id)}
+          onClick={() => handleDelete(params.row.subcategoryId)}
         />
         
       </Box>
     ),
   },
 ];
+
+export default subCategoryTableColumns;

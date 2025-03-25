@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import CategoryTab from "../scenes/category/index"; // Replace with your actual component
 import SubCategoryTable from "../scenes/subcategory/subcategory"; // Replace with your actual component
-// import SubSubCategoryTable from "./SubSubCategoryTable"; // Replace with your actual component
+import SubSubCategoryTable from "../scenes/subSubcategory/subSubcategory"; // Replace with your actual component
 // import ProductTable from "./ProductTable"; // Replace with your actual component
 
 const MultipleTabs = () => {
@@ -29,8 +29,8 @@ const MultipleTabs = () => {
       >
         <Tab label="Categories" />
         <Tab label="Subcategories" />
-        {/* <Tab label="Sub-Subcategories" />
-        <Tab label="Products" /> */}
+        <Tab label="Sub-Subcategories" />
+        {/* <Tab label="Products" /> */}
       </Tabs>
 
       <Box sx={{ mt: 2 }}>
@@ -52,14 +52,14 @@ const MultipleTabs = () => {
           </Box>
         )}
 
-        {/* {currentTab === 2 && (
+        {currentTab === 2 && (
           <Box>
             <Typography variant="h6" gutterBottom>
               Manage Sub-Subcategories
             </Typography>
             <SubSubCategoryTable />
           </Box>
-        )} */}
+        )}
 
         {/* {currentTab === 3 && (
           <Box>
