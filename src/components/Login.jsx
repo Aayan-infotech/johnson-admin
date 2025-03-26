@@ -5,9 +5,11 @@ import { Email, Visibility, VisibilityOff, Lock } from "@mui/icons-material";
 import logo from "../assets/images/logo1.png";
 import watermark from "../assets/images/watermark1.png";
 
+
 import "../css/login.scss";
 import Input from "../custom/Input";
 import axios from "axios";
+import { API_BASE_URL } from "../utils/apiConfig";
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -29,7 +31,7 @@ const Login = () => {
         if (loading) return; // prevent multiple clicks
         setLoading(true);
         try {
-            const response = await axios.post("http://localhost:5050/api/admin/login",
+            const response = await axios.post(`${API_BASE_URL}/api/admin/login`,
                 { email, password }
             );
 
