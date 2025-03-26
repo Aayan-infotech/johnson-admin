@@ -17,7 +17,6 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
-    console.log(API_BASE_URL)
     // const handleLogin = () => {
     //     if (email === "adminjohnson@yopmail.com" && password === "admin@12") {
     //         localStorage.setItem("isAuthenticated", "true");
