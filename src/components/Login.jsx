@@ -17,7 +17,6 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
-
     // const handleLogin = () => {
     //     if (email === "adminjohnson@yopmail.com" && password === "admin@12") {
     //         localStorage.setItem("isAuthenticated", "true");
@@ -31,7 +30,7 @@ const Login = () => {
         if (loading) return; // prevent multiple clicks
         setLoading(true);
         try {
-            const response = await axios.post(`${API_BASE_URL}/api/admin/login`,
+            const response = await axios.post(`${API_BASE_URL}/admin/login`,
                 { email, password }
             );
 
