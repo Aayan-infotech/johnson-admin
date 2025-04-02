@@ -26,6 +26,7 @@ import Login from "./components/Login";
 import MenuTabs from "./custom/multipleTabs";
 import PrivateRoute from "./utils/PrivateRoute";
 import Products from "./scenes/products/Products";
+import Orders from "./scenes/order/order";
 
 const AppRouter = () => {
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
@@ -46,6 +47,7 @@ const AppRouter = () => {
             <Route path="/customers" element={<UserDetails />} />
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/orders" element={<Orders />} />
           </Route>
         </Route>
       </Routes>

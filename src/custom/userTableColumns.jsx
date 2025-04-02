@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import { DeleteOutline, Visibility } from "@mui/icons-material";
-import { Trash2 } from "lucide-react";
+import { Trash2, Eye } from "lucide-react";
 import { CustomIconButton } from "./Button";
 
 export const userTableColumns = ({ handleToggleStatus, handleDelete, handleView }) => [
@@ -25,13 +25,14 @@ export const userTableColumns = ({ handleToggleStatus, handleDelete, handleView 
             </Button>
         ),
     },
+    
     {
         field: "view",
         headerName: "View",
         flex: 0.3,
         sortable: false,
         renderCell: (params) => (
-            <CustomIconButton icon={<Visibility />} color="rgb(77 141 225)" onClick={() => handleView(params.row)} />
+            <CustomIconButton icon={<Eye size={20} color="white" />} color="rgb(77 141 225)" onClick={() => handleView(params.row)} />
         ),
     },
     {

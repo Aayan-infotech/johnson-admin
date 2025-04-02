@@ -13,7 +13,7 @@ import {
   import CustomTable from "../../custom/Table";
   import { subSubCategoryTableColumns } from "../../custom/subsubcategoryTableColumn/subsubcategoryTableColumn"; // Create this file
   import { API_BASE_URL } from "../../utils/apiConfig";
-//   import AddSubCategoryDialog from "../../components/AddSubCategoryDialog"; // Modify to support both add/edit
+  import AddSubSubcategoryDialog from "../../components/AddSubSubcateogryDialogue"; // Modify to support both add/edit
   import { tokens } from "../../theme";
   import { showErrorToast, showSuccessToast } from "../../Toast";
   
@@ -174,12 +174,13 @@ import {
           checkboxSelection
         />
   
-        {/* <AddSubCategoryDialog
+        <AddSubSubcategoryDialog
           open={openDialog}
           handleClose={handleCloseDialog}
           subCategory={selectedSubCategory}
+          category={selectedSubCategory?.categoryId}
           fetchAllSubCategories={fetchAllSubCategories}
-        /> */}
+        />
       </Container>
     );
   };

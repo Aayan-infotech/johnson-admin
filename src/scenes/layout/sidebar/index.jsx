@@ -29,6 +29,7 @@ import {
   CategoryOutlined,
 } from "@mui/icons-material";
 import HandymanSharpIcon from '@mui/icons-material/HandymanSharp';
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 import Item from "./Item";
 import { ToggledContext } from "../../../App";
@@ -161,6 +162,12 @@ const SideBar = () => {
             path="/products"
             colors={colors}
             icon={<HandymanSharpIcon />}
+          />
+          <Item
+            title="Orders"
+            path="/orders"
+            colors={colors}
+            icon={<ShoppingCartIcon />}
           />
           {/* <Item
             title="Invoices Balances"

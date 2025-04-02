@@ -23,6 +23,7 @@ import {
   PointOfSale,
   Traffic,
 } from "@mui/icons-material";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import HandymanSharpIcon from '@mui/icons-material/HandymanSharp';
 import { useNavigate } from "react-router-dom";
 import { tokens } from "../../theme";
@@ -34,7 +35,8 @@ const statData = [
   // { title: "", subtitle: "Email Sent", progress: "0.75", increase: "+14%", icon: <Email sx={{ fontSize: "26px" }} /> },
   { title: "User Management", subtitle: "Add, Edit, Delete User", icon: <PersonAdd sx={{ fontSize: "26px" }} /> },
   { title: "Category Management", subtitle: "Add, Edit, Delete Category, Subcategory and more", icon: <PointOfSale sx={{ fontSize: "26px" }} /> },
-  { title: "Product Management", subtitle: "Add, Update, Delete product and more...", progress: "0.80",  icon: <HandymanSharpIcon sx={{ fontSize: "26px" }} /> },
+  { title: "Product Management", subtitle: "Add, Update, Delete product and more...", progress: "0.80", icon: <HandymanSharpIcon sx={{ fontSize: "26px" }} /> },
+  { title: "Order Management", subtitle: "Add, Update, Delete order and more...", progress: "0.80", icon: <ShoppingCartIcon sx={{ fontSize: "26px" }} /> },
 ];
 
 function Dashboard() {
@@ -54,6 +56,8 @@ function Dashboard() {
       navigate("/customers");
     } else if (stat.title === "Product Management") {
       navigate("/products");
+    } else if (stat.title === "Order Management") {
+      navigate("/orders");
     } else {
       // fallback or default navigation
       navigate("/");
@@ -109,14 +113,16 @@ function Dashboard() {
         {statData.map((stat, index) => (
 
           <Box
-          key={index}
+            key={index}
             gridColumn="span 5"
             bgcolor={colors.primary[400]}
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ borderRadius: "15px", boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;", cursor: "pointer", width: "100%", transition: "transform 0.2s",
-              "&:hover": { transform: "scale(1.05)"} }}
+            sx={{
+              borderRadius: "15px", boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;", cursor: "pointer", width: "100%", transition: "transform 0.2s",
+              "&:hover": { transform: "scale(1.05)" }
+            }}
             // onClick={() => setSelectedStat(stat)}
             onClick={() => handleStatClick(stat)}
           >
