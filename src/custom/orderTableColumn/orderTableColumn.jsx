@@ -60,7 +60,7 @@ import { CustomIconButton } from '../Button';
 
 export const orderTableColumns = ({ handleToggleStatus, handleStatusChange, handleDelete, handleView }) => [
     // { field: "orderId", headerName: "Order ID", width: 180 },
-    { field: "id", headerName: "Order ID", width: 180 },
+    { field: "id", headerName: "Order ID", width: 200 },
     // { field: "status", headerName: "Status", width: 180, renderCell: (params) => (
     //     <Button
     //       variant="contained"
@@ -72,7 +72,7 @@ export const orderTableColumns = ({ handleToggleStatus, handleStatusChange, hand
     //     </Button>
     // )},
     {
-        field: "status", headerName: "Status", width: 200, renderCell: (params) => {
+        field: "status", headerName: "Status", width: 250, renderCell: (params) => {
             // Define colors based on status
             const statusColors = {
                 //   pending: "#FACC15",      // Yellow
