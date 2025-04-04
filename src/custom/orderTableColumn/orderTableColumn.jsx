@@ -60,7 +60,7 @@ import { CustomIconButton } from '../Button';
 
 export const orderTableColumns = ({ handleToggleStatus, handleStatusChange, handleDelete, handleView }) => [
     // { field: "orderId", headerName: "Order ID", width: 180 },
-    { field: "id", headerName: "Order ID", width: 200 },
+    // { field: "id", headerName: "Order ID", width: 200 },
     // { field: "status", headerName: "Status", width: 180, renderCell: (params) => (
     //     <Button
     //       variant="contained"

@@ -5,7 +5,7 @@ import EditSharpIcon from '@mui/icons-material/EditSharp';
 import { CustomIconButton } from "./Button";
 
 export const productTableColumns = ({ handleDelete, handleView, handleEdit }) => [
-    { field: "productId", headerName: "Product ID", flex: 1 },
+    // { field: "productId", headerName: "Product ID", flex: 1 },
     { field: "name", headerName: "Name", flex: 1 },
     { field: "price", headerName: "Price", flex: 1 },
     { field: "discount", headerName: "Discount Percentage", flex: 1 },

@@ -10,7 +10,7 @@ export const categoryTableColumns = ({
   handleDelete,
   handleView,
 }) => [
-    { field: "categoryId", headerName: "Category ID", width: 150 },
+    // { field: "categoryId", headerName: "Category ID", width: 150 },
     { field: "name", headerName: "Category Name", width: 200 },
     // { field: "slug", headerName: "Slug", width: 200 },
     {

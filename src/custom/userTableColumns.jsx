@@ -4,7 +4,7 @@ import { Trash2, Eye } from "lucide-react";
 import { CustomIconButton } from "./Button";
 
 export const userTableColumns = ({ handleToggleStatus, handleDelete, handleView }) => [
-    { field: "userId", headerName: "User ID", flex: 1 },
+    // { field: "userId", headerName: "User ID", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
     { field: "mobile", headerName: "Mobile", flex: 1 },
     {

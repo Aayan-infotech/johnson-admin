@@ -7,11 +7,11 @@ const subCategoryTableColumns = ({
   handleDelete,
   handleView,
 }) => [
-  {
-    field: "subCategoryId",
-    headerName: "SubCategory ID",
-    width: 150,
-  },
+  // {
+  //   field: "subCategoryId",
+  //   headerName: "SubCategory ID",
+  //   width: 150,
+  // },
   {
     field: "name",
     headerName: "SubCategory Name",
