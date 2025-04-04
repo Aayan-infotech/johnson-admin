@@ -1,42 +1,50 @@
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, Button } from "@mui/material";
 import { Eye, Trash2 } from "lucide-react";
 import { CustomIconButton } from "../Button";
 
 export const subSubCategoryTableColumns = ({
   handleDelete,
   handleView,
+  handleToggleStatus
 }) => [
-  {
-    field: "subsubCategoryId",
-    headerName: "Sub-SubCategory ID",
-    width: 220,
-  },
+  // {
+  //   field: "id",
+  //   headerName: "Sub-SubCategory ID",
+  //   width: 220,
+  // },
   {
     field: "name",
     headerName: "Sub-SubCategory Name",
     width: 180,
   },
+  // {
+  //   field: "subcategoryName",
+  //   headerName: "Parent SubCategory",
+  //   width: 180,
+  // },
+  // {
+  //   field: "categoryName",
+  //   headerName: "Parent Category",
+  //   width: 180,
+  // },
   {
-    field: "parentSubCategory",
-    headerName: "Parent SubCategory",
-    width: 180,
-  },
-  {
-    field: "parentCategory",
-    headerName: "Parent Category",
-    width: 180,
-  },
-  {
-    field: "isActive",
+    field: "status",
     headerName: "Status",
-    width: 150,
-    renderCell: (params) => (
-      <Chip  
-        label={params.row.isActive}
-        color={params.row.isActive === "Active" ? "success" : "error"}
+    width: 180,
+    renderCell: (params) => {
+      // return <Chip label="Active" color="success" size="small" />;
+      return  <Button
+        variant="contained"
+        color={params.row.status === true ? "success" : "error"}
         size="small"
-      />
-    ),
+        onClick={(event) => {
+          event.stopPropagation();
+          handleToggleStatus(params.row.subsubcategoryId);
+        }}
+      >
+        {params.row.status === true ? "Active" : "Inactive"}
+      </Button>
+    },
   },
   {
     field: "actions",

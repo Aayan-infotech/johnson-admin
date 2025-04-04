@@ -36,27 +36,27 @@ const MultipleTabs = () => {
       <Box sx={{ mt: 2 }}>
         {currentTab === 0 && (
           <Box>
-            <Typography variant="h6" gutterBottom>
+            {/* <Typography variant="h6" gutterBottom>
               Manage Categories
-            </Typography>
+            </Typography> */}
             <CategoryTab />
           </Box>
         )}
 
         {currentTab === 1 && (
           <Box>
-            <Typography variant="h6" gutterBottom>
+            {/* <Typography variant="h6" gutterBottom>
               Manage Subcategories
-            </Typography>
+            </Typography> */}
             <SubCategoryTable />
           </Box>
         )}
 
         {currentTab === 2 && (
           <Box>
-            <Typography variant="h6" gutterBottom>
+            {/* <Typography variant="h6" gutterBottom>
               Manage Sub-Subcategories
-            </Typography>
+            </Typography> */}
             <SubSubCategoryTable />
           </Box>
         )}
