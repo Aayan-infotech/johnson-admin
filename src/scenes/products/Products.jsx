@@ -1,12 +1,14 @@
 import { Box, Container, IconButton, InputBase, useTheme, Modal, TextField, Button } from "@mui/material";
 import { Header } from "../../components";
-import { SearchOutlined } from "@mui/icons-material";
 import { useEffect, useState } from "react";
+import { SearchOutlined, PersonAdd, AddCircleOutline  } from "@mui/icons-material";
 import axios from "axios";
 import CustomTable from "../../custom/Table";
 import { productTableColumns } from "../../custom/ProductTableColumns";
+// import { AddProductDialog } from "../../components/AddProductDialogue";
 import { API_BASE_URL } from "../../utils/apiConfig";
 import { tokens } from "../../theme";
+import AddProductDialog from './../../components/AddProductDialogue';
 
 const Products = () => {
     const [allProducts, setAllProducts] = useState([]);
@@ -15,6 +17,7 @@ const Products = () => {
     const [searchText, setSearchText] = useState("");
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [addDialogOpen, setAddDialogOpen] = useState(false);
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
@@ -98,18 +101,37 @@ const Products = () => {
         <Container maxWidth={false}>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
                 <Header title="Products" />
-                <Box display="flex" alignItems="center" borderRadius="3px" bgcolor={colors.primary[400]}>
-                    <InputBase
-                        placeholder="Search product"
-                        value={searchText}
-                        onChange={handleSearch}
-                        sx={{ ml: 2, flex: 1 }}
-                    />
-                    <IconButton type="button" sx={{ p: 1 }}>
-                        <SearchOutlined />
-                    </IconButton>
+                <Box display="flex" alignItems="center" gap={2}>
+                    <Box display="flex" alignItems="center" borderRadius="3px" bgcolor={colors.primary[400]}>
+                        <InputBase
+                            placeholder="Search product"
+                            value={searchText}
+                            onChange={handleSearch}
+                            sx={{ ml: 2, flex: 1 }}
+                        />
+                        <IconButton type="button" sx={{ p: 1 }}>
+                            <SearchOutlined />
+                        </IconButton>
+                    </Box>
+                    <Button variant="outlined"
+                        sx={{
+                            fontWeight: "bold",
+                            transition: ".3s ease",
+                            textTransform: "none",
+                            backgroundColor: colors.primary[400],
+                            color: "black",
+                            "&:hover": {
+                                backgroundColor: colors.primary[600],
+                                color: "white",
+                            },
+                        }}
+                        startIcon={<AddCircleOutline  />}
+                        size="large" onClick={() => setAddDialogOpen(true)}>
+                        Add Product
+                    </Button>
                 </Box>
             </Box>
+
             <CustomTable columns={columns} rows={filteredProducts} loading={loading} checkboxSelection />
 
             <Modal open={editModalOpen} onClose={() => setEditModalOpen(false)}>
@@ -125,7 +147,16 @@ const Products = () => {
                     </Box>
                 </Box>
             </Modal>
+
+            <AddProductDialog
+                open={addDialogOpen}
+                handleClose={() => setAddDialogOpen(false)}
+                fetchAllProducts={fetchAllProducts}
+            />
+
         </Container>
+
+
     );
 };
 

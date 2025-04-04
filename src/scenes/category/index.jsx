@@ -160,6 +160,8 @@ const Category = () => {
     setOpenCategoryDialog(true);
   };
 
+  // const handleRedirect = async() =
+
   const columns = categoryTableColumns({
     handleToggleStatus,
     handleAddSubCategory,
