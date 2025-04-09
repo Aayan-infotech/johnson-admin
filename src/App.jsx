@@ -4,6 +4,9 @@ import { ColorModeContext, useMode } from "./theme";
 import { Navbar, SideBar } from "./scenes";
 import { Outlet } from "react-router-dom";
 import ToastNotification from "./Toast";
+// In App.jsx or index.jsx
+import 'react-quill/dist/quill.snow.css';
+
 
 export const ToggledContext = createContext(null);
 
