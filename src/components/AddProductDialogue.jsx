@@ -154,7 +154,6 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
         }
 
         console.log(compatibleVehicles, "compatibleVehicles")
-
         const payload = {
             name: productName,
             description: description,
@@ -173,16 +172,15 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             SubSubcategory: selectedSubSubCategory || null,
             picture: [], // you can handle this later via file upload
         };
-
-
         setLoading(true);
         try {
             const res = await axios.post(`${API_BASE_URL}/product/admin/create-product`, payload);
             if (res.data.status === 200) {
                 showSuccessToast("Product added successfully");
-                handleClose();
                 fetchAllProducts();
             }
+            fetchAllProducts();
+            handleClose();
         } catch (err) {
             showErrorToast(err?.response?.data?.message || "Failed to add product");
         } finally {
