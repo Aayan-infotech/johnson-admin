@@ -169,6 +169,12 @@ const SideBar = () => {
             colors={colors}
             icon={<ShoppingCartIcon />}
           />
+          <Item
+            title="Static Content Management"
+            path="/staticPage"
+            colors={colors}
+            icon={<ShoppingCartIcon />}
+          />
           {/* <Item
             title="Invoices Balances"
             path="/invoices"

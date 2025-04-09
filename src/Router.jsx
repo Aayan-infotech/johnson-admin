@@ -27,6 +27,7 @@ import MenuTabs from "./custom/multipleTabs";
 import PrivateRoute from "./utils/PrivateRoute";
 import Products from "./scenes/products/Products";
 import Orders from "./scenes/order/order";
+import StaticPage from "./scenes/staticPage/staticContentPage"
 
 const AppRouter = () => {
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
@@ -48,6 +49,7 @@ const AppRouter = () => {
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/products" element={<Products />} />
             <Route path="/orders" element={<Orders />} />
+            <Route path="/staticPage" element={<StaticPage />} />
           </Route>
         </Route>
       </Routes>
