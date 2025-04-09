@@ -16,6 +16,7 @@ import {
 //   import AddSubCategoryDialog from "../../components/AddSubCategoryDialog"; // Modify to support both add/edit
   import { tokens } from "../../theme";
   import { showErrorToast, showSuccessToast } from "../../Toast";
+import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
   
   const SubCategory = () => {
     const [subCategories, setSubCategories] = useState([]);
@@ -190,12 +191,12 @@ import {
           checkboxSelection
         />
   
-        {/* <AddSubCategoryDialog
+        <AddSubCategoryDialog
           open={openDialog}
           handleClose={handleCloseDialog}
           subCategory={selectedSubCategory}
           fetchAllSubCategories={fetchAllSubCategories}
-        /> */}
+        />
       </Container>
     );
   };

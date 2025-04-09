@@ -1,29 +1,3 @@
-// import React from "react";
-// import { Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField } from "@mui/material";
-
-// const AddSubCategoryDialog = ({ open, handleClose }) => {
-//   return (
-//     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-//       <DialogTitle>Add Sub Category</DialogTitle>
-//       <DialogContent>
-//         <TextField 
-//           autoFocus
-//           margin="dense"
-//           label="Sub Category Name"
-//           type="text"
-//           fullWidth
-//         />
-//       </DialogContent>
-//       <DialogActions>
-//         <Button onClick={handleClose} color="error">Cancel</Button>
-//         <Button onClick={handleClose} color="primary">Add</Button>
-//       </DialogActions>
-//     </Dialog>
-//   );
-// };
-
-// export default AddSubCategoryDialog;
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -35,16 +9,20 @@ import {
   TextField,
   Typography,
   CircularProgress,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
-
+import { API_BASE_URL } from "../utils/apiConfig";
 const AddSubCategoryDialog = ({
   open,
   handleClose,
   parentId,
-  // parentName,
   onSuccess, // callback after successful add
 }) => {
   const [subCategoryName, setSubCategoryName] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -55,6 +33,7 @@ const AddSubCategoryDialog = ({
   }, [open]);
 
   const handleAdd = async () => {
+    console.log(selectedCategory,"selecetd category")
     if (!subCategoryName.trim()) {
       alert("Sub Category Name is required");
       return;
@@ -64,11 +43,11 @@ const AddSubCategoryDialog = ({
 
     try {
       const response = await axios.post(
-        "http://localhost:5050/api/subcategory/admin/add-subcategory",
+        `${API_BASE_URL}/subcategory/admin/add-subcategory`,
         {
-          categoryId: parentId,
+          categoryId: selectedCategory,
           name: subCategoryName,
-        },
+        }
         // {
         //   withCredentials: true, // if you're using cookies/auth
         // }
@@ -87,14 +66,45 @@ const AddSubCategoryDialog = ({
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/category/admin/get-categories`
+      );
+      if (response?.data?.status === 200) {
+        setCategories(response.data.data);
+      } else {
+        showErrorToast("Failed to fetch categories");
+      }
+    } catch (error) {
+      console.error(error);
+      showErrorToast("Error fetching categories");
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
       <DialogTitle>Add Sub Category</DialogTitle>
 
       <DialogContent>
-        {/* <Typography variant="subtitle1" gutterBottom>
-          Parent Category: <strong>{parentName}</strong>
-        </Typography> */}
+        <InputLabel sx={{ color: "black" }}>Category</InputLabel>
+        <Select
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+          displayEmpty
+          sx={{ minWidth: 250 }}
+        >
+          <MenuItem value="">Select Category</MenuItem>
+          {categories.map((cat) => (
+            <MenuItem key={cat.categoryId} value={cat._id}>
+              {cat.name.en}
+            </MenuItem>
+          ))}
+        </Select>
 
         <TextField
           autoFocus
@@ -126,4 +136,3 @@ const AddSubCategoryDialog = ({
 };
 
 export default AddSubCategoryDialog;
-

@@ -142,7 +142,7 @@ const AddSubSubCategoryDialog = ({
                         />
 
                         <FormControl fullWidth sx={{ mt: 4 }}>
-                            <InputLabel sx={{ color: "black" }}>Category</InputLabel>
+                            <InputLabel sx={{ color: "black",backgroundColor:"white" }}>Category</InputLabel>
                             <Select
                                 value={selectedCategory}
                                 onChange={(e) => setSelectedCategory(e.target.value)}
@@ -158,7 +158,7 @@ const AddSubSubCategoryDialog = ({
                         </FormControl>
 
                         <FormControl fullWidth sx={{ mt: 2 }}>
-                            <InputLabel sx={{ color: "black" }}>Subcategory</InputLabel>
+                            <InputLabel sx={{ color: "black",backgroundColor:"white" }}>Subcategory</InputLabel>
                             <Select
                                 value={selectedSubCategory}
                                 onChange={(e) => setSelectedSubCategory(e.target.value)}
