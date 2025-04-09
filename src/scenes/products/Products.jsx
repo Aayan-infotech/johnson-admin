@@ -49,6 +49,10 @@ const Products = () => {
         fetchAllProducts();
     }, []);
 
+    const handleClose = () => {
+        setAddDialogOpen(false);
+      };
+
     const handleSearch = (e) => {
         const value = e.target.value.toLowerCase();
         setSearchText(value);
@@ -150,7 +154,7 @@ const Products = () => {
 
             <AddProductDialog
                 open={addDialogOpen}
-                handleClose={() => setAddDialogOpen(false)}
+                handleClose={handleClose}
                 fetchAllProducts={fetchAllProducts}
             />
 

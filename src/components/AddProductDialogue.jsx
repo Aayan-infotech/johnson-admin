@@ -8,6 +8,8 @@ import {
     FormControl,
     Typography,
     Divider,
+    Box,
+    Button
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import Select from "@mui/material/Select";
@@ -38,6 +40,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
     const [compatibleYear, setCompatibleYear] = useState("");
     const [compatibleMake, setCompatibleMake] = useState("");
     const [compatibleModel, setCompatibleModel] = useState("");
+    const [compatibleVehicles, setCompatibleVehicles] = useState([]);
 
     const [loading, setLoading] = useState(false);
 
@@ -98,6 +101,45 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
         }
     };
 
+    const addMake = () => {
+        setCompatibleVehicles([...compatibleVehicles, { make: "", models: [] }]);
+      };
+      
+      const removeMake = (index) => {
+        const updated = [...compatibleVehicles];
+        updated.splice(index, 1);
+        setCompatibleVehicles(updated);
+      };
+      
+      const handleMakeChange = (index, value) => {
+        const updated = [...compatibleVehicles];
+        updated[index].make = value;
+        setCompatibleVehicles(updated);
+      };
+      
+      const addModel = (makeIndex) => {
+        const updated = [...compatibleVehicles];
+        updated[makeIndex].models.push({ model: "", years: [] });
+        setCompatibleVehicles(updated);
+      };
+      
+      const handleModelChange = (makeIndex, modelIndex, value) => {
+        const updated = [...compatibleVehicles];
+        updated[makeIndex].models[modelIndex].model = value;
+        setCompatibleVehicles(updated);
+      };
+      
+      const handleYearChange = (makeIndex, modelIndex, value) => {
+        const updated = [...compatibleVehicles];
+        const yearArray = value
+          .split(",")
+          .map((y) => Number(y.trim()))
+          .filter((y) => !isNaN(y));
+        updated[makeIndex].models[modelIndex].years = yearArray;
+        setCompatibleVehicles(updated);
+      };
+      
+
     const resetForm = () => {
         setSelectedCategory("");
         setSelectedSubCategory("");
@@ -111,10 +153,12 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             return;
         }
 
+        console.log(compatibleVehicles, "compatibleVehicles")
+
         const payload = {
             name: productName,
             description: description,
-            brand:brand,
+            brand: brand,
             price: {
                 actualPrice: Number(actualPrice),
                 discountPercent: Number(discountPercent),
@@ -123,11 +167,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             quality,
             partNo,
             autoPartType,
-            compatibleVehicles: {
-                year: compatibleYear.split(",").map((y) => Number(y.trim())),
-                make: compatibleMake.split(",").map((m) => m.trim()),
-                model: compatibleModel.split(",").map((m) => m.trim()),
-            },
+            compatibleVehicles,
             Category: selectedCategory,
             SubCategory: selectedSubCategory || null,
             SubSubcategory: selectedSubSubCategory || null,
@@ -140,8 +180,8 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             const res = await axios.post(`${API_BASE_URL}/product/admin/create-product`, payload);
             if (res.data.status === 200) {
                 showSuccessToast("Product added successfully");
-                fetchAllProducts();
                 handleClose();
+                fetchAllProducts();
             }
         } catch (err) {
             showErrorToast(err?.response?.data?.message || "Failed to add product");
@@ -221,13 +261,51 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
                 <InputLabel sx={{ color: "black", mt: 2 }}>Auto Part Type</InputLabel>
                 <Input value={autoPartType} onChange={(e) => setAutoPartType(e.target.value)} />
 
-                <Typography mt={3} mb={1}>Compatible Vehicles (comma separated)</Typography>
-                <InputLabel>Year</InputLabel>
-                <Input value={compatibleYear} onChange={(e) => setCompatibleYear(e.target.value)} />
-                <InputLabel>Make</InputLabel>
-                <Input value={compatibleMake} onChange={(e) => setCompatibleMake(e.target.value)} />
-                <InputLabel>Model</InputLabel>
-                <Input value={compatibleModel} onChange={(e) => setCompatibleModel(e.target.value)} />
+                <Typography mt={3} mb={1}>Compatible Vehicles</Typography>
+
+                {compatibleVehicles.map((vehicle, makeIndex) => (
+                    <Box key={makeIndex} sx={{ border: "1px solid #ccc", borderRadius: 2, p: 2, mb: 2 }}>
+                        <InputLabel>Make</InputLabel>
+                        <Input
+                            value={vehicle.make}
+                            onChange={(e) => handleMakeChange(makeIndex, e.target.value)}
+                            placeholder="e.g., Toyota"
+                        />
+
+                        {vehicle.models.map((modelObj, modelIndex) => (
+                            <Box key={modelIndex} sx={{ mt: 2, ml: 2 }}>
+                                <InputLabel>Model</InputLabel>
+                                <Input
+                                    value={modelObj.model}
+                                    onChange={(e) => handleModelChange(makeIndex, modelIndex, e.target.value)}
+                                    placeholder="e.g., Camry"
+                                />
+
+                                <InputLabel sx={{ mt: 1 }}>Years (comma-separated)</InputLabel>
+                                <Input
+                                    value={modelObj.years.join(", ")}
+                                    onChange={(e) => handleYearChange(makeIndex, modelIndex, e.target.value)}
+                                    placeholder="e.g., 2020, 2021, 2022"
+                                />
+                            </Box>
+                        ))}
+
+                        <Button onClick={() => addModel(makeIndex)} sx={{ mt: 1 }}>
+                            + Add Model
+                        </Button>
+
+                        <Divider sx={{ my: 2 }} />
+
+                        <Button color="error" onClick={() => removeMake(makeIndex)}>
+                            Remove Make
+                        </Button>
+                    </Box>
+                ))}
+
+                <Button variant="outlined" onClick={addMake}>
+                    + Add Make
+                </Button>
+
             </DialogContent>
 
             <DialogActions>
