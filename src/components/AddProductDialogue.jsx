@@ -153,41 +153,57 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             showCustomMessage("Please fill in required fields");
             return;
         }
-
-        console.log(compatibleVehicles, "compatibleVehicles")
-        const payload = {
-            name: productName,
-            description: description,
-            brand: brand,
-            price: {
-                actualPrice: Number(actualPrice),
-                discountPercent: Number(discountPercent),
-            },
-            quantity: Number(quantity),
-            quality,
-            partNo,
-            autoPartType,
-            compatibleVehicles,
-            Category: selectedCategory,
-            SubCategory: selectedSubCategory || null,
-            SubSubcategory: selectedSubSubCategory || null,
-            picture: [], // you can handle this later via file upload
-        };
-        setLoading(true);
+    
         try {
-            const res = await axios.post(`${API_BASE_URL}/product/admin/create-product`, payload);
-            if (res.data.status === 200) {
+            setLoading(true);
+    
+            const formData = new FormData();
+            formData.append("name", productName);
+            formData.append("description", description);
+            formData.append("brand", brand);
+            formData.append("price[actualPrice]", actualPrice);
+            formData.append("price[discountPercent]", discountPercent);
+            formData.append("quantity", quantity);
+            formData.append("quality", quality);
+            formData.append("partNo", partNo);
+            formData.append("autoPartType", autoPartType);
+            formData.append("Category", selectedCategory);
+            formData.append("SubCategory", selectedSubCategory || "");
+            formData.append("SubSubcategory", selectedSubSubCategory || "");
+    
+            // 🔁 Compatible vehicles (array)
+            formData.append("compatibleVehicles", JSON.stringify(compatibleVehicles));
+    
+            // 📸 Append image(s)
+            // selectedImages.forEach((img, index) => {
+            //     formData.append("picture", img); // 'picture' is an array on backend
+            // });
+    
+            const res = await axios.post(
+                `${API_BASE_URL}/product/admin/create-product`,
+                formData,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
+            console.log(res, "res");
+    
+            if (res.status === 201) {
                 showSuccessToast("Product added successfully");
                 fetchAllProducts();
             }
-            fetchAllProducts();
             handleClose();
+
         } catch (err) {
+            console.error(err);
             showErrorToast(err?.response?.data?.message || "Failed to add product");
         } finally {
             setLoading(false);
         }
     };
+    
 
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
