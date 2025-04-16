@@ -338,8 +338,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             <InputLabel>Sub-Subcategory</InputLabel>
             <Select
               value={selectedSubSubCategory}
-              onChange={(e) => console.log(e.target.value)}
-            //   onChange={(e) => setSelectedSubSubCategory(e.target.value)}
+              onChange={(e) => setSelectedSubSubCategory(e.target.value)}
               disabled={!subSubCategories.length}
             >
               <MenuItem value="">Select Sub-Subcategory</MenuItem>
