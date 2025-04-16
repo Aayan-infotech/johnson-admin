@@ -39,7 +39,7 @@ export const subSubCategoryTableColumns = ({
         size="small"
         onClick={(event) => {
           event.stopPropagation();
-          handleToggleStatus(params.row.subsubcategoryId);
+          handleToggleStatus(params.row.id);
         }}
       >
         {params.row.status === true ? "Active" : "Inactive"}

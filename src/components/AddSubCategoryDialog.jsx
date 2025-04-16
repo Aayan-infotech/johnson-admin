@@ -18,6 +18,7 @@ const AddSubCategoryDialog = ({
   open,
   handleClose,
   parentId,
+  fetchAllSubCategories,
   onSuccess, // callback after successful add
 }) => {
   const [subCategoryName, setSubCategoryName] = useState("");
@@ -56,7 +57,7 @@ const AddSubCategoryDialog = ({
       console.log("Subcategory added:", response.data);
 
       if (onSuccess) onSuccess(); // refresh data or show success
-
+      fetchAllSubCategories()
       handleClose(); // close modal
     } catch (error) {
       console.error("Error adding subcategory:", error);

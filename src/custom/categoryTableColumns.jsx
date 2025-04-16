@@ -25,7 +25,7 @@ export const categoryTableColumns = ({
           size="small"
           onClick={(event) => {
             event.stopPropagation();
-            handleToggleStatus(params.row.categoryId);
+            handleToggleStatus(params.row.id);
           }}
         >
           {params.row.status === true ? "Active" : "Inactive"}

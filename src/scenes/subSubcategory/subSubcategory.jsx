@@ -90,8 +90,7 @@ const SubSubCategory = () => {
   const handleToggleStatus = async (row) => {
     const newStatus = row.isActive === "Active" ? false : true;
     try {
-      console.log(row, "row")
-      await axios.patch(`${API_BASE_URL}/subsubcategory/admin/activate-subsubcategory/${row}`, {
+      await axios.put(`${API_BASE_URL}/subsubcategory/admin/activate-subsubcategory/${row}`, {
         isActive: newStatus,
       });
       fetchAllSubSubCategories();

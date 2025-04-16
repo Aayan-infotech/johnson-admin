@@ -64,6 +64,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
 
   useEffect(() => {
     if (selectedSubCategory) {
+      console.log(selectedSubCategory)
       fetchSubSubCategories(selectedSubCategory);
     } else {
       setSubSubCategories([]);
@@ -101,6 +102,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
       const res = await axios.get(
         `${API_BASE_URL}/subsubcategory/get-subsubcategories/${subcategoryId}`
       );
+      console.log(res.data)
       if (res.data.status === 200) {
         setSubSubCategories(res.data.data);
       }
@@ -346,8 +348,8 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
               <MenuItem value="">Select Sub-Subcategory</MenuItem>
               {subSubCategories.map((subsub) => (
                 <MenuItem
-                  key={subsub.subsubcategoryId}
-                  value={subsub}
+                  key={subsub.id}
+                  value={subsub.id}
                 >
                   {subsub.name}
                 </MenuItem>
