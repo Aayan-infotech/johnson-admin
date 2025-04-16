@@ -30,6 +30,8 @@ import {
 } from "@mui/icons-material";
 import HandymanSharpIcon from '@mui/icons-material/HandymanSharp';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ArticleIcon from '@mui/icons-material/Article';
+import FeedbackIcon from '@mui/icons-material/Feedback';
 
 import Item from "./Item";
 import { ToggledContext } from "../../../App";
@@ -54,7 +56,8 @@ const SideBar = () => {
     >
       <Menu
         menuItemStyles={{
-          button: { ":hover": { background: "transparent" } }, }}>
+          button: { ":hover": { background: "transparent" } },
+        }}>
         <MenuItem
           rootStyles={{
             margin: "10px 0 20px 0",
@@ -173,7 +176,13 @@ const SideBar = () => {
             title="Static Content Management"
             path="/staticPage"
             colors={colors}
-            icon={<ShoppingCartIcon />}
+            icon={<ArticleIcon />}
+          />
+          <Item
+            title="Feedback Management"
+            path="/feedback"
+            colors={colors}
+            icon={<FeedbackIcon />}
           />
           {/* <Item
             title="Invoices Balances"

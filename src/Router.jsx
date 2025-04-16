@@ -28,6 +28,7 @@ import PrivateRoute from "./utils/PrivateRoute";
 import Products from "./scenes/products/Products";
 import Orders from "./scenes/order/order";
 import StaticPage from "./scenes/staticPage/staticContentPage"
+import Feedback from "./scenes/rating&Reviews/RatingReviews";
 
 const AppRouter = () => {
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
@@ -50,6 +51,7 @@ const AppRouter = () => {
             <Route path="/products" element={<Products />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/staticPage" element={<StaticPage />} />
+            <Route path="/feedback" element={<Feedback />} />
           </Route>
         </Route>
       </Routes>

@@ -21,7 +21,9 @@ import { CustomIconButton } from "../custom/Button";
 import { API_BASE_URL } from "../utils/apiConfig";
 import { showSuccessToast, showErrorToast, showCustomMessage } from "../Toast";
 
+// commit 
 const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
+
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [subSubCategories, setSubSubCategories] = useState([]);
@@ -434,6 +436,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
       </DialogActions>
     </Dialog>
   );
+
 };
 
 export default AddProductDialog;
