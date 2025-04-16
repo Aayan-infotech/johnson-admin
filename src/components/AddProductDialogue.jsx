@@ -40,9 +40,6 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
     const [quality, setQuality] = useState("");
     const [partNo, setPartNo] = useState("");
     const [autoPartType, setAutoPartType] = useState("");
-    const [compatibleYear, setCompatibleYear] = useState("");
-    const [compatibleMake, setCompatibleMake] = useState("");
-    const [compatibleModel, setCompatibleModel] = useState("");
     const [compatibleVehicles, setCompatibleVehicles] = useState([]);
 
     const [loading, setLoading] = useState(false);
@@ -190,7 +187,6 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
                     },
                 }
             );
-            console.log(res, "res");
     
             if (res.status === 201) {
                 showSuccessToast("Product added successfully");
