@@ -323,7 +323,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
           </FormControl>
 
           <FormControl fullWidth sx={{ mt: 2 }}>
-            <InputLabel>Subcategory</InputLabel>
+            <InputLabel>Subcategory:</InputLabel>
             <Select
               value={selectedSubCategory}
               onChange={(e) =>setSelectedSubCategory(e.target.value)}
