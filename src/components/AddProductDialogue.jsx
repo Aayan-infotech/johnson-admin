@@ -180,9 +180,9 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
     formData.append("quality", quality);
     formData.append("partNo", partNo);
     formData.append("autoPartType", autoPartType);
-    formData.append("Category", selectedCategory);
-    formData.append("SubCategory", selectedSubCategory || "");
-    formData.append("SubSubcategory", selectedSubSubCategory || "");
+    formData.append("categoryId", selectedCategory);
+    formData.append("subcategoryId", selectedSubCategory || "");
+    formData.append("subsubcategoryId", selectedSubSubCategory || "");
 
     formData.append("price[actualPrice]", actualPrice);
     formData.append("price[discountPercent]", discountPercent);
@@ -311,7 +311,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             >
               <MenuItem value="">Select Category</MenuItem>
               {categories.map((cat) => (
-                <MenuItem key={cat.categoryId} value={cat.categoryId}>
+                <MenuItem key={cat._id} value={cat._id}>
                   {cat.name.en}
                 </MenuItem>
               ))}
@@ -322,14 +322,14 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             <InputLabel>Subcategory</InputLabel>
             <Select
               value={selectedSubCategory}
-              onChange={(e) => setSelectedSubCategory(e.target.value)}
+              onChange={(e) =>setSelectedSubCategory(e.target.value)}
               disabled={!subCategories.length}
             >
               <MenuItem value="">Select Subcategory</MenuItem>
               {subCategories.map((sub) => (
-                <MenuItem key={sub.subcategoryId} value={sub.subcategoryId}>
-                  {sub.name}
-                </MenuItem>
+               <MenuItem key={sub?.id} value={sub?.id}>
+               {sub.name}
+             </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -338,14 +338,15 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             <InputLabel>Sub-Subcategory</InputLabel>
             <Select
               value={selectedSubSubCategory}
-              onChange={(e) => setSelectedSubSubCategory(e.target.value)}
+              onChange={(e) => console.log(e.target.value)}
+            //   onChange={(e) => setSelectedSubSubCategory(e.target.value)}
               disabled={!subSubCategories.length}
             >
               <MenuItem value="">Select Sub-Subcategory</MenuItem>
               {subSubCategories.map((subsub) => (
                 <MenuItem
                   key={subsub.subsubcategoryId}
-                  value={subsub.subsubcategoryId}
+                  value={subsub}
                 >
                   {subsub.name}
                 </MenuItem>
