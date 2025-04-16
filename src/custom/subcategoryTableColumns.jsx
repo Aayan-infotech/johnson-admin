@@ -40,7 +40,7 @@ const subCategoryTableColumns = ({
         onClick={(event) => {
           event.stopPropagation();
           console.log(params.row);
-          handleToggleStatus(params.row.subCategoryId);
+          handleToggleStatus(params.row.id);
         }}
       >
         {params.row.status === true ? "Active" : "Inactive"}
@@ -77,7 +77,7 @@ const subCategoryTableColumns = ({
         <CustomIconButton
           icon={<Trash2 size={18} />}
           color="hsl(0 84.2% 60.2%)"
-          onClick={() => handleDelete(params.row.subcategoryId)}
+          onClick={() => handleDelete(params.row.id)}
         />
         
       </Box>
