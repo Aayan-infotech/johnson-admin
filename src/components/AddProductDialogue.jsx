@@ -12,6 +12,8 @@ import {
   Button,
   Grid,
   Paper,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import Select from "@mui/material/Select";
@@ -21,13 +23,15 @@ import { CustomIconButton } from "../custom/Button";
 import { API_BASE_URL } from "../utils/apiConfig";
 import { showSuccessToast, showErrorToast, showCustomMessage } from "../Toast";
 
-// commit 
+// commit
 const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
-
+  const [isRegularService, setIsRegularService] = useState(false);
+  const [regularServiceCategories, setRegularServiceCategories] = useState([]);
+  const [selectedRegularServiceCategory, setSelectedRegularServiceCategory] =
+    useState("");
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [subSubCategories, setSubSubCategories] = useState([]);
-
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [selectedSubSubCategory, setSelectedSubSubCategory] = useState("");
@@ -45,6 +49,21 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
 
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (isRegularService) {
+      const fetchRegularServiceCategories = async () => {
+        try {
+          const { data } = await axios.get(
+            "http://3.223.253.106:5050/api/regular-services?lang=en"
+          );
+          setRegularServiceCategories(data.data);
+        } catch (err) {
+          toast.error("Failed to load regular service categories");
+        }
+      };
+      fetchRegularServiceCategories();
+    }
+  }, [isRegularService]);
 
   useEffect(() => {
     if (open) {
@@ -64,7 +83,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
 
   useEffect(() => {
     if (selectedSubCategory) {
-      console.log(selectedSubCategory)
+      console.log(selectedSubCategory);
       fetchSubSubCategories(selectedSubCategory);
     } else {
       setSubSubCategories([]);
@@ -102,7 +121,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
       const res = await axios.get(
         `${API_BASE_URL}/subsubcategory/get-subsubcategories/${subcategoryId}`
       );
-      console.log(res.data)
+      console.log(res.data);
       if (res.data.status === 200) {
         setSubSubCategories(res.data.data);
       }
@@ -191,6 +210,9 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
     formData.append("price[actualPrice]", actualPrice);
     formData.append("price[discountPercent]", discountPercent);
     formData.append("compatibleVehicles", JSON.stringify(compatibleVehicles));
+    if (isRegularService && selectedRegularServiceCategory) {
+      formData.append("regularServiceCategory", selectedRegularServiceCategory);
+    }
 
     images.forEach((file) => {
       formData.append("files", file);
@@ -208,7 +230,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
         showSuccessToast("Product added successfully");
         fetchAllProducts();
         handleClose();
-        resetForm()
+        resetForm();
       }
     } catch (err) {
       showErrorToast(err?.response?.data?.message || "Failed to add product");
@@ -326,14 +348,14 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             <InputLabel>Subcategory:</InputLabel>
             <Select
               value={selectedSubCategory}
-              onChange={(e) =>setSelectedSubCategory(e.target.value)}
+              onChange={(e) => setSelectedSubCategory(e.target.value)}
               disabled={!subCategories.length}
             >
               <MenuItem value="">Select Subcategory</MenuItem>
               {subCategories.map((sub) => (
-               <MenuItem key={sub?.id} value={sub?.id}>
-               {sub.name}
-             </MenuItem>
+                <MenuItem key={sub?.id} value={sub?.id}>
+                  {sub.name}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>
@@ -347,10 +369,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             >
               <MenuItem value="">Select Sub-Subcategory</MenuItem>
               {subSubCategories.map((subsub) => (
-                <MenuItem
-                  key={subsub.id}
-                  value={subsub.id}
-                >
+                <MenuItem key={subsub.id} value={subsub.id}>
                   {subsub.name}
                 </MenuItem>
               ))}
@@ -424,6 +443,40 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
               ))}
           </Box>
         </Paper>
+        <Paper sx={{ p: 3, borderRadius: 3, mt: 2 }} elevation={1}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isRegularService}
+                onChange={(e) => setIsRegularService(e.target.checked)}
+              />
+            }
+            label="Regular Service Product"
+          />
+
+          {isRegularService && (
+            <FormControl fullWidth>
+              <InputLabel id="regular-service-label">
+                Select Regular Service Category
+              </InputLabel>
+              <Select
+                labelId="regular-service-label"
+                id="regular-service-select"
+                value={selectedRegularServiceCategory}
+                onChange={(e) =>
+                  setSelectedRegularServiceCategory(e.target.value)
+                }
+                label="Select Regular Service Category"
+              >
+                {regularServiceCategories.map((cat) => (
+                  <MenuItem key={cat._id} value={cat._id}>
+                    {cat.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          )}
+        </Paper>
       </DialogContent>
 
       <DialogActions>
@@ -438,7 +491,6 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
       </DialogActions>
     </Dialog>
   );
-
 };
 
 export default AddProductDialog;
