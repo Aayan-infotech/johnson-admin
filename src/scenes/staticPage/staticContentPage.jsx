@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import StaticPageEditor from '../../components/staticContentPage/staticPageEditor';
+import { Box, Container } from '@mui/material';
 
 const StaticContentPage = () => {
   const [activePage, setActivePage] = useState('about-us');
@@ -11,10 +12,10 @@ const StaticContentPage = () => {
   ];
 
   return (
-    <div>
+    <Container maxWidth={false}>
       <h1>Static Content Management</h1>
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+      <Box style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
         {pages.map((page) => (
           <button
             key={page.key}
@@ -31,10 +32,10 @@ const StaticContentPage = () => {
             {page.label}
           </button>
         ))}
-      </div>
+      </Box>
 
       <StaticPageEditor pageKey={activePage} />
-    </div>
+    </Container>
   );
 };
 

@@ -23,6 +23,7 @@ const OrderManagement = () => {
     const fetchAllOrders = async () => {
         try {
             const response = await axios.get(`${API_BASE_URL}/orders/admin/get-orders`);
+            console.log(response)
             if (response?.data?.status === 200) {
                 const formattedData = response?.data?.data.map((order) => ({
                     id: order._id,
@@ -31,7 +32,9 @@ const OrderManagement = () => {
                     createdAt: new Date(order.createdAt).toLocaleDateString(),
                     totalAmount: order.totalAmount || "N/A",
                     customerName: order.user.name || "N/A",
+                    paymentStatus:order.payment.status||"N/A",
                     customerEmail: order.user.email || "N/A",
+                    customerAddres:`${order.address.street}, ${order.address.city}, ${order.address.state},${order.address.postalCode}, ${order.address.country}`
                 }));
                 setAllOrdersList(formattedData);
                 setFilteredOrders(formattedData);
@@ -155,7 +158,7 @@ const OrderManagement = () => {
                             <SearchOutlined />
                         </IconButton>
                     </Box>
-                    <Button
+                    {/* <Button
                         variant="outlined"
                         sx={{
                             fontWeight: "bold",
@@ -173,7 +176,7 @@ const OrderManagement = () => {
                         onClick={() => setOpenOrderDialog(true)}
                     >
                         Add Order
-                    </Button>
+                    </Button> */}
                 </Box>
             </Box>
             <CustomTable
