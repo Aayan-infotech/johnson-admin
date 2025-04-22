@@ -128,6 +128,7 @@ export const orderTableColumns = ({ handleToggleStatus, handleStatusChange, hand
 
     { field: "createdAt", headerName: "Created At", width: 180 },
     { field: "totalAmount", headerName: "Total Amount", width: 180, renderCell: (params) => `$${params.row.totalAmount}` },
+    { field: "payment", headerName: "Payment Status", width: 180, renderCell: (params) => `${params.row.paymentStatus}` },
     {
         field: "actions", headerName: "Actions", width: 180, renderCell: (params) => (
             <Box display="flex" gap={1}>

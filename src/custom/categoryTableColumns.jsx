@@ -25,7 +25,7 @@ export const categoryTableColumns = ({
           size="small"
           onClick={(event) => {
             event.stopPropagation();
-            handleToggleStatus(params.row.categoryId);
+            handleToggleStatus(params.row.id);
           }}
         >
           {params.row.status === true ? "Active" : "Inactive"}
@@ -69,7 +69,7 @@ export const categoryTableColumns = ({
           <CustomIconButton
             icon={<Trash2 size={18} />}
             color="hsl(0 84.2% 60.2%)"
-            onClick={() => handleDelete(params.row.categoryId)}
+            onClick={() => handleDelete(params.row.id)}
           />
         </Box>
       ),

@@ -18,6 +18,7 @@ const AddSubCategoryDialog = ({
   open,
   handleClose,
   parentId,
+  fetchAllSubCategories,
   onSuccess, // callback after successful add
 }) => {
   const [subCategoryName, setSubCategoryName] = useState("");
@@ -56,7 +57,7 @@ const AddSubCategoryDialog = ({
       console.log("Subcategory added:", response.data);
 
       if (onSuccess) onSuccess(); // refresh data or show success
-
+      // fetchAllSubCategories()
       handleClose(); // close modal
     } catch (error) {
       console.error("Error adding subcategory:", error);
@@ -71,6 +72,7 @@ const AddSubCategoryDialog = ({
       const response = await axios.get(
         `${API_BASE_URL}/category/admin/get-categories`
       );
+      console.log(response)
       if (response?.data?.status === 200) {
         setCategories(response.data.data);
       } else {
@@ -100,7 +102,7 @@ const AddSubCategoryDialog = ({
         >
           <MenuItem value="">Select Category</MenuItem>
           {categories.map((cat) => (
-            <MenuItem key={cat.categoryId} value={cat._id}>
+            <MenuItem key={cat._id} value={cat._id}>
               {cat.name.en}
             </MenuItem>
           ))}

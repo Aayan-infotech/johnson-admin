@@ -131,6 +131,7 @@ const Category = () => {
   };
 
   const handleDelete = async (id) => {
+    console.log(id)
     const confirmDelete = window.confirm("Are you sure you want to delete this category?");
     if (!confirmDelete) return;
     try {
