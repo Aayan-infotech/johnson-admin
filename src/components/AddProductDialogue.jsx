@@ -21,6 +21,8 @@ import axios from "axios";
 import Input from "../custom/Input";
 import { CustomIconButton } from "../custom/Button";
 import { API_BASE_URL } from "../utils/apiConfig";
+
+import { API_BASE_URL } from "../../utils/apiConfig";
 import { showSuccessToast, showErrorToast, showCustomMessage } from "../Toast";
 
 // commit
@@ -222,7 +224,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
     try {
       console.log("before sending");
       const res = await axios.post(
-        `http://localhost:5050/api/product/admin/create-product`,
+        `${API_BASE_URL}/product/admin/create-product`,
         formData
       );
       console.log(res, "after sending");
