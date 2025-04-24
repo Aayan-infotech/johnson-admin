@@ -4,8 +4,7 @@ import { fetchStaticPage, updateStaticPage } from '../../services/staticContentS
 
 const StaticPageEditor = ({ pageKey }) => {
   const [page, setPage] = useState({
-    key: pageKey,
-    title: '',
+    key: '',
     content: '',
   });
 
@@ -15,7 +14,8 @@ const StaticPageEditor = ({ pageKey }) => {
     const loadPage = async () => {
       try {
         const data = await fetchStaticPage(pageKey);
-        setPage(data);
+        console.log(data.data, "data");
+        setPage(data.data);
       } catch (error) {
         console.error('Error loading page:', error);
       } finally {
