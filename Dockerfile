@@ -1,4 +1,4 @@
-k# Stage 1: Build the Vite application
+# Stage 1: Build the Vite application
 FROM node:20.11.1 AS build
 
 # Set working directory
