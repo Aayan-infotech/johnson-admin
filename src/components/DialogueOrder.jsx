@@ -97,7 +97,7 @@ const ViewOrderDialog = ({
                       : "default"
                   }
                   variant="outlined"
-                  sx={{ mt: 0.5 }}
+                    sx={{ mt: 0.5 }}
                 />
               </Grid>
            
@@ -105,12 +105,12 @@ const ViewOrderDialog = ({
             </Grid>
 
             <Grid container spacing={2}>
-              <Grid item xs={6}>
+              {/* <Grid item xs={6}>
                 <Typography variant="subtitle2">Created At</Typography>
                 <Typography variant="body2">
                   {formatDate(orderDetails.createdAt)}
                 </Typography>
-              </Grid>
+              </Grid> */}
               <Grid item xs={6}>
                 <Typography variant="subtitle2">Customer</Typography>
                 <Typography variant="body2">
