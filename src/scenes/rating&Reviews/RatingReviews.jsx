@@ -28,7 +28,7 @@ const RatingReviews = () => {
             setReviews(formattedData);
         } catch (error) {
             console.error("Error fetching reviews:", error);
-        } finally {
+        } finally { 
             setLoading(false);
         }
     };

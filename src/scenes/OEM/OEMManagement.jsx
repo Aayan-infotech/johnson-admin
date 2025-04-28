@@ -136,6 +136,8 @@ const [modelCompany,setModelCompany]=useState(null)
   const handleCompanyDelete = async (id) => {
     if (window.confirm("Delete this company?")) {
       await axios.delete(`${API_BASE_URL}/companies/${id}`);
+      
+      showSuccessToast("Company and its relevent models deleted successfully!");
       fetchCompanies();
     }
   };
