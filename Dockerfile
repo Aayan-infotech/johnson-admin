@@ -1,5 +1,5 @@
-# Stage 1: Build the Vite application
-FROM node:20.11.1 AS build
+# Stage 1: Build the Vite app
+FROM node:20 AS build
 
 # Set working directory
 WORKDIR /usr/src/app
@@ -7,27 +7,27 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies (allow legacy deps if needed)
+# Install dependencies
 RUN npm install --legacy-peer-deps
 
-# Copy the rest of the app source code
+# Copy all project files
 COPY . .
 
-# Build the app using Vite
+# Build the Vite project
 RUN npm run build
 
-# Stage 2: Serve the app using Nginx
-FROM nginx:1.25-alpine
+# Stage 2: Serve with Nginx
+FROM nginx:alpine
 
-# Copy the build output to Nginx html directory
+# Copy the built files to Nginx
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 
-# Replace the default Nginx config
+# Copy custom Nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expose application port
+# Expose the port your app will run on
 EXPOSE 2564
 
-# Run Nginx in the foreground
+# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
 
