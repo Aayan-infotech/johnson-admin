@@ -14,7 +14,6 @@ const StaticPageEditor = ({ pageKey }) => {
     const loadPage = async () => {
       try {
         const data = await fetchStaticPage(pageKey);
-        console.log(data.data, "data");
         setPage(data.data);
       } catch (error) {
         console.error('Error loading page:', error);

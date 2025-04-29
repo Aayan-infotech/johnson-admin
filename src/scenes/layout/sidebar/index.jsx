@@ -179,7 +179,7 @@ const SideBar = () => {
             icon={<ArticleIcon />}
           />
           <Item
-            title="Feedback Management"
+            title="Review Management"
             path="/feedback"
             colors={colors}
             icon={<FeedbackIcon />}
