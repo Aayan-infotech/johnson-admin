@@ -22,11 +22,9 @@ import {
   MapOutlined,
   MenuOutlined,
   PeopleAltOutlined,
-  PersonOutlined,
-  ReceiptOutlined,
-  TimelineOutlined,
-  WavesOutlined,
+  PlayCircleRounded,
   CategoryOutlined,
+  CarCrash,
 } from "@mui/icons-material";
 import HandymanSharpIcon from '@mui/icons-material/HandymanSharp';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -130,13 +128,7 @@ const SideBar = () => {
             icon={<DashboardOutlined />}
           />
         </Menu>
-        <Typography
-          variant="h6"
-          color={colors.gray[300]}
-          sx={{ m: "15px 0 5px 20px" }}
-        >
-          {!collapsed ? "Data" : " "}
-        </Typography>{" "}
+        
         <Menu
           menuItemStyles={{
             button: {
@@ -183,6 +175,18 @@ const SideBar = () => {
             path="/feedback"
             colors={colors}
             icon={<FeedbackIcon />}
+          />
+          <Item
+            title="Parts Video Management"
+            path="/part-video"
+            colors={colors}
+            icon={<PlayCircleRounded />}
+          />
+          <Item
+            title="OEM Management"
+            path="/oem-management"
+            colors={colors}
+            icon={<CarCrash />}
           />
           {/* <Item
             title="Invoices Balances"
