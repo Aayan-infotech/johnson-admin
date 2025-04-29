@@ -25,6 +25,7 @@ import {
   PlayCircleRounded,
   CategoryOutlined,
   CarCrash,
+  HelpOutline
 } from "@mui/icons-material";
 import HandymanSharpIcon from '@mui/icons-material/HandymanSharp';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -128,7 +129,7 @@ const SideBar = () => {
             icon={<DashboardOutlined />}
           />
         </Menu>
-        
+
         <Menu
           menuItemStyles={{
             button: {
@@ -187,6 +188,12 @@ const SideBar = () => {
             path="/oem-management"
             colors={colors}
             icon={<CarCrash />}
+          />
+          <Item
+            title="FAQ Management"
+            path="/faq-management"
+            colors={colors}
+            icon={<HelpOutline />}
           />
           {/* <Item
             title="Invoices Balances"

@@ -31,6 +31,8 @@ import StaticPage from "./scenes/staticPage/staticContentPage"
 import Feedback from "./scenes/rating&Reviews/RatingReviews";
 import PartsVideos from "./scenes/PartsVideo/PartsVideos";
 import OEMManagement from "./scenes/OEM/OEMManagement";
+import FAQManagement from "./scenes/faq/index";
+
 
 const AppRouter = () => {
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
@@ -56,6 +58,7 @@ const AppRouter = () => {
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/part-video" element={<PartsVideos/>} />
             <Route path="/oem-management" element={<OEMManagement/>} />
+            <Route path="/faq-management" element={<FAQManagement/>} />
           </Route>
         </Route>
       </Routes>
