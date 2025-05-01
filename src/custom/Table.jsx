@@ -1,6 +1,18 @@
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar, GridToolbarContainer,
+    GridToolbarExport,
+    GridToolbarFilterButton,
+    GridToolbarDensitySelector, } from "@mui/x-data-grid";
 import { Box, Card, CardContent, LinearProgress, useTheme } from "@mui/material";
 import { tokens } from "../theme";
+
+
+const CustomToolbar = () => (
+    <GridToolbarContainer>
+      <GridToolbarFilterButton />
+      <GridToolbarDensitySelector />
+      <GridToolbarExport />
+    </GridToolbarContainer>
+  );
 
 const CustomTable = ({ columns, rows, loading, checkboxSelection = false }) => {
     const theme = useTheme();
@@ -40,7 +52,8 @@ const CustomTable = ({ columns, rows, loading, checkboxSelection = false }) => {
                             rows={rows}
                             columns={columns}
                             getRowId={(row) => row.id || row._id} // ✅ fallback logic
-                            components={{ Toolbar: GridToolbar }}
+                            // components={{ Toolbar: GridToolbar }}
+                            components={{ Toolbar: CustomToolbar }}
                             initialState={{
                                 pagination: { paginationModel: { pageSize: 10 } },
                             }}

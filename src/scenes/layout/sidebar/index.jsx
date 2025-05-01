@@ -195,6 +195,12 @@ const SideBar = () => {
             colors={colors}
             icon={<HelpOutline />}
           />
+           <Item
+            title="Blog Management"
+            path="/blog-management"
+            colors={colors}
+            icon={<HelpOutline />}
+          />
           {/* <Item
             title="Invoices Balances"
             path="/invoices"

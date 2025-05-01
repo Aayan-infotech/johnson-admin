@@ -144,7 +144,7 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
             mb: 2,
           }}
         >
-          <Header title="Subcategories" />
+          {/* <Header title="Subcategories" /> */}
           <Box display="flex" alignItems="center" ml={2} gap={2}>
             <Box
               display="flex"

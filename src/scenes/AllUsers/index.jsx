@@ -91,7 +91,7 @@ const UserDetails = () => {
     return (
         <Container maxWidth={false}>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-                <Header title="Users" />
+                <Header title="" />
                 <Box display="flex" alignItems="center" borderRadius="3px" bgcolor={colors.primary[400]}>
                     <InputBase
                         placeholder="Search user"

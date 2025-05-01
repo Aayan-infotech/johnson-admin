@@ -8,10 +8,13 @@ import FaqModal from '../../components/faqModal';
 import axios from "axios";
 import { showErrorToast, showSuccessToast } from "../../../src/Toast";
 import { API_BASE_URL } from '../../utils/apiConfig';
+// import CustomTable from './../../ProtectedPages/CustomTable';
+// import { faqTableColumns } from '../../custom/faqTableColumn';
 
 
 const FaqManagement = () => {
   const [faqs, setFaqs] = useState([]);
+  const [faqList, setFaqList] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [currentFaq, setCurrentFaq] = useState({ id: null, question: '', answer: '' });
 
@@ -30,15 +33,30 @@ const FaqManagement = () => {
         }
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch FAQs');
-      }
+      // if (response?.data?.status === 200) {
+      //   const formattedData = response?.data?.data.map((ques) => ({
+      //     id: ques._id,
+      //     question: ques.questioon.en || "N/A",
+      //     answer: ques.answer.en || "N/A",
+      //     // slug: category.slug || "N/A",
+      //     // status: ques?.isActive || "N/A",
+      //     // createdAt: new Date(category.createdAt).toLocaleDateString(),
+      //   }));
 
-      const data = await response.json();
-      console.log(data.data);
-      setFaqs(data.data || []); // assuming your backend sends { faqs: [...] }
-    } catch (error) {
+      //   setFaqList(formattedData)
+        // if (!response.ok) {
+        //   throw new Error('Failed to fetch FAQs');
+        // }
+
+        const data = await response.json();
+        console.log(data.data);
+        setFaqs(data.data || []); // assuming your backend sends { faqs: [...] }
+      }
+     catch (error) {
       console.error('Error fetching FAQs:', error.message);
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -98,6 +116,12 @@ const FaqManagement = () => {
     }
   };
 
+  const columns = categoryTableColumns({
+    // handleToggleStatus,
+    // handleAddSubCategory,
+    handleDeleteFaq,
+    handleView,
+  });
 
   return (
     <Box p={3}>
@@ -142,6 +166,15 @@ const FaqManagement = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+
+      {/* <CustomTable
+        columns={columns}
+        rows={faqList}
+        loading={loading}
+        // onStatusToggle={handleToggleStatus}
+        checkboxSelection
+      /> */}
 
       {/* Modal Component */}
       <FaqModal
