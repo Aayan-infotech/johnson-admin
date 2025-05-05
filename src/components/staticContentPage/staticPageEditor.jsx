@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import StaticPageForm from './staticPageForm';
 import { fetchStaticPage, updateStaticPage } from '../../services/staticContentServices';
 
+
 const StaticPageEditor = ({ pageKey }) => {
   const [page, setPage] = useState({
     key: '',
