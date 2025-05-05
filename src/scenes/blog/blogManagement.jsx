@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../utils/apiConfig';
 
 const BlogList = () => {
   const [posts, setPosts] = useState([]);
@@ -10,7 +11,7 @@ const BlogList = () => {
     // Fetching data from Strapi API
     const fetchPosts = async () => {
       try {
-        const response = await axios.get('http://localhost:1337/api/blog-posts');
+        const response = await axios.get(`${API_BASE_URL}/api/blog-posts`);
         setPosts(response.data.data); // Strapi data structure
       } catch (err) {
         setError(err);

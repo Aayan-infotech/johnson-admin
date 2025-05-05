@@ -42,7 +42,8 @@ const RatingReviews = () => {
             console.log(id, "id");
             const response = await axios.delete(`${API_BASE_URL}/RatingAndReviews/admin/delete/${id}`);
 
-            if(res.data.status === 200) {
+            if(response.data.status === 200) {
+                toast.success("Review Deleted Successfully");
                 fetchReviews();
             }
 
