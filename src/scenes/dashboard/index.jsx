@@ -30,6 +30,24 @@ import { tokens } from "../../theme";
 import { mockTransactions } from "../../data/mockData";
 import { useState } from "react";
 import { CustomIconButton } from "../../custom/Button";
+import {
+  BarChartOutlined,
+  CalendarTodayOutlined,
+  ContactsOutlined,
+  DashboardOutlined,
+  DonutLargeOutlined,
+  HelpOutlineOutlined,
+  MapOutlined,
+  MenuOutlined,
+  PeopleAltOutlined,
+  PlayCircleRounded,
+  CategoryOutlined,
+  CarCrash,
+  HelpOutline,
+  // FeedbackIcon
+} from "@mui/icons-material";
+import FeedbackIcon from '@mui/icons-material/Feedback';
+
 
 const statData = [
   // { title: "", subtitle: "Email Sent", progress: "0.75", increase: "+14%", icon: <Email sx={{ fontSize: "26px" }} /> },
@@ -37,6 +55,8 @@ const statData = [
   { title: "Category Management", subtitle: "Add, Edit, Delete Category, Subcategory and more", icon: <PointOfSale sx={{ fontSize: "26px" }} /> },
   { title: "Product Management", subtitle: "Add, Update, Delete product and more...", progress: "0.80", icon: <HandymanSharpIcon sx={{ fontSize: "26px" }} /> },
   { title: "Order Management", subtitle: "Add, Update, Delete order and more...", progress: "0.80", icon: <ShoppingCartIcon sx={{ fontSize: "26px" }} /> },
+  { title: "Static Content Management", subtitle: "Add, Update, View content", progress: "0.80", icon: <FeedbackIcon sx={{ fontSize: "26px" }} /> },
+  { title: "FAQ Management", subtitle: "Add, Update, Delete FAQs and more...", progress: "0.80", icon: <HelpOutline sx={{ fontSize: "26px" }} /> },
 ];
 
 function Dashboard() {
@@ -58,6 +78,10 @@ function Dashboard() {
       navigate("/products");
     } else if (stat.title === "Order Management") {
       navigate("/orders");
+    } else if (stat.title === "Static Content Management") {
+      navigate("/staticPage");
+    } else if (stat.title === "FAQ Management") {
+      navigate("/faq-management");
     } else {
       // fallback or default navigation
       navigate("/");

@@ -33,13 +33,14 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
         const response = await axios.get(
           `${API_BASE_URL}/subcategory/admin/get-all-subcategories`
         );
+        console.log(response,"sub cat")
         if (response?.data?.status === 200) {
           const formattedData = response.data.data.map((sub) => ({
             id: sub._id,
             subCategoryId: sub.subcategoryId || "N/A",
             name: sub.name.en || "N/A",
             // parentCategory: sub.categoryId?.name?.en || "N/A",
-            parentCategory: sub.categoryId || "N/A",
+            parentCategory: sub.categoryId.name.en || "N/A",
             slug: sub.slug || "N/A",
             status: sub?.isActive || "N/A",
             createdAt: new Date(sub.createdAt).toLocaleDateString(),
@@ -144,7 +145,7 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
             mb: 2,
           }}
         >
-          <Header title="Subcategories" />
+          {/* <Header title="Subcategories" /> */}
           <Box display="flex" alignItems="center" ml={2} gap={2}>
             <Box
               display="flex"

@@ -28,6 +28,11 @@ import { deepOrange } from "@mui/material/colors";
 import { ToggledContext } from "../../../App";
 import { useNavigate } from "react-router-dom";
 import { Header } from "../../../components";
+
+import { useLocation } from "react-router-dom";
+
+
+
 const Navbar = () => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
@@ -41,6 +46,28 @@ const Navbar = () => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  // Add this below useNavigate
+  const location = useLocation();
+
+  const getTitleFromPath = (pathname) => {
+    const routeMap = {
+      "/": "Dashboard",
+      "/customers": "Customers",
+      "/menu": "Category",
+      "/products": "Products",
+      "/orders": "Orders",
+      "/staticPage": "Static Content Management",
+      "/feedback": "Review Management",
+      "/part-video": "Parts Video Management",
+      "/oem-management": "OEM Management",
+      "/faq-management": "FAQ Management",
+      // Add more if you have additional paths
+    };
+    return routeMap[pathname] || "Dashboard";
+  };
+
+  const pageTitle = getTitleFromPath(location.pathname);
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -78,7 +105,8 @@ const Navbar = () => {
             <SearchOutlined />
           </IconButton>
         </Box> */}
-        <Header title="DASHBOARD" /> 
+        <Header title={pageTitle.toUpperCase()} />
+
       </Box>
 
       <Box>

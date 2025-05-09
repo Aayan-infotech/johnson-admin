@@ -16,8 +16,8 @@ const StaticPageForm = ({ page, onChange, onSave }) => {
             <input
               id="title"
               type="text"
-              value={page.title}
-              onChange={(e) => onChange('title', e.target.value)}
+              value={page.key}
+              onChange={(e) => onChange('key', e.target.value)}
               placeholder="Enter page title"
               style={{padding:"10px", borderRadius:"10px", border:"none"}}
             />

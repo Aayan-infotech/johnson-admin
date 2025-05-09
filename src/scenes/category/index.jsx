@@ -21,7 +21,7 @@ import { showErrorToast, showSuccessToast } from "../../Toast";
 const Category = () => {
   const [allCategoriesList, setAllCategoriesList] = useState([]);
   const [selectedParentId, setSelectedParentId] = useState(null);
-// const [selectedParentName, setSelectedParentName] = useState("");
+  // const [selectedParentName, setSelectedParentName] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [showCategoryDetails, setShowCategoryDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -47,7 +47,7 @@ const Category = () => {
           // createdAt: new Date(category.createdAt).toLocaleDateString(),
         }));
 
-    console.log(formattedData, "formattedData");
+        console.log(formattedData, "formattedData");
 
 
         setAllCategoriesList(formattedData);
@@ -102,9 +102,9 @@ const Category = () => {
 
   const handleToggleStatus = async (row) => {
     console.log(row, "row");
-    
+
     const newStatus = row.status === "Active" ? "Blocked" : "Active";
-  
+
     try {
       await axios.put(`${API_BASE_URL}/category/admin/activate-category/${row}`, {
         status: newStatus,
@@ -115,7 +115,7 @@ const Category = () => {
       console.error("Failed to update status", error);
     }
   };
-  
+
 
   const handleAddSubCategory = (id, name) => {
     console.log("Opening Add Subcategory Dialog for:", id, name);
@@ -146,7 +146,7 @@ const Category = () => {
         setAllCategoriesList((prevList) => prevList.filter(category => category.id !== id));
         setFilteredUsers((prevList) => prevList.filter(category => category.id !== id));
         fetchAllCategoryDetails();
-  
+
       } else {
         showErrorToast("Failed to delete category.");
       }
@@ -154,7 +154,7 @@ const Category = () => {
       showErrorToast(error?.response?.data?.message || "An error occurred while deleting.");
     }
   };
-  
+
 
   const handleView = (row) => {
     setShowCategoryDetails(row);

@@ -142,7 +142,7 @@ const SubSubCategory = () => {
   return (
     <Container maxWidth={false}>
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-        <Header title="Sub-Subcategories" />
+        {/* <Header title="Sub-Subcategories" /> */}
         <Box display="flex" alignItems="center" ml={2} gap={2}>
           {/* Search Bar */}
           <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} borderRadius="3px">

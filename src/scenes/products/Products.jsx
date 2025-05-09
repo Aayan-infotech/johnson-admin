@@ -1,167 +1,277 @@
-import { Box, Container, IconButton, InputBase, useTheme, Modal, TextField, Button } from "@mui/material";
+import {
+  Box,
+  Container,
+  IconButton,
+  InputBase,
+  useTheme,
+  Modal,
+  TextField,
+  Button,
+  Typography,
+} from "@mui/material";
 import { Header } from "../../components";
 import { useEffect, useState } from "react";
-import { SearchOutlined, PersonAdd, AddCircleOutline  } from "@mui/icons-material";
+import { SearchOutlined, AddCircleOutline } from "@mui/icons-material";
 import axios from "axios";
 import CustomTable from "../../custom/Table";
 import { productTableColumns } from "../../custom/ProductTableColumns";
-// import { AddProductDialog } from "../../components/AddProductDialogue";
 import { API_BASE_URL } from "../../utils/apiConfig";
 import { tokens } from "../../theme";
-import AddProductDialog from './../../components/AddProductDialogue';
+import AddProductDialog from "./../../components/AddProductDialogue";
+import { showSuccessToast } from "../../Toast";
+import ViewProductModal from "../../custom/ViewProductTable";
+import EditProductModal from "../../custom/EditProductModal";
 
 const Products = () => {
-    const [allProducts, setAllProducts] = useState([]);
-    const [filteredProducts, setFilteredProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [searchText, setSearchText] = useState("");
-    const [editModalOpen, setEditModalOpen] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [addDialogOpen, setAddDialogOpen] = useState(false);
-    const theme = useTheme();
-    const colors = tokens(theme.palette.mode);
+  const [allProducts, setAllProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState("");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [addDialogOpen, setAddDialogOpen] = useState(false);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [viewProduct, setViewProduct] = useState(null);
+  const [yearInputs, setYearInputs] = useState({});
+  const [removedImages, setRemovedImages] = useState([]);
+  const [newImageFiles, setNewImageFiles] = useState([]);
+  const [editLoading, setEditLoading] = useState(false);
 
-    const fetchAllProducts = async () => {
-        try {
-            setLoading(true);
-            const response = await axios.get(`${API_BASE_URL}/product/getAllProducts`);
-            console.log(response, "response");
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
-            const formattedData = response?.data.products.map((product) => ({
-                id: product._id,
-                productId: product._id || "N/A",
-                name: product.name || "N/A",
-                price: product.price?.actualPrice || "N/A",
-                discount: product.price?.discountPercent || "N/A",
-                stock: product.quantity || "N/A",
-            }));
-            console.log(formattedData);
-            setAllProducts(formattedData);
-            setFilteredProducts(formattedData);
-        } catch (error) {
-            console.log("Error fetching products:", error);
-        } finally {
-            setLoading(false);
+  const fetchAllProducts = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${API_BASE_URL}/product/getAllProducts`
+      );
+      console.log(response);
+      const formattedData = response?.data.products.map((product) => ({
+        id: product._id,
+        productId: product._id || "N/A",
+        name: product.name || "N/A",
+        price: product.price?.actualPrice || "N/A",
+        discount: product.price?.discountPercent || "N/A",
+        stock: product.quantity || "N/A",
+        partNo: product.partNo || "N/A",
+        brand: product.brand || "N/A",
+        description: product.description || "N/A",
+        category: product.Category?._id || "N/A",
+        subCategory: product.SubCategory?._id || "N/A",
+        subSubCategory: product.SubSubcategory?._id || "N/A",
+        type: product.autoPartType || "N/A",
+        compatibleVehicles: product.compatibleVehicles || [],
+        image: product?.picture || "",
+        averageRating: product.averageRating || "N/A",
+        discountedPrice: product.discountedPrice || "N/A",
+        autoPartType: product.autoPartType,
+      }));
+      setAllProducts(formattedData);
+      setFilteredProducts(formattedData);
+    } catch (error) {
+      console.log("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllProducts();
+  }, []);
+
+  const handleClose = () => setAddDialogOpen(false);
+
+  const handleSearch = (e) => {
+    const value = e.target.value.toLowerCase();
+    setSearchText(value);
+    if (value === "") {
+      setFilteredProducts(allProducts);
+    } else {
+      const filtered = allProducts.filter(
+        (product) =>
+          product.productId.toLowerCase().includes(value) ||
+          product.name.toLowerCase().includes(value)
+      );
+      setFilteredProducts(filtered);
+    }
+  };
+  const handleRemoveImage = (index) => {
+    const updatedImages = [...selectedProduct.image];
+    const removed = updatedImages.splice(index, 1)[0];
+    setSelectedProduct((prev) => ({ ...prev, image: updatedImages }));
+    setRemovedImages((prev) => [...prev, removed]);
+  };
+
+  const handleImageFileSelect = (e) => {
+    const files = Array.from(e.target.files);
+    setNewImageFiles((prev) => [...prev, ...files]);
+  };
+
+  const handleEdit = (product) => {
+    console.log(product);
+    setSelectedProduct(product);
+    setEditModalOpen(true);
+  };
+
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setSelectedProduct((prev) => ({ ...prev, [name]: value }));
+  };
+  const handleSaveEdit = async () => {
+    const formData = new FormData();
+
+    Object.entries(selectedProduct).forEach(([key, value]) => {
+      if (key === "images") return;
+
+      if (key === "compatibleVehicles") {
+        formData.append("compatibleVehicles", JSON.stringify(value));
+      } else if (typeof value === "object") {
+        formData.append(key, JSON.stringify(value));
+      } else if (value !== undefined && value !== null) {
+        formData.append(key, value.toString());
+      }
+    });
+
+    formData.append("removedImages", JSON.stringify(removedImages));
+
+    newImageFiles.forEach((file) => {
+      formData.append("files", file);
+    });
+
+    try {
+      setEditLoading(true);
+      const response = await axios.put(
+        `${API_BASE_URL}/product/update-product/${selectedProduct.id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
-    };
+      );
+      setEditLoading(false);
+      console.log("Updated product:", response.data);
+      fetchAllProducts();
+      setEditModalOpen(false);
+    } catch (error) {
+      setEditLoading(false);
 
-    useEffect(() => {
-        fetchAllProducts();
-    }, []);
+      console.error("Failed to update product:", error);
+    }
+  };
 
-    const handleClose = () => {
-        setAddDialogOpen(false);
-      };
-
-    const handleSearch = (e) => {
-        const value = e.target.value.toLowerCase();
-        setSearchText(value);
-        if (value === "") {
-            setFilteredProducts(allProducts);
-        } else {
-            const filtered = allProducts.filter(product =>
-                product.productId.toLowerCase().includes(value) ||
-                product.name.toLowerCase().includes(value)
-            );
-            setFilteredProducts(filtered);
-        }
-    };
-
-    const handleEdit = (product) => {
-        console.log(product);
-        setSelectedProduct(product);
-        setEditModalOpen(true);
-    };
-
-    const handleEditChange = (e) => {
-        const { name, value } = e.target;
-        setSelectedProduct((prev) => ({ ...prev, [name]: value }));
-    };
-
-    const handleSaveEdit = async () => {
-        try {
-            const response = await axios.put(`${API_BASE_URL}/product/updateProduct/${selectedProduct.id}`, selectedProduct);
-            console.log("Edited product response:", response.data);
-            setFilteredProducts((prevProducts) => prevProducts.map((product) =>
-                product.id === selectedProduct.id ? { ...product, ...selectedProduct } : product
-            ));
-            setEditModalOpen(false);
-        } catch (error) {
-            console.error("Error updating product:", error);
-        }
-    };
-
-    const handleDelete = (id) => {
-        setFilteredProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
-    };
-
-    const handleView = (product) => {
-        alert(`Product Details:\n\nID: ${product.productId}\nName: ${product.name}\nPrice: ${product.price}`);
-    };
-
-    const columns = productTableColumns({ handleEdit, handleDelete, handleView });
-
-    return (
-        <Container maxWidth={false}>
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-                <Header title="Products" />
-                <Box display="flex" alignItems="center" gap={2}>
-                    <Box display="flex" alignItems="center" borderRadius="3px" bgcolor={colors.primary[400]}>
-                        <InputBase
-                            placeholder="Search product"
-                            value={searchText}
-                            onChange={handleSearch}
-                            sx={{ ml: 2, flex: 1 }}
-                        />
-                        <IconButton type="button" sx={{ p: 1 }}>
-                            <SearchOutlined />
-                        </IconButton>
-                    </Box>
-                    <Button variant="outlined"
-                        sx={{
-                            fontWeight: "bold",
-                            transition: ".3s ease",
-                            textTransform: "none",
-                            backgroundColor: colors.primary[400],
-                            color: "black",
-                            "&:hover": {
-                                backgroundColor: colors.primary[600],
-                                color: "white",
-                            },
-                        }}
-                        startIcon={<AddCircleOutline  />}
-                        size="large" onClick={() => setAddDialogOpen(true)}>
-                        Add Product
-                    </Button>
-                </Box>
-            </Box>
-
-            <CustomTable columns={columns} rows={filteredProducts} loading={loading} checkboxSelection />
-
-            <Modal open={editModalOpen} onClose={() => setEditModalOpen(false)}>
-                <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 400, bgcolor: "background.paper", p: 4, borderRadius: 2 }}>
-                    <h2>Edit Product</h2>
-                    <TextField label="Name" fullWidth margin="normal" name="name" value={selectedProduct?.name || ""} onChange={handleEditChange} />
-                    <TextField label="Price" fullWidth margin="normal" name="price" value={selectedProduct?.price || ""} onChange={handleEditChange} />
-                    <TextField label="Stock" fullWidth margin="normal" name="stock" value={selectedProduct?.stock || ""} onChange={handleEditChange} />
-                    <TextField label="Discount" fullWidth margin="normal" name="discount" value={selectedProduct?.discount || ""} onChange={handleEditChange} />
-                    <Box display="flex" justifyContent="flex-end" mt={2}>
-                        <Button onClick={() => setEditModalOpen(false)} sx={{ mr: 2 }}>Cancel</Button>
-                        <Button variant="contained" color="primary" onClick={handleSaveEdit}>Save</Button>
-                    </Box>
-                </Box>
-            </Modal>
-
-            <AddProductDialog
-                open={addDialogOpen}
-                handleClose={handleClose}
-                fetchAllProducts={fetchAllProducts}
-            />
-
-        </Container>
-
-
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this product?"
     );
+    if (!confirmDelete) return;
+
+    try {
+      setFilteredProducts((prevProducts) =>
+        prevProducts.filter((product) => product.id !== id)
+      );
+      await axios.delete(`${API_BASE_URL}/product/delete-product/${id}`);
+      showSuccessToast("Product deleted successfully");
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
+  const handleView = (product) => {
+    setViewProduct(product);
+    setViewModalOpen(true);
+  };
+
+  const columns = productTableColumns({ handleEdit, handleDelete, handleView });
+
+  return (
+    <Container maxWidth={false}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+      >
+        {/* <Header title="Products" /> */}
+        <Box display="flex" alignItems="center" gap={2}>
+          <Box
+            display="flex"
+            alignItems="center"
+            borderRadius="3px"
+            bgcolor={colors.primary[400]}
+          >
+            <InputBase
+              placeholder="Search product"
+              value={searchText}
+              onChange={handleSearch}
+              sx={{ ml: 2, flex: 1 }}
+            />
+            <IconButton type="button" sx={{ p: 1 }}>
+              <SearchOutlined />
+            </IconButton>
+          </Box>
+          <Button
+            variant="outlined"
+            sx={{
+              fontWeight: "bold",
+              transition: ".3s ease",
+              textTransform: "none",
+              backgroundColor: colors.primary[400],
+              color: "black",
+              "&:hover": {
+                backgroundColor: colors.primary[600],
+                color: "white",
+              },
+            }}
+            startIcon={<AddCircleOutline />}
+            size="large"
+            onClick={() => setAddDialogOpen(true)}
+          >
+            Add Product
+          </Button>
+        </Box>
+      </Box>
+
+      <CustomTable
+        columns={columns}
+        rows={filteredProducts}
+        loading={loading}
+        checkboxSelection
+      />
+
+      {/* Edit Modal */}
+      <EditProductModal
+        open={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        product={selectedProduct}
+        setProduct={setSelectedProduct}
+        loading={loading}
+        editLoading={setEditLoading}
+        setEditLoading={setEditLoading}
+        onSave={handleSaveEdit}
+        onImageSelect={handleImageFileSelect}
+        onRemoveImage={handleRemoveImage}
+        yearInputs={yearInputs}
+        setYearInputs={setYearInputs}
+      />
+
+      {/* View Modal */}
+      <ViewProductModal
+        open={viewModalOpen}
+        onClose={() => setViewModalOpen(false)}
+        viewProduct={viewProduct}
+      />
+
+      <AddProductDialog
+        open={addDialogOpen}
+        handleClose={handleClose}
+        fetchAllProducts={fetchAllProducts}
+      />
+    </Container>
+  );
 };
 
 export default Products;

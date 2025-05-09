@@ -145,7 +145,7 @@ const OrderManagement = () => {
     return (
         <Container maxWidth={false}>
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-                <Header title="Order Management" />
+                {/* <Header title="Order Management" /> */}
                 <Box display="flex" alignItems="center" ml={2} gap={2}>
                     <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} borderRadius="3px">
                         <InputBase

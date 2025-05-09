@@ -21,8 +21,6 @@ import axios from "axios";
 import Input from "../custom/Input";
 import { CustomIconButton } from "../custom/Button";
 import { API_BASE_URL } from "../utils/apiConfig";
-
-import { API_BASE_URL } from "../../utils/apiConfig";
 import { showSuccessToast, showErrorToast, showCustomMessage } from "../Toast";
 
 // commit
@@ -56,7 +54,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
       const fetchRegularServiceCategories = async () => {
         try {
           const { data } = await axios.get(
-            "http://3.223.253.106:5050/api/regular-services?lang=en"
+            "http://18.209.91.97:5050/api/regular-services?lang=en"
           );
           setRegularServiceCategories(data.data);
         } catch (err) {

@@ -5,10 +5,15 @@ import { Box, Container } from '@mui/material';
 const StaticContentPage = () => {
   const [activePage, setActivePage] = useState('about-us');
 
+  // const pages = [
+  //   { label: 'About Us', key: 'about-us' },
+  //   { label: 'Privacy Policy', key: 'privacy-policy' },
+  //   { label: 'Terms & Conditions', key: 'terms-and-conditions' },
+  // ];
   const pages = [
-    { label: 'About Us', key: 'about-us' },
-    { label: 'Privacy Policy', key: 'privacy-policy' },
-    { label: 'Terms & Conditions', key: 'terms-and-conditions' },
+    { key: 'About Us', slug: 'about-us' },
+    { key: 'Privacy Policy', slug: 'privacy-policy' },
+    { key: 'Terms & Conditions', slug: 'terms-and-conditions' },
   ];
 
   return (
@@ -19,17 +24,17 @@ const StaticContentPage = () => {
         {pages.map((page) => (
           <button
             key={page.key}
-            onClick={() => setActivePage(page.key)}
+            onClick={() => setActivePage(page.slug)}
             style={{
               padding: '8px 16px',
-              backgroundColor: activePage === page.key ? '#007BFF' : '#ccc',
-              color: activePage === page.key ? '#fff' : '#000',
+              backgroundColor: activePage === page.slug ? '#007BFF' : '#ccc',
+              color: activePage === page.slug ? '#fff' : '#000',
               border: 'none',
               borderRadius: '4px',
               cursor: 'pointer',
             }}
           >
-            {page.label}
+            {page.key}
           </button>
         ))}
       </Box>
