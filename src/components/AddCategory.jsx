@@ -24,7 +24,7 @@ const AddCategory = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const isViewMode = Boolean(showCategoryDetails);
-
+  console.log(showCategoryDetails)
   const handleAddCategory = async () => {
     if (!categoryName.trim()) {
       showCustomMessage("Category name is required!");
@@ -63,17 +63,15 @@ const AddCategory = ({
           <>
             <Typography variant="h6">{showCategoryDetails?.name}</Typography>
             <Typography variant="body2">
-              ID: {showCategoryDetails?.categoryId}
+              ID: {showCategoryDetails?.id}
             </Typography>
             <Typography variant="body2">
-              Slug: {showCategoryDetails?.slug}
+              NAme: {showCategoryDetails?.name}
             </Typography>
             <Typography variant="body2">
-              Status: {showCategoryDetails?.isActive}
+              Status: {showCategoryDetails?.status?"Active":"Inactive"}
             </Typography>
-            <Typography variant="body2">
-              Created At: {showCategoryDetails?.createdAt}
-            </Typography>
+           
           </>
         ) : (
           <>
