@@ -249,7 +249,7 @@ const Products = () => {
         product={selectedProduct}
         setProduct={setSelectedProduct}
         loading={loading}
-        editLoading={setEditLoading}
+        editLoading={editLoading}
         setEditLoading={setEditLoading}
         onSave={handleSaveEdit}
         onImageSelect={handleImageFileSelect}
