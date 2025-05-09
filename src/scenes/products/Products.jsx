@@ -7,6 +7,7 @@ import {
   Modal,
   TextField,
   Button,
+  Typography,
 } from "@mui/material";
 import { Header } from "../../components";
 import { useEffect, useState } from "react";
@@ -19,6 +20,7 @@ import { tokens } from "../../theme";
 import AddProductDialog from "./../../components/AddProductDialogue";
 import { showSuccessToast } from "../../Toast";
 import ViewProductModal from "../../custom/ViewProductTable";
+import EditProductModal from "../../custom/EditProductModal";
 
 const Products = () => {
   const [allProducts, setAllProducts] = useState([]);
@@ -30,6 +32,10 @@ const Products = () => {
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [viewProduct, setViewProduct] = useState(null);
+  const [yearInputs, setYearInputs] = useState({});
+  const [removedImages, setRemovedImages] = useState([]);
+  const [newImageFiles, setNewImageFiles] = useState([]);
+  const [editLoading, setEditLoading] = useState(false);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -51,14 +57,15 @@ const Products = () => {
         partNo: product.partNo || "N/A",
         brand: product.brand || "N/A",
         description: product.description || "N/A",
-        category: product.Category?.name?.en || "N/A",
-        subCategory: product.SubCategory?.name?.en || "N/A",
-        subSubCategory: product.SubSubcategory?.name?.en || "N/A",
+        category: product.Category?._id || "N/A",
+        subCategory: product.SubCategory?._id || "N/A",
+        subSubCategory: product.SubSubcategory?._id || "N/A",
         type: product.autoPartType || "N/A",
         compatibleVehicles: product.compatibleVehicles || [],
-        image: product.picture?.[0] || "",
+        image: product?.picture || "",
         averageRating: product.averageRating || "N/A",
         discountedPrice: product.discountedPrice || "N/A",
+        autoPartType: product.autoPartType,
       }));
       setAllProducts(formattedData);
       setFilteredProducts(formattedData);
@@ -89,8 +96,20 @@ const Products = () => {
       setFilteredProducts(filtered);
     }
   };
+  const handleRemoveImage = (index) => {
+    const updatedImages = [...selectedProduct.image];
+    const removed = updatedImages.splice(index, 1)[0];
+    setSelectedProduct((prev) => ({ ...prev, image: updatedImages }));
+    setRemovedImages((prev) => [...prev, removed]);
+  };
+
+  const handleImageFileSelect = (e) => {
+    const files = Array.from(e.target.files);
+    setNewImageFiles((prev) => [...prev, ...files]);
+  };
 
   const handleEdit = (product) => {
+    console.log(product);
     setSelectedProduct(product);
     setEditModalOpen(true);
   };
@@ -99,23 +118,46 @@ const Products = () => {
     const { name, value } = e.target;
     setSelectedProduct((prev) => ({ ...prev, [name]: value }));
   };
-
   const handleSaveEdit = async () => {
+    const formData = new FormData();
+
+    Object.entries(selectedProduct).forEach(([key, value]) => {
+      if (key === "images") return;
+
+      if (key === "compatibleVehicles") {
+        formData.append("compatibleVehicles", JSON.stringify(value));
+      } else if (typeof value === "object") {
+        formData.append(key, JSON.stringify(value));
+      } else if (value !== undefined && value !== null) {
+        formData.append(key, value.toString());
+      }
+    });
+
+    formData.append("removedImages", JSON.stringify(removedImages));
+
+    newImageFiles.forEach((file) => {
+      formData.append("files", file);
+    });
+
     try {
+      setEditLoading(true);
       const response = await axios.put(
-        `${API_BASE_URL}/product/updateProduct/${selectedProduct.id}`,
-        selectedProduct
+        `${API_BASE_URL}/product/update-product/${selectedProduct.id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-      setFilteredProducts((prevProducts) =>
-        prevProducts.map((product) =>
-          product.id === selectedProduct.id
-            ? { ...product, ...selectedProduct }
-            : product
-        )
-      );
+      setEditLoading(false);
+      console.log("Updated product:", response.data);
+      fetchAllProducts();
       setEditModalOpen(false);
     } catch (error) {
-      console.error("Error updating product:", error);
+      setEditLoading(false);
+
+      console.error("Failed to update product:", error);
     }
   };
 
@@ -201,66 +243,20 @@ const Products = () => {
       />
 
       {/* Edit Modal */}
-      <Modal open={editModalOpen} onClose={() => setEditModalOpen(false)}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            p: 4,
-            borderRadius: 2,
-          }}
-        >
-          <h2>Edit Product</h2>
-          <TextField
-            label="Name"
-            fullWidth
-            margin="normal"
-            name="name"
-            value={selectedProduct?.name || ""}
-            onChange={handleEditChange}
-          />
-          <TextField
-            label="Price"
-            fullWidth
-            margin="normal"
-            name="price"
-            value={selectedProduct?.price || ""}
-            onChange={handleEditChange}
-          />
-          <TextField
-            label="Stock"
-            fullWidth
-            margin="normal"
-            name="stock"
-            value={selectedProduct?.stock || ""}
-            onChange={handleEditChange}
-          />
-          <TextField
-            label="Discount"
-            fullWidth
-            margin="normal"
-            name="discount"
-            value={selectedProduct?.discount || ""}
-            onChange={handleEditChange}
-          />
-          <Box display="flex" justifyContent="flex-end" mt={2}>
-            <Button onClick={() => setEditModalOpen(false)} sx={{ mr: 2 }}>
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleSaveEdit}
-            >
-              Save
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+      <EditProductModal
+        open={editModalOpen}
+        onClose={() => setEditModalOpen(false)}
+        product={selectedProduct}
+        setProduct={setSelectedProduct}
+        loading={loading}
+        editLoading={setEditLoading}
+        setEditLoading={setEditLoading}
+        onSave={handleSaveEdit}
+        onImageSelect={handleImageFileSelect}
+        onRemoveImage={handleRemoveImage}
+        yearInputs={yearInputs}
+        setYearInputs={setYearInputs}
+      />
 
       {/* View Modal */}
       <ViewProductModal

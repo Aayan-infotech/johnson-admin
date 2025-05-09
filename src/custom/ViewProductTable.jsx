@@ -26,7 +26,7 @@ const ViewProductModal = ({ open, onClose, viewProduct }) => {
                         <Grid item xs={12}>
                             <Box sx={{ textAlign: "center" }}>
                                 <img
-                                    src={viewProduct.image}
+                                    src={viewProduct.image[0]}
                                     alt="Product"
                                     style={{ width: "100%", maxHeight: 300, objectFit: "cover", borderRadius: 8 }}
                                 />
