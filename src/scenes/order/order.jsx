@@ -35,23 +35,17 @@ const OrderManagement = () => {
       console.log(response);
       if (response?.data?.status === 200) {
         const formattedData = response?.data?.data.map((order) => ({
-          id: order?._id || "N/A",
-          orderId: order?.orderId || "N/A",
-          status: order?.status || "N/A",
-          createdAt: order?.createdAt
-            ? new Date(order.createdAt).toLocaleDateString()
-            : "N/A",
-          totalAmount: order?.totalAmount || "N/A",
-          customerName: order?.user?.name || "N/A",
-          paymentStatus: order?.payment?.status || "N/A",
-          customerEmail: order?.user?.email || "N/A",
-          customerAddres: order?.address
-            ? `${order.address?.street || ""}, ${order.address?.city || ""}, ${
-                order.address?.state || ""
-              }, ${order.address?.postalCode || ""}, ${
-                order.address?.country || ""
-              }`
-            : "N/A",
+            id: order?._id || "N/A",
+            orderId: order?.orderId || "N/A",
+            status: order?.status || "N/A",
+            createdAt: order?.createdAt ? new Date(order.createdAt).toLocaleDateString() : "N/A",
+            totalAmount: order?.totalAmount || "N/A",
+            customerName: order?.user?.name || "N/A",
+            paymentStatus: order?.payment?.status || "N/A",
+            customerEmail: order?.user?.email || "N/A",
+            customerAddres: order?.address
+                ? `${order.address?.street || ''}, ${order.address?.city || ''}, ${order.address?.state || ''}, ${order.address?.postalCode || ''}, ${order.address?.country || ''}`
+                : "N/A"
         }));
 
         setAllOrdersList(formattedData);
