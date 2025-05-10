@@ -8,14 +8,11 @@ import FaqModal from '../../components/faqModal';
 import axios from "axios";
 import { showErrorToast, showSuccessToast } from "../../../src/Toast";
 import { API_BASE_URL } from '../../utils/apiConfig';
-// import CustomTable from './../../ProtectedPages/CustomTable';
-// import { faqTableColumns } from '../../custom/faqTableColumn';
-
 
 const FaqManagement = () => {
   const [faqs, setFaqs] = useState([]);
-  const [faqList, setFaqList] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [currentFaq, setCurrentFaq] = useState({ id: null, question: '', answer: '' });
 
   useEffect(() => {
@@ -24,42 +21,17 @@ const FaqManagement = () => {
 
   const fetchFaqs = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/faq/admin/get-faq`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          // Include Authorization if needed
-          // 'Authorization': `Bearer ${yourToken}`
-        }
-      });
-
-      // if (response?.data?.status === 200) {
-      //   const formattedData = response?.data?.data.map((ques) => ({
-      //     id: ques._id,
-      //     question: ques.questioon.en || "N/A",
-      //     answer: ques.answer.en || "N/A",
-      //     // slug: category.slug || "N/A",
-      //     // status: ques?.isActive || "N/A",
-      //     // createdAt: new Date(category.createdAt).toLocaleDateString(),
-      //   }));
-
-      //   setFaqList(formattedData)
-        // if (!response.ok) {
-        //   throw new Error('Failed to fetch FAQs');
-        // }
-
-        const data = await response.json();
-        console.log(data.data);
-        setFaqs(data.data || []); // assuming your backend sends { faqs: [...] }
-      }
-     catch (error) {
+      setLoading(true);
+      const response = await fetch(`${API_BASE_URL}/faq/admin/get-faq`);
+      const data = await response.json();
+      setFaqs(data.data || []);
+    } catch (error) {
       console.error('Error fetching FAQs:', error.message);
-    }
-    finally {
+      showErrorToast("Failed to fetch FAQs");
+    } finally {
       setLoading(false);
     }
   };
-
 
   const handleOpenModal = (faq = { id: null, question: '', answer: '' }) => {
     setCurrentFaq(faq);
@@ -74,8 +46,18 @@ const FaqManagement = () => {
   const handleSaveFaq = async () => {
     try {
       if (currentFaq.id) {
-        setFaqs(prev => prev.map(f => (f.id === currentFaq.id ? currentFaq : f)));
-        // TODO: Call update API
+        const response = await axios.put(`${API_BASE_URL}/faq/admin/update-faq/${currentFaq.id}`, {
+          question: currentFaq.question,
+          answer: currentFaq.answer
+        });
+        console.log(response)
+        if (response.status === 200) {
+          showSuccessToast("FAQ updated successfully!");
+          fetchFaqs();
+          handleCloseModal();
+        } else {
+          showErrorToast("Failed to update FAQ.");
+        }
       } else {
         const response = await axios.post(`${API_BASE_URL}/faq/admin/create-faq`, {
           question: currentFaq.question,
@@ -90,12 +72,10 @@ const FaqManagement = () => {
           showErrorToast('Failed to add FAQ.');
         }
       }
-    }
-    catch (error) {
+    } catch (error) {
       console.error("Error saving FAQ:", error);
-      showErrorToast("Failed to save FAQ")
+      showErrorToast("Failed to save FAQ");
     }
-    // handleCloseModal();
   };
 
   const handleDeleteFaq = async (id) => {
@@ -103,7 +83,7 @@ const FaqManagement = () => {
       try {
         const response = await axios.delete(`${API_BASE_URL}/faq/admin/delete-faq/${id}`);
 
-        if (response.data.status === 200) { // fix: check status, not response.data == 200
+        if (response.data.status === 200) {
           showSuccessToast('FAQ deleted successfully!');
           setFaqs(prev => prev.filter(f => f.id !== id));
         } else {
@@ -111,17 +91,10 @@ const FaqManagement = () => {
         }
       } catch (error) {
         console.error('Delete FAQ error:', error);
-        toast.error('An error occurred while deleting FAQ.');
+        showErrorToast('An error occurred while deleting FAQ.');
       }
     }
   };
-
-  const columns = categoryTableColumns({
-    // handleToggleStatus,
-    // handleAddSubCategory,
-    handleDeleteFaq,
-    handleView,
-  });
 
   return (
     <Box p={3}>
@@ -143,20 +116,24 @@ const FaqManagement = () => {
           </TableHead>
           <TableBody>
             {faqs.map((faq) => (
-              <TableRow key={faq.id}>
-                <TableCell>{faq.question}</TableCell>
-                <TableCell>{faq.answer}</TableCell>
+              <TableRow key={faq.id || faq._id}>
+                <TableCell>{faq.question?.en || faq.question || 'N/A'}</TableCell>
+                <TableCell>{faq.answer?.en || faq.answer || 'N/A'}</TableCell>
                 <TableCell align="right">
-                  <IconButton onClick={() => handleOpenModal(faq)}>
+                  <IconButton onClick={() => handleOpenModal({
+                    id: faq.id || faq._id,
+                    question: faq.question?.en || faq.question,
+                    answer: faq.answer?.en || faq.answer
+                  })}>
                     <Edit />
                   </IconButton>
-                  <IconButton color="error" onClick={() => handleDeleteFaq(faq.id)}>
+                  <IconButton color="error" onClick={() => handleDeleteFaq(faq.id || faq._id)}>
                     <Delete />
                   </IconButton>
                 </TableCell>
               </TableRow>
             ))}
-            {faqs.length === 0 && (
+            {faqs.length === 0 && !loading && (
               <TableRow>
                 <TableCell colSpan={3} align="center">
                   No FAQs available.
@@ -167,16 +144,6 @@ const FaqManagement = () => {
         </Table>
       </TableContainer>
 
-
-      {/* <CustomTable
-        columns={columns}
-        rows={faqList}
-        loading={loading}
-        // onStatusToggle={handleToggleStatus}
-        checkboxSelection
-      /> */}
-
-      {/* Modal Component */}
       <FaqModal
         open={openModal}
         onClose={handleCloseModal}

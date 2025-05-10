@@ -24,7 +24,6 @@ const EditProductModal = ({
   setProduct,
   onSave,
   onImageSelect,
-  onRemoveImage,
   editLoading,
   yearInputs,
   setYearInputs,
