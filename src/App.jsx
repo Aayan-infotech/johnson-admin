@@ -1,78 +1,62 @@
-import React, { Suspense, useState, createContext, useEffect } from "react";
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import OverlaySpinner from "./utils/Spinner";
-import Dashboard from "./Dashboard";
-import Home from "./components/Home";
-// import Main from "./components/Main";
+import React, { createContext, useState } from "react";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
+import { ColorModeContext, useMode } from "./theme";
+import { Navbar, SideBar } from "./scenes";
+import { Outlet } from "react-router-dom";
+import ToastNotification from "./Toast";
+// In App.jsx or index.jsx
+import 'react-quill/dist/quill.snow.css';
 
 
-const AdminLogin = React.lazy(() => import("./Pages/Login"));
-const ChangePassword = React.lazy(() => import("./Pages/ChangePassword"));
-// const ManageUsers = React.lazy(() => import("./ProtectedPages/User/ManageUsers"));
-// const Category = React.lazy(() => import("./ProtectedPages/Category/Category"));
-
-export const ColorModeContext = createContext();
+export const ToggledContext = createContext(null);
 
 function App() {
-  const [mode, setMode] = useState("light");
-  const [open, setOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("token"));
-  // const location = useLocation(); // Now this will work
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsAuthenticated(true); 
-    }
-  }, []);
-
-  const colorMode = {
-    toggleColorMode: () => {
-      setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
-    },
-  };
-
-  const theme = createTheme({
-    palette: {
-      mode: mode,
-      primary: {
-        main: mode === "light" ? "#1976d2" : "#90caf9",
-      },
-      background: {
-        default: mode === "light" ? "#f5f5f5" : "#121212",
-        paper: mode === "light" ? "#ffffff" : "#1e1e1e",
-      },
-    },
-  });
+  const [theme, colorMode] = useMode();
+  const [toggled, setToggled] = useState(false);
+  const values = { toggled, setToggled };
 
   return (
     <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}> 
+      <ThemeProvider theme={theme}>
         <CssBaseline />
-        <Suspense fallback={<OverlaySpinner />}>
-        <Routes>
-          <Route path="/" element={<AdminLogin setIsAuthenticated={setIsAuthenticated} />} />
-          <Route path="/ChangePassword" element={<ChangePassword />} />
-          <Route
-            path="/"
-            element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
-          />
-          {isAuthenticated && (
-            <>
-              <Route path="/dashboard" element={<Dashboard />} />
-            </>
-          )}
-        </Routes>
-        </Suspense>
+        <ToggledContext.Provider value={values}>
+          <ToastNotification />
+          <Box
+            sx={{
+              display: "flex",
+              height: "100vh",
+              width: "100vw",
+              overflowX: "hidden",
+            }}
+          >
+            <SideBar className="sidebar-container" />
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: "flex",
+                flexDirection: "column",
+                height: "100%",
+                width: "100%",
+                overflowX: "hidden",
+              }}
+            >
+              <Navbar />
+              <Box
+                sx={{
+                  overflowY: "auto",
+                  flex: 1,
+                  width: "100%",
+                  overflowX: "hidden",
+                }}
+              >
+                <Outlet />
+              </Box>
+            </Box>
+          </Box>
+        </ToggledContext.Provider>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
 }
 
-
 export default App;
-
-
-
