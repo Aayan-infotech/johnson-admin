@@ -31,7 +31,7 @@ import StaticPage from "./scenes/staticPage/staticContentPage"
 import Feedback from "./scenes/rating&Reviews/RatingReviews";
 import PartsVideos from "./scenes/PartsVideo/PartsVideos";
 import OEMManagement from "./scenes/OEM/OEMManagement";
-import FAQmanagement from "./scenes/FAQManagement/FAQ";
+import FAQManagement from "./scenes/faq/index";
 import BlogManagement from "./scenes/blog/blogManagement";
 
 
@@ -59,9 +59,8 @@ const AppRouter = () => {
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/part-video" element={<PartsVideos/>} />
             <Route path="/oem-management" element={<OEMManagement/>} />
-            {/* <Route path="/faq-management" element={<FAQManagement/>} /> */}
-            <Route path="/faq-management" element={<FAQmanagement />} />
-            {/* <Route path="/blog-management" element={<BlogManagement/>} /> */}
+            <Route path="/faq-management" element={<FAQManagement/>} />
+            <Route path="/blog-management" element={<BlogManagement/>} />
           </Route>
         </Route>
       </Routes>
