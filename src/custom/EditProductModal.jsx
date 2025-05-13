@@ -24,11 +24,11 @@ const EditProductModal = ({
   setProduct,
   onSave,
   onImageSelect,
-  onRemoveImage,
   editLoading,
   yearInputs,
   setYearInputs,
 }) => {
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct((prev) => ({ ...prev, [name]: value }));
@@ -36,7 +36,6 @@ const EditProductModal = ({
   // const [categories, setCategories] = useState([]);
   // const [subCategories, setSubCategories] = useState([]);
   // const [subSubCategories, setSubSubCategories] = useState([]);
-
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -220,9 +219,12 @@ const EditProductModal = ({
 
         {/* Compatible Vehicles */}
         <Box mt={4}>
-          <h3>Compatible Vehicles</h3>
+          <Typography variant="h6" gutterBottom>
+            Compatible Vehicles
+          </Typography>
+
           {product?.compatibleVehicles?.map((vehicle, i) => (
-            <Box key={i} mb={2} p={2} border="1px solid #ccc" borderRadius={1}>
+            <Box key={i} mb={3} p={2} border="1px solid #ccc" borderRadius={2}>
               <TextField
                 label="Make"
                 fullWidth
@@ -237,6 +239,7 @@ const EditProductModal = ({
                   }));
                 }}
               />
+
               {vehicle.models.map((modelObj, j) => {
                 const key = `${i}-${j}`;
                 return (
@@ -292,11 +295,72 @@ const EditProductModal = ({
                         });
                       }}
                     />
+
+                    <Button
+                      size="small"
+                      color="error"
+                      sx={{ mt: 1 }}
+                      onClick={() => {
+                        const updated = [...product.compatibleVehicles];
+                        updated[i].models.splice(j, 1);
+                        setProduct((prev) => ({
+                          ...prev,
+                          compatibleVehicles: updated,
+                        }));
+                      }}
+                    >
+                      Remove Model
+                    </Button>
                   </Box>
                 );
               })}
+
+              <Button
+                size="small"
+                onClick={() => {
+                  const updated = [...product.compatibleVehicles];
+                  updated[i].models.push({ model: "", years: [] });
+                  setProduct((prev) => ({
+                    ...prev,
+                    compatibleVehicles: updated,
+                  }));
+                }}
+                sx={{ mt: 1 }}
+              >
+                + Add Model
+              </Button>
+<br/>
+              <Button
+                size="small"
+                color="error"
+                sx={{ mt: 2 }}
+                onClick={() => {
+                  const updated = [...product.compatibleVehicles];
+                  updated.splice(i, 1);
+                  setProduct((prev) => ({
+                    ...prev,
+                    compatibleVehicles: updated,
+                  }));
+                }}
+              >
+                Remove Make
+              </Button>
             </Box>
           ))}
+
+          <Button
+            variant="outlined"
+            onClick={() => {
+              const updated = [...(product.compatibleVehicles || [])];
+              updated.push({ make: "", models: [{ model: "", years: [] }] });
+              setProduct((prev) => ({
+                ...prev,
+                compatibleVehicles: updated,
+              }));
+            }}
+          >
+            + Add Make
+          </Button>
         </Box>
 
         {/* Save/Cancel Buttons */}
@@ -305,13 +369,17 @@ const EditProductModal = ({
             Cancel
           </Button>
           <Button
-      variant="contained"
-      color="primary"
-      onClick={onSave}
-      disabled={editLoading}
-    >
-      {editLoading ? <CircularProgress size={24} color="inherit" /> : "Save"}
-    </Button>
+            variant="contained"
+            color="primary"
+            onClick={onSave}
+            disabled={editLoading}
+          >
+            {editLoading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Save"
+            )}
+          </Button>
         </Box>
       </Box>
     </Modal>
