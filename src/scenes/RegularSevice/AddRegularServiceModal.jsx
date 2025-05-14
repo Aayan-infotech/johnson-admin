@@ -77,6 +77,7 @@ const AddRegularServiceCategory = ({
     try {
       setLoading(true);
       if (isEditMode) {
+        console.log(selectedService)
         await axios.put(
           `${API_BASE_URL}/regular-services/${selectedService.id}`,
           formData
