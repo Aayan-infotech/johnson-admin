@@ -90,6 +90,7 @@ import {
 import CategoryTab from "../scenes/category/index";
 import SubCategoryTable from "../scenes/subcategory/subcategory";
 import SubSubCategoryTable from "../scenes/subSubcategory/subSubcategory";
+import RegularService from "../scenes/RegularSevice/RegularService";
 
 const MultipleTabs = () => {
   const [currentTab, setCurrentTab] = useState(0);
@@ -98,7 +99,7 @@ const MultipleTabs = () => {
     setCurrentTab(newValue);
   };
 
-  const breadcrumbMap = ["Categories", "Subcategories", "Sub-Subcategories"];
+  const breadcrumbMap = ["Categories", "Subcategories", "Sub-Subcategories","Regular-Service-Category"];
 
   return (
     <Paper elevation={3} sx={{ p: 2 }}>
@@ -126,6 +127,7 @@ const MultipleTabs = () => {
         <Tab label="Categories" />
         <Tab label="Subcategories" />
         <Tab label="Sub-Subcategories" />
+        <Tab label="Regular-Service-Category" />
       </Tabs>
 
       {/* Tab Content */}
@@ -133,6 +135,7 @@ const MultipleTabs = () => {
         {currentTab === 0 && <CategoryTab />}
         {currentTab === 1 && <SubCategoryTable />}
         {currentTab === 2 && <SubSubCategoryTable />}
+        {currentTab === 3 && <RegularService />}
       </Box>
     </Paper>
   );

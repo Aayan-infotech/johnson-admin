@@ -282,7 +282,7 @@ const [modelCompany,setModelCompany]=useState(null)
               onClick={() => {
                 setModelForm({ name: "", modelImage: [], _id: null });
                 setModelModalOpen(true);
-              }}
+              }}  
               disabled={!selectedCompany}
             >
               Add Model
