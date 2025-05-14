@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import StaticPageForm from './staticPageForm';
-import { fetchStaticPage, updateStaticPage } from '../../services/staticContentServices';
-
+import React, { useEffect, useState } from "react";
+import StaticPageForm from "./staticPageForm";
+import {
+  fetchStaticPage,
+  updateStaticPage,
+} from "../../services/staticContentServices";
 
 const StaticPageEditor = ({ pageKey }) => {
   const [page, setPage] = useState({
-    key: '',
-    content: '',
+    key: "",
+    content: "",
   });
 
   const [loading, setLoading] = useState(true);
@@ -17,7 +19,7 @@ const StaticPageEditor = ({ pageKey }) => {
         const data = await fetchStaticPage(pageKey);
         setPage(data.data);
       } catch (error) {
-        console.error('Error loading page:', error);
+        console.error("Error loading page:", error);
       } finally {
         setLoading(false);
       }
@@ -36,17 +38,17 @@ const StaticPageEditor = ({ pageKey }) => {
   const handleSave = async () => {
     try {
       await updateStaticPage(pageKey, page);
-      alert('Page saved successfully!');
+      alert("Page saved successfully!");
     } catch (error) {
-      console.error('Error saving page:', error);
+      console.error("Error saving page:", error);
     }
   };
 
   if (loading) return <p>Loading...</p>;
 
-  return <StaticPageForm page={page} onChange={handleChange} onSave={handleSave} />;
+  return (
+    <StaticPageForm page={page} pageTitle={pageKey} onChange={handleChange} onSave={handleSave} />
+  );
 };
 
 export default StaticPageEditor;
-
-
