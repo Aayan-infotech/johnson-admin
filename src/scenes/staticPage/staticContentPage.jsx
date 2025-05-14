@@ -4,12 +4,6 @@ import { Box, Container } from '@mui/material';
 
 const StaticContentPage = () => {
   const [activePage, setActivePage] = useState('about-us');
-
-  // const pages = [
-  //   { label: 'About Us', key: 'about-us' },
-  //   { label: 'Privacy Policy', key: 'privacy-policy' },
-  //   { label: 'Terms & Conditions', key: 'terms-and-conditions' },
-  // ];
   const pages = [
     { key: 'About Us', slug: 'about-us' },
     { key: 'Privacy Policy', slug: 'privacy-policy' },
@@ -20,7 +14,7 @@ const StaticContentPage = () => {
     <Container maxWidth={false}>
       <h1>Static Content Management</h1>
 
-      <Box style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
+      <Box style={{ display: 'flex ', gap: '1rem', marginBottom: '1rem' }}>
         {pages.map((page) => (
           <button
             key={page.key}

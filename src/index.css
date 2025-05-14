@@ -14,6 +14,13 @@ body,
   font-family: "Source Sans 3", sans-serif;
 }
 
+.selected-company-row {
+  background-color: #fff9c4 !important; /* light yellow */
+  font-weight: bold;
+  border-left: 4px solid #fdd835;
+}
+
+
 .sidebar-container {
   background-color: rgba(255, 255, 255, var(--tw-bg-opacity, 1));
   box-shadow: 0 19px 38px rgb(116 116 116 / 30%), 0 15px 12px rgb(104 103 103 / 22%)
