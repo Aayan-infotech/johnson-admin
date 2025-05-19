@@ -62,6 +62,7 @@ const Navbar = () => {
       "/part-video": "Parts Video Management",
       "/oem-management": "OEM Management",
       "/faq-management": "FAQ Management",
+      "/contact-us": "Contact Us",
       // Add more if you have additional paths
     };
     return routeMap[pathname] || "Dashboard";

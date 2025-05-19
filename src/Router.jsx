@@ -33,6 +33,7 @@ import PartsVideos from "./scenes/PartsVideo/PartsVideos";
 import OEMManagement from "./scenes/OEM/OEMManagement";
 import FAQManagement from "./scenes/faq/index";
 import BlogManagement from "./scenes/blog/blogManagement";
+import ContactUs from "../src/scenes/contactUs/ContactUs";
 
 
 const AppRouter = () => {
@@ -61,6 +62,7 @@ const AppRouter = () => {
             <Route path="/oem-management" element={<OEMManagement/>} />
             <Route path="/faq-management" element={<FAQManagement/>} />
             <Route path="/blog-management" element={<BlogManagement/>} />
+            <Route path="/contact-us" element={<ContactUs/>} />
           </Route>
         </Route>
       </Routes>

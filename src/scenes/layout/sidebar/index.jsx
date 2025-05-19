@@ -25,7 +25,8 @@ import {
   PlayCircleRounded,
   CategoryOutlined,
   CarCrash,
-  HelpOutline
+  HelpOutline,
+  Message
 } from "@mui/icons-material";
 import HandymanSharpIcon from '@mui/icons-material/HandymanSharp';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -34,6 +35,7 @@ import FeedbackIcon from '@mui/icons-material/Feedback';
 
 import Item from "./Item";
 import { ToggledContext } from "../../../App";
+import { Contact } from "lucide-react";
 
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(true);
@@ -195,12 +197,12 @@ const SideBar = () => {
             colors={colors}
             icon={<HelpOutline />}
           />
-           {/* <Item
-            title="Blog Management"
-            path="/blog-management"
+           <Item
+            title="Contact Us"
+            path="/contact-us"
             colors={colors}
-            icon={<HelpOutline />}
-          /> */}
+            icon={<Message />}
+          />
           {/* <Item
             title="Invoices Balances"
             path="/invoices"
