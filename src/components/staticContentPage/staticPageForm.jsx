@@ -17,7 +17,7 @@ const StaticPageForm = ({ page, pageTitle, onChange, onSave }) => {
 };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 6 }}>
+    <Container maxWidth="lg" sx={{ mt: 6 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" align="center" gutterBottom>
           {capitalizeFirstLetter(pageTitle)} Page

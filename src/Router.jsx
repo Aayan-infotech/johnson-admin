@@ -33,6 +33,8 @@ import PartsVideos from "./scenes/PartsVideo/PartsVideos";
 import OEMManagement from "./scenes/OEM/OEMManagement";
 import FAQManagement from "./scenes/faq/index";
 import BlogManagement from "./scenes/blog/blogManagement";
+// import Contacts from "./scenes/ContactUs/ContactUsPage"
+import ContactUsPage from './scenes/ContactUs/contactUsPage';
 
 
 const AppRouter = () => {
@@ -52,7 +54,7 @@ const AppRouter = () => {
           <Route path="/menu" element={<MenuTabs />} />
             <Route path="/category" element={<Category />} />
             <Route path="/customers" element={<UserDetails />} />
-            <Route path="/contacts" element={<Contacts />} />
+            <Route path="/contact-us" element={<ContactUsPage />} />
             <Route path="/products" element={<Products />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/staticPage" element={<StaticPage />} />

@@ -99,7 +99,7 @@ const FaqManagement = () => {
   return (
     <Box p={3}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h5">FAQ Management</Typography>
+        <Typography variant="h5"></Typography>
         <Button variant="contained" startIcon={<Add />} onClick={() => handleOpenModal()}>
           Add FAQ
         </Button>
