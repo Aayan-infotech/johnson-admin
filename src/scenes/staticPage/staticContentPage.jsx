@@ -12,7 +12,7 @@ const StaticContentPage = () => {
 
   return (
     <Container maxWidth={false}>
-      <h1>Static Content Management</h1>
+      {/* <h1>Static Content Management</h1> */}
 
       <Box style={{ display: 'flex ', gap: '1rem', marginBottom: '1rem' }}>
         {pages.map((page) => (
