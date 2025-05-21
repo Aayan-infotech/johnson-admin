@@ -30,7 +30,7 @@ const checkoutSchema = yup.object().shape({
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const handleFormSubmit = (values, actions) => {
-    console.log(values);
+    //console.log(values);
     actions.resetForm({
       values: initialValues,
     });

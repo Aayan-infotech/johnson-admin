@@ -22,9 +22,10 @@ const AddCategory = ({
   fetchAllCategoryDetails,
   showCategoryDetails,
 }) => {
+  console.log(showCategoryDetails,"ddddd")
   const [loading, setLoading] = useState(false);
   const isViewMode = Boolean(showCategoryDetails);
-  console.log(showCategoryDetails)
+  //console.log(showCategoryDetails)
   const handleAddCategory = async () => {
     if (!categoryName.trim()) {
       showCustomMessage("Category name is required!");
@@ -55,21 +56,20 @@ const AddCategory = ({
   return (
     <Dialog open={open} onClose={handleClose} fullWidth>
       <DialogTitle>
-        {isViewMode ? "Category Details" : "Add New Category"}
+        {isViewMode ? "View Category Details" : "Add New Category"}
       </DialogTitle>
       <Divider />
       <DialogContent>
         {isViewMode ? (
           <>
-            <Typography variant="h6">{showCategoryDetails?.name}</Typography>
             <Typography variant="body2">
               ID: {showCategoryDetails?.id}
             </Typography>
             <Typography variant="body2">
-              NAme: {showCategoryDetails?.name}
+            Subcategory Name: <strong>{showCategoryDetails?.name}</strong> 
             </Typography>
             <Typography variant="body2">
-              Status: {showCategoryDetails?.status?"Active":"Inactive"}
+              Status:<strong>{showCategoryDetails?.status=="N/A"?"Inactive":"Active"}</strong> 
             </Typography>
            
           </>

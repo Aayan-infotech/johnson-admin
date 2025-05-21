@@ -31,7 +31,7 @@ const SubSubCategory = () => {
   const fetchAllSubSubCategories = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/subsubcategory/admin/get-all-subsubcategories`);
-      console.log(response.data.data, "response.data.data")
+      //console.log(response.data.data, "response.data.data")
       if (response?.data?.status === 200) {
         const formattedData = response.data.data.map((sub) => ({
           id: sub._id,
@@ -42,7 +42,7 @@ const SubSubCategory = () => {
           subcategoryId: sub.subcategoryId|| "N/A",
           subcategoryName: sub.subcategoryId?.name?.en || "N/A",
           slug: sub.slug || "N/A",
-          status: sub?.isActive || "N/A",
+          status: sub?.isActive || false,
           createdAt: new Date(sub.createdAt).toLocaleDateString(),
         }));
         setSubSubCategories(formattedData);
@@ -141,8 +141,13 @@ const SubSubCategory = () => {
 
   return (
     <Container maxWidth={false}>
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
-        {/* <Header title="Sub-Subcategories" /> */}
+      <Box sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}>
+        <Header title="Sub-Subcategories" />
         <Box display="flex" alignItems="center" ml={2} gap={2}>
           {/* Search Bar */}
           <Box display="flex" alignItems="center" bgcolor={colors.primary[400]} borderRadius="3px">

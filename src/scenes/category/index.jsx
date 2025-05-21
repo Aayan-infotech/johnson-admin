@@ -47,7 +47,7 @@ const Category = () => {
           // createdAt: new Date(category.createdAt).toLocaleDateString(),
         }));
 
-        console.log(formattedData, "formattedData");
+        //console.log(formattedData, "formattedData");
 
 
         setAllCategoriesList(formattedData);
@@ -101,7 +101,7 @@ const Category = () => {
   };
 
   const handleToggleStatus = async (row) => {
-    console.log(row, "row");
+    //console.log(row, "row");
 
     const newStatus = row.status === "Active" ? "Blocked" : "Active";
 
@@ -118,7 +118,7 @@ const Category = () => {
 
 
   const handleAddSubCategory = (id, name) => {
-    console.log("Opening Add Subcategory Dialog for:", id, name);
+    //console.log("Opening Add Subcategory Dialog for:", id, name);
     setSelectedParentId(id);
     // setSelectedParentName(name);
     setOpenDialog(true);
@@ -131,7 +131,7 @@ const Category = () => {
   };
 
   const handleDelete = async (id) => {
-    console.log(id)
+    //console.log(id)
     const confirmDelete = window.confirm("Are you sure you want to delete this category?");
     if (!confirmDelete) return;
     try {

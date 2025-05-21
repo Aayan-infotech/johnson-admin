@@ -11,7 +11,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 const StaticPageForm = ({ page, pageTitle, onChange, onSave }) => {
-  console.log(page);
+  //console.log(page);
   const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };

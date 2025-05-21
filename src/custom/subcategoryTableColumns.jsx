@@ -39,7 +39,7 @@ const subCategoryTableColumns = ({
         size="small"
         onClick={(event) => {
           event.stopPropagation();
-          console.log(params.row);
+          //console.log(params.row);
           handleToggleStatus(params.row.id);
         }}
       >
@@ -71,7 +71,7 @@ const subCategoryTableColumns = ({
           icon={<Eye size={20} color="white" />}
           color="rgb(77 141 225)"
           onClick={() => {
-            // {console.log(params.row);
+            //console.log(params.row, "subcategory");
             handleView(params.row)}}
         />
         <CustomIconButton

@@ -71,12 +71,12 @@ const AddSubSubCategoryDialog = ({
   };
 
   const fetchSubCategories = async (categoryId) => {
-    console.log(categoryId, "72ftch subcat");
+    //console.log(categoryId, "72ftch subcat");
     try {
       const response = await axios.get(
         `${API_BASE_URL}/subcategory/get-subcategories/${categoryId}`
       );
-      console.log(response.data.data, "response");
+      //console.log(response.data.data, "response");
       if (response?.data?.status === 200) {
         setSubCategories(response.data.data);
       } else {
@@ -148,7 +148,7 @@ const AddSubSubCategoryDialog = ({
               Subcategory: {selectedSubSubCategory?.subcategoryId}
             </Typography>
             <Typography variant="body2">
-              Status: {selectedSubSubCategory?.isActive ? "Active" : "Inactive"}
+              Status: {selectedSubSubCategory?.status ? "Active" : "Inactive"}
             </Typography>
             <Typography variant="body2">
               Created At: {selectedSubSubCategory?.createdAt}
@@ -193,7 +193,7 @@ const AddSubSubCategoryDialog = ({
                 value={selectedSubCategory}
                 onChange={(e) => {
                   setSelectedSubCategory(e.target.value);
-                  console.log(e.target.value);
+                  //console.log(e.target.value);
                 }}
                 sx={{ minWidth: 250 }}
               >

@@ -54,7 +54,7 @@ const Navbar = () => {
     const routeMap = {
       "/": "Dashboard",
       "/customers": "Customers",
-      "/menu": "Category",
+      "/menu": "Menu",
       "/products": "Products",
       "/orders": "Orders",
       "/staticPage": "Static Content Management",
