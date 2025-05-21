@@ -30,7 +30,7 @@ const ViewOrderDialog = ({
     setLoading(true);
     try {
       const response = await axios.put(
-        `${API_BASE_URL}/order/admin/update-status/${orderDetails.id}`,
+        `${API_BASE_URL}/orders/admin/change-order/${orderDetails.id}`,
         { status: newStatus }
       );
 
@@ -143,15 +143,15 @@ const ViewOrderDialog = ({
       <Divider />
       <DialogActions sx={{ p: 2 }}>
         <CustomIconButton color="red" text="Close" onClick={handleClose} />
-        {orderDetails?.status !== "Completed" && (
+        {/* {(orderDetails?.status !== "delivered" || orderDetails?.status !== "cancelled") && (
           <CustomIconButton
             loading={loading}
             disabled={loading}
             color="black"
             text="Mark as Completed"
-            onClick={() => handleUpdateStatus("Completed")}
+            onClick={() => handleUpdateStatus("delivered")}
           />
-        )}
+        )} */}
       </DialogActions>
     </Dialog>
   );

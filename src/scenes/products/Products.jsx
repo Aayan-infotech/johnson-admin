@@ -195,7 +195,7 @@ const Products = () => {
           mb: 2,
         }}
       >
-        {/* <Header title="Products" /> */}
+        <Header title="" />
         <Box display="flex" alignItems="center" gap={2}>
           <Box
             display="flex"
