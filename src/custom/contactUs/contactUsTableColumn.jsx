@@ -130,7 +130,7 @@ const ContactUsTable = ({ onView, onReply }) => {
                 }}
             >
                 <InputBase
-                    placeholder="Search by email or query number"
+                    placeholder="Search by email"
                     value={searchText}
                     onChange={handleSearch}
                     sx={{
