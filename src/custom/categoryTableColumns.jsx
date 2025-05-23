@@ -33,19 +33,7 @@ export const categoryTableColumns = ({
       },
     },
     // { field: "createdAt", headerName: "Created At", width: 150 },
-    {
-      field: "actions",
-      headerName: "Add Sub Category",
-      flex: 0.3,
-      sortable: false,
-      renderCell: (params) => (
-        <CustomIconButton
-          icon={<PlusCircle size={20} color="white" />}
-          color="green"
-          onClick={() => handleAddSubCategory(params.row.categoryId)}
-        />
-      ),
-    },
+   
     {
       field: "view",
       headerName: "Actions",

@@ -25,7 +25,7 @@ const RatingReviews = () => {
       const response = await axios.get(
         `${API_BASE_URL}/RatingAndReviews/admin/get-all`
       );
-      console.log(response);
+      //console.log(response);
       const formattedData = response.data.data.map((review) => ({
         id: review._id,
         reviewer: review.userId?.name || "Anonymous",
@@ -47,14 +47,15 @@ const RatingReviews = () => {
 
   const handleDelete = async (id) => {
     try {
-      console.log(id, "id");
+      //console.log(id, "id");
       const response = await axios.delete(
         `${API_BASE_URL}/RatingAndReviews/admin/delete/${id}`
       );
 
-      if (res.data.status === 200) {
-        fetchReviews();
-      }
+            if(response.data.status === 200) {
+                toast.success("Review Deleted Successfully");
+                fetchReviews();
+            }
 
       fetchReviews();
     } catch (error) {

@@ -46,7 +46,7 @@ const Products = () => {
       const response = await axios.get(
         `${API_BASE_URL}/product/getAllProducts`
       );
-      console.log(response);
+      //console.log(response);
       const formattedData = response?.data.products.map((product) => ({
         id: product._id,
         productId: product._id || "N/A",
@@ -70,7 +70,7 @@ const Products = () => {
       setAllProducts(formattedData);
       setFilteredProducts(formattedData);
     } catch (error) {
-      console.log("Error fetching products:", error);
+      //console.log("Error fetching products:", error);
     } finally {
       setLoading(false);
     }
@@ -109,7 +109,7 @@ const Products = () => {
   };
 
   const handleEdit = (product) => {
-    console.log(product);
+    //console.log(product);
     setSelectedProduct(product);
     setEditModalOpen(true);
   };
@@ -151,7 +151,7 @@ const Products = () => {
         }
       );
       setEditLoading(false);
-      console.log("Updated product:", response.data);
+      //console.log("Updated product:", response.data);
       fetchAllProducts();
       setEditModalOpen(false);
     } catch (error) {

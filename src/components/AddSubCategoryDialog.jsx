@@ -1,138 +1,193 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Button,
-  TextField,
-  Typography,
-  CircularProgress,
   InputLabel,
+  Typography,
   Select,
   MenuItem,
+  CircularProgress,
+  Divider,
 } from "@mui/material";
+import axios from "axios";
 import { API_BASE_URL } from "../utils/apiConfig";
-import { showErrorToast } from "../Toast";
+import { showErrorToast, showSuccessToast, showCustomMessage } from "../Toast";
+import Input from "../custom/Input";
+import { CustomIconButton } from "../custom/Button";
+
 const AddSubCategoryDialog = ({
   open,
   handleClose,
-  parentId,
   fetchAllSubCategories,
-  onSuccess, // callback after successful add
+  showSubCategoryDetails,
 }) => {
   const [subCategoryName, setSubCategoryName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const isViewMode = Boolean(showSubCategoryDetails);
+  console.log(showSubCategoryDetails, "showSubCategoryDetails");
   useEffect(() => {
+    if (open && !isViewMode) {
+      fetchCategories();
+    }
     if (!open) {
       setSubCategoryName("");
+      setSelectedCategory("");
+      setImageFile(null);
       setLoading(false);
     }
   }, [open]);
 
-  const handleAdd = async () => {
-    console.log(selectedCategory,"selecetd category")
-    if (!subCategoryName.trim()) {
-      alert("Sub Category Name is required");
-      return;
+  useEffect(() => {
+    if (!isViewMode && categories.length && selectedCategory === "") {
+      setSelectedCategory(categories[0]?._id || "");
     }
-
-    setLoading(true);
-
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/subcategory/admin/add-subcategory`,
-        {
-          categoryId: selectedCategory,
-          name: subCategoryName,
-        }
-        // {
-        //   withCredentials: true, // if you're using cookies/auth
-        // }
-      );
-
-      console.log("Subcategory added:", response.data);
-
-      if (onSuccess) onSuccess(); // refresh data or show success
-      // fetchAllSubCategories()
-      handleClose(); // close modal
-    } catch (error) {
-      console.error("Error adding subcategory:", error);
-      alert("Failed to add subcategory");
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [categories]);
 
   const fetchCategories = async () => {
     try {
       const response = await axios.get(
         `${API_BASE_URL}/category/admin/get-categories`
       );
-      console.log(response)
       if (response?.data?.status === 200) {
         setCategories(response.data.data);
       } else {
         showErrorToast("Failed to fetch categories");
       }
     } catch (error) {
-      console.error(error);
       showErrorToast("Error fetching categories");
     }
   };
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  const handleAdd = async () => {
+    if (!subCategoryName.trim()) {
+      showCustomMessage("Subcategory name is required!");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("categoryId", selectedCategory);
+      formData.append("name", subCategoryName);
+      if (imageFile) {
+        formData.append("files", imageFile);
+      }
+
+      const response = await axios.post(
+        `${API_BASE_URL}/subcategory/admin/add-subcategory`,
+        formData
+      );
+
+      if (response?.data?.status === 200) {
+        showSuccessToast(
+          response.data.message || "Subcategory added successfully"
+        );
+        await fetchAllSubCategories();
+        handleClose();
+        setSubCategoryName("");
+        setSelectedCategory("");
+        setImageFile(null);
+      }
+    } catch (error) {
+      showErrorToast(
+        error?.response?.data?.message || "Failed to add subcategory"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Add Sub Category</DialogTitle>
+    <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+      <DialogTitle>
+        {isViewMode ? "Subcategory Details" : "Add Subcategory"}
+      </DialogTitle>
+      <Divider />
+      <DialogContent sx={{ mt: 1 }}>
+        {isViewMode ? (
+          <>
+            <Typography variant="body2">
+              ID: {showSubCategoryDetails?.id}
+            </Typography>
+            <Typography variant="body2">
+              Name: {showSubCategoryDetails?.name}
+            </Typography>
+            <Typography variant="body2">
+              Parent {showSubCategoryDetails?.parentCategory}
+            </Typography>
+            <Typography variant="body2">
+              Status:{" "}
+              {showSubCategoryDetails?.status === "N/A" ? "Inactive" : "Active"}
+            </Typography>
+            {showSubCategoryDetails?.picture && (
+              <img
+                src={showSubCategoryDetails.picture}
+                alt={showSubCategoryDetails?.name || "Subcategory Image"}
+                style={{
+                  marginTop: 10,
+                  width: "100%",
+                  maxHeight: 300,
+                  objectFit: "contain",
+                  borderRadius: 8,
+                }}
+              />
+            )}
+          </>
+        ) : (
+          <>
+            <InputLabel sx={{ color: "black" }}>Select Category</InputLabel>
+            <Select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              fullWidth
+              sx={{ mb: 2 }}
+            >
+              <MenuItem value="">Select Category</MenuItem>
+              {categories.map((cat) => (
+                <MenuItem key={cat._id} value={cat._id}>
+                  {cat?.name?.en}
+                </MenuItem>
+              ))}
+            </Select>
 
-      <DialogContent>
-        <InputLabel sx={{ color: "black" }}>Category</InputLabel>
-        <Select
-          value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-          displayEmpty
-          sx={{ minWidth: 250 }}
-        >
-          <MenuItem value="">Select Category</MenuItem>
-          {categories.map((cat) => (
-            <MenuItem key={cat._id} value={cat._id}>
-              {cat.name.en}
-            </MenuItem>
-          ))}
-        </Select>
+            <InputLabel sx={{ color: "black" }}>Subcategory Name</InputLabel>
+            <Input
+              placeholder="Write subcategory name"
+              type="text"
+              height={50}
+              value={subCategoryName}
+              onChange={(e) => setSubCategoryName(e.target.value)}
+            />
 
-        <TextField
-          autoFocus
-          margin="dense"
-          label="Sub Category Name"
-          type="text"
-          fullWidth
-          value={subCategoryName}
-          onChange={(e) => setSubCategoryName(e.target.value)}
-          disabled={loading}
-        />
+            <InputLabel sx={{ color: "black", mt: 2 }}>
+              Subcategory Image
+            </InputLabel>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
+              style={{ marginTop: 8 }}
+            />
+          </>
+        )}
       </DialogContent>
-
       <DialogActions>
-        <Button onClick={handleClose} color="error" disabled={loading}>
-          Cancel
-        </Button>
-        <Button
-          onClick={handleAdd}
-          color="primary"
-          variant="contained"
-          disabled={loading}
-        >
-          {loading ? <CircularProgress size={24} color="inherit" /> : "Add"}
-        </Button>
+        <CustomIconButton color="red" text="Close" onClick={handleClose} />
+        {!isViewMode && (
+          <CustomIconButton
+            loading={loading}
+            disabled={loading}
+            color="black"
+            text="Add Subcategory"
+            onClick={handleAdd}
+          />
+        )}
       </DialogActions>
     </Dialog>
   );

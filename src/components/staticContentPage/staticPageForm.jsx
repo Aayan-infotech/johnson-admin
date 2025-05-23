@@ -11,13 +11,13 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 const StaticPageForm = ({ page, pageTitle, onChange, onSave }) => {
-  console.log(page);
+  //console.log(page);
   const capitalizeFirstLetter = (str) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
   return (
-    <Container maxWidth="md" sx={{ mt: 6 }}>
+    <Container maxWidth="lg" sx={{ mt: 6 }}>
       <Paper elevation={3} sx={{ p: 4 }}>
         <Typography variant="h4" align="center" gutterBottom>
           {capitalizeFirstLetter(pageTitle)} Page

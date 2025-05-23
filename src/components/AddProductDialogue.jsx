@@ -83,7 +83,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
 
   useEffect(() => {
     if (selectedSubCategory) {
-      console.log(selectedSubCategory);
+      //console.log(selectedSubCategory);
       fetchSubSubCategories(selectedSubCategory);
     } else {
       setSubSubCategories([]);
@@ -121,7 +121,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
       const res = await axios.get(
         `${API_BASE_URL}/subsubcategory/get-subsubcategories/${subcategoryId}`
       );
-      console.log(res.data);
+      //console.log(res.data);
       if (res.data.status === 200) {
         setSubSubCategories(res.data.data);
       }
@@ -220,12 +220,12 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
 
     setLoading(true);
     try {
-      console.log("before sending");
+      //console.log("before sending");
       const res = await axios.post(
         `${API_BASE_URL}/product/admin/create-product`,
         formData
       );
-      console.log(res, "after sending");
+      //console.log(res, "after sending");
       if (res.data.success) {
         showSuccessToast("Product added successfully");
         fetchAllProducts();
@@ -329,10 +329,12 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
           <Typography variant="h6" gutterBottom>
             Category
           </Typography>
-          <FormControl fullWidth sx={{ mt: 1 }}>
-            <InputLabel>Category *</InputLabel>
+          <FormControl fullWidth sx={{ mt: 1 }} variant="outlined">
+            <InputLabel id="category-label">Category *</InputLabel>
             <Select
+              labelId="category-label"
               value={selectedCategory}
+              label="Category *"
               onChange={(e) => setSelectedCategory(e.target.value)}
             >
               <MenuItem value="">Select Category</MenuItem>
@@ -344,11 +346,13 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             </Select>
           </FormControl>
 
-          <FormControl fullWidth sx={{ mt: 2 }}>
-            <InputLabel>Subcategory:</InputLabel>
+          <FormControl variant="outlined" fullWidth sx={{ mt: 2 }}>
+            <InputLabel id="subcategory-label">Subcategory</InputLabel>
             <Select
+              labelId="subcategory-label"
               value={selectedSubCategory}
               onChange={(e) => setSelectedSubCategory(e.target.value)}
+              label="Subcategory"
               disabled={!subCategories.length}
             >
               <MenuItem value="">Select Subcategory</MenuItem>
@@ -360,18 +364,20 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
             </Select>
           </FormControl>
 
-          <FormControl fullWidth sx={{ mt: 2 }}>
-            <InputLabel>Sub-Subcategory</InputLabel>
+          <FormControl variant="outlined" fullWidth sx={{ mt: 2 }}>
+            <InputLabel id="subsubcategory-label">Sub-Subcategory</InputLabel>
             <Select
+              labelId="subsubcategory-label"
               value={selectedSubSubCategory}
               onChange={(e) => setSelectedSubSubCategory(e.target.value)}
+              label="Sub-Subcategory"
               disabled={!subSubCategories.length}
             >
               <MenuItem value="">Select Sub-Subcategory</MenuItem>
               {subSubCategories.map((subsub) => (
                 <MenuItem key={subsub.id} value={subsub.id}>
                   {subsub.name}
-                </MenuItem>
+                </MenuItem>   
               ))}
             </Select>
           </FormControl>

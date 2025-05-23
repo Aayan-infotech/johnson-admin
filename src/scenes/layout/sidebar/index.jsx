@@ -25,7 +25,9 @@ import {
   PlayCircleRounded,
   CategoryOutlined,
   CarCrash,
-  HelpOutline
+  HelpOutline,
+  CallMadeOutlined,
+  MobileFriendly
 } from "@mui/icons-material";
 import HandymanSharpIcon from '@mui/icons-material/HandymanSharp';
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -194,6 +196,12 @@ const SideBar = () => {
             path="/faq-management"
             colors={colors}
             icon={<HelpOutline />}
+          />
+          <Item
+            title="Contact Us"
+            path="/contact-us"
+            colors={colors}
+            icon={<CallMadeOutlined/>}
           />
            {/* <Item
             title="Blog Management"
