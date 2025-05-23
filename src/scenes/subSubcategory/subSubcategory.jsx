@@ -43,6 +43,7 @@ const SubSubCategory = () => {
           subcategoryName: sub.subcategoryId?.name?.en || "N/A",
           slug: sub.slug || "N/A",
           status: sub?.isActive || false,
+          picture: sub?.picture || false,
           createdAt: new Date(sub.createdAt).toLocaleDateString(),
         }));
         setSubSubCategories(formattedData);

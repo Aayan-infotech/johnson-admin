@@ -21,15 +21,16 @@ const AddSubCategoryDialog = ({
   open,
   handleClose,
   fetchAllSubCategories,
-  showSubCategoryDetails, // Pass object here to enable view mode
+  showSubCategoryDetails,
 }) => {
   const [subCategoryName, setSubCategoryName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
+  const [imageFile, setImageFile] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const isViewMode = Boolean(showSubCategoryDetails);
-
+  console.log(showSubCategoryDetails, "showSubCategoryDetails");
   useEffect(() => {
     if (open && !isViewMode) {
       fetchCategories();
@@ -37,6 +38,7 @@ const AddSubCategoryDialog = ({
     if (!open) {
       setSubCategoryName("");
       setSelectedCategory("");
+      setImageFile(null);
       setLoading(false);
     }
   }, [open]);
@@ -49,7 +51,9 @@ const AddSubCategoryDialog = ({
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/category/admin/get-categories`);
+      const response = await axios.get(
+        `${API_BASE_URL}/category/admin/get-categories`
+      );
       if (response?.data?.status === 200) {
         setCategories(response.data.data);
       } else {
@@ -68,23 +72,32 @@ const AddSubCategoryDialog = ({
 
     setLoading(true);
     try {
+      const formData = new FormData();
+      formData.append("categoryId", selectedCategory);
+      formData.append("name", subCategoryName);
+      if (imageFile) {
+        formData.append("files", imageFile);
+      }
+
       const response = await axios.post(
         `${API_BASE_URL}/subcategory/admin/add-subcategory`,
-        {
-          categoryId: selectedCategory,
-          name: subCategoryName,
-        }
+        formData
       );
 
       if (response?.data?.status === 200) {
-        showSuccessToast(response.data.message || "Subcategory added successfully");
+        showSuccessToast(
+          response.data.message || "Subcategory added successfully"
+        );
         await fetchAllSubCategories();
         handleClose();
         setSubCategoryName("");
         setSelectedCategory("");
+        setImageFile(null);
       }
     } catch (error) {
-      showErrorToast(error?.response?.data?.message || "Failed to add subcategory");
+      showErrorToast(
+        error?.response?.data?.message || "Failed to add subcategory"
+      );
     } finally {
       setLoading(false);
     }
@@ -99,14 +112,32 @@ const AddSubCategoryDialog = ({
       <DialogContent sx={{ mt: 1 }}>
         {isViewMode ? (
           <>
-            <Typography variant="body2">ID: {showSubCategoryDetails?.id}</Typography>
-            <Typography variant="body2">Name: {showSubCategoryDetails?.name}</Typography>
             <Typography variant="body2">
-             Parent  {showSubCategoryDetails?.parentCategory}
+              ID: {showSubCategoryDetails?.id}
             </Typography>
             <Typography variant="body2">
-              Status: {showSubCategoryDetails?.status === "N/A" ? "Inactive" : "Active"}
+              Name: {showSubCategoryDetails?.name}
             </Typography>
+            <Typography variant="body2">
+              Parent {showSubCategoryDetails?.parentCategory}
+            </Typography>
+            <Typography variant="body2">
+              Status:{" "}
+              {showSubCategoryDetails?.status === "N/A" ? "Inactive" : "Active"}
+            </Typography>
+            {showSubCategoryDetails?.picture && (
+              <img
+                src={showSubCategoryDetails.picture}
+                alt={showSubCategoryDetails?.name || "Subcategory Image"}
+                style={{
+                  marginTop: 10,
+                  width: "100%",
+                  maxHeight: 300,
+                  objectFit: "contain",
+                  borderRadius: 8,
+                }}
+              />
+            )}
           </>
         ) : (
           <>
@@ -132,6 +163,16 @@ const AddSubCategoryDialog = ({
               height={50}
               value={subCategoryName}
               onChange={(e) => setSubCategoryName(e.target.value)}
+            />
+
+            <InputLabel sx={{ color: "black", mt: 2 }}>
+              Subcategory Image
+            </InputLabel>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
+              style={{ marginTop: 8 }}
             />
           </>
         )}

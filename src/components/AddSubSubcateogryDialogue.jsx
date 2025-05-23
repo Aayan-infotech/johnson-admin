@@ -25,13 +25,13 @@ const AddSubSubCategoryDialog = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const isViewMode = Boolean(selectedSubSubCategory);
-
   const [subSubCategoryName, setSubSubCategoryName] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
-
+  const [imageFile, setImageFile] = useState(null);
+console.log(selectedSubSubCategory,"selectedSubSubCategory")
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -46,11 +46,12 @@ const AddSubSubCategoryDialog = ({
     if (open && selectedSubSubCategory) {
       setSubSubCategoryName(selectedSubSubCategory.name);
       setSelectedCategory(selectedSubSubCategory.categoryId);
-      setSelectedSubCategory(selectedSubSubCategory.id);
+      setSelectedSubCategory(selectedSubSubCategory.subcategoryId);
     } else if (open) {
       setSubSubCategoryName("");
       setSelectedCategory("");
       setSelectedSubCategory("");
+      setImageFile(null);
     }
   }, [open, selectedSubSubCategory]);
 
@@ -71,12 +72,10 @@ const AddSubSubCategoryDialog = ({
   };
 
   const fetchSubCategories = async (categoryId) => {
-    //console.log(categoryId, "72ftch subcat");
     try {
       const response = await axios.get(
         `${API_BASE_URL}/subcategory/get-subcategories/${categoryId}`
       );
-      //console.log(response.data.data, "response");
       if (response?.data?.status === 200) {
         setSubCategories(response.data.data);
       } else {
@@ -97,19 +96,23 @@ const AddSubSubCategoryDialog = ({
       showCustomMessage("All fields are required!");
       return;
     }
+
     setLoading(true);
     try {
-      const payload = {
-        name: subSubCategoryName,
-        categoryId: selectedCategory,
-        subcategoryId: selectedSubCategory,
-      };
+      const formData = new FormData();
+      formData.append("name", subSubCategoryName);
+      formData.append("categoryId", selectedCategory);
+      formData.append("subcategoryId", selectedSubCategory);
+      if (imageFile) {
+        formData.append("files", imageFile);
+      }
+
       const apiUrl = selectedSubSubCategory
         ? `${API_BASE_URL}/subsubcategory/admin/update/${selectedSubSubCategory.id}`
         : `${API_BASE_URL}/subsubcategory/admin/insert-subsubcategory`;
 
       const method = selectedSubSubCategory ? axios.put : axios.post;
-      const response = await method(apiUrl, payload);
+      const response = await method(apiUrl, formData);
 
       if (response?.data?.status === 200) {
         showSuccessToast(
@@ -153,6 +156,18 @@ const AddSubSubCategoryDialog = ({
             <Typography variant="body2">
               Created At: {selectedSubSubCategory?.createdAt}
             </Typography>
+            {selectedSubSubCategory?.picture && (
+              <img
+                src={selectedSubSubCategory.picture}
+                alt="Sub-subcategory"
+                style={{
+                  marginTop: 10,
+                  width: "100%",
+                  maxHeight: 300,
+                  objectFit: "contain",
+                }}
+              />
+            )}
           </>
         ) : (
           <>
@@ -174,7 +189,7 @@ const AddSubSubCategoryDialog = ({
               <Select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                sx={{ minWidth: 250 }} // Adjust width as needed
+                sx={{ minWidth: 250 }}
               >
                 <MenuItem value="">Select Category</MenuItem>
                 {categories.map((cat) => (
@@ -191,10 +206,7 @@ const AddSubSubCategoryDialog = ({
               </InputLabel>
               <Select
                 value={selectedSubCategory}
-                onChange={(e) => {
-                  setSelectedSubCategory(e.target.value);
-                  //console.log(e.target.value);
-                }}
+                onChange={(e) => setSelectedSubCategory(e.target.value)}
                 sx={{ minWidth: 250 }}
               >
                 <MenuItem value="">Select Subcategory</MenuItem>
@@ -205,6 +217,14 @@ const AddSubSubCategoryDialog = ({
                 ))}
               </Select>
             </FormControl>
+
+            <InputLabel sx={{ color: "black", mt: 2 }}>Image</InputLabel>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImageFile(e.target.files[0])}
+              style={{ marginTop: 8 }}
+            />
           </>
         )}
       </DialogContent>
