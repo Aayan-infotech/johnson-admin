@@ -377,7 +377,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
               {subSubCategories.map((subsub) => (
                 <MenuItem key={subsub.id} value={subsub.id}>
                   {subsub.name}
-                </MenuItem>
+                </MenuItem>   
               ))}
             </Select>
           </FormControl>
