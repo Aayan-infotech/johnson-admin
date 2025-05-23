@@ -11,11 +11,7 @@ import { useState } from "react";
 import Input from "../custom/Input";
 import axios from "axios";
 import { API_BASE_URL } from "../utils/apiConfig";
-import {
-  showErrorToast,
-  showSuccessToast,
-  showCustomMessage,
-} from "../Toast";
+import { showErrorToast, showSuccessToast, showCustomMessage } from "../Toast";
 import { CustomIconButton } from "../custom/Button";
 
 const AddCategory = ({
@@ -30,7 +26,7 @@ const AddCategory = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const isViewMode = Boolean(showCategoryDetails);
-
+  console.log(showCategoryDetails, "showCategoryDetails");
   const handleAddCategory = async () => {
     if (!categoryName.trim()) {
       showCustomMessage("Category name is required!");
@@ -83,7 +79,9 @@ const AddCategory = ({
       <DialogContent>
         {isViewMode ? (
           <>
-            <Typography variant="body2">ID: {showCategoryDetails?.id}</Typography>
+            <Typography variant="body2">
+              ID: {showCategoryDetails?.id}
+            </Typography>
             <Typography variant="body2">
               Subcategory Name: <strong>{showCategoryDetails?.name}</strong>
             </Typography>
@@ -93,6 +91,22 @@ const AddCategory = ({
                 {showCategoryDetails?.status === "N/A" ? "Inactive" : "Active"}
               </strong>
             </Typography>
+            {showCategoryDetails?.picture && (
+              <>
+                <Typography variant="body2">Image</Typography>
+                <img
+                  src={showCategoryDetails.picture}
+                  alt={showCategoryDetails?.name || "Category Image"}
+                  style={{
+                    marginTop: 10,
+                    width: "100%",
+                    maxHeight: 300,
+                    objectFit: "contain",
+                    borderRadius: 8,
+                  }}
+                />
+              </>
+            )}
           </>
         ) : (
           <>
@@ -105,7 +119,9 @@ const AddCategory = ({
               onChange={(e) => setCategoryName(e.target.value)}
             />
 
-            <InputLabel sx={{ color: "black", mt: 2 }}>Category Image</InputLabel>
+            <InputLabel sx={{ color: "black", mt: 2 }}>
+              Category Image
+            </InputLabel>
             <Input
               type="file"
               inputProps={{ accept: "image/*" }}

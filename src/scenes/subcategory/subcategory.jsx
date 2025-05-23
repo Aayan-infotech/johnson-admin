@@ -44,6 +44,7 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
             parentCategory: sub.categoryId.name.en || "N/A",
             slug: sub.slug || "N/A",
             status: sub?.isActive || "N/A",
+            picture: sub?.picture || "N/A",
             createdAt: new Date(sub.createdAt).toLocaleDateString(),
           }));
           setSubCategories(formattedData);

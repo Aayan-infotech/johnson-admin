@@ -43,7 +43,7 @@ const Category = () => {
           id: category._id,
           categoryId: category.categoryId || "N/A",
           name: category.name.en || "N/A",
-          // slug: category.slug || "N/A",
+          picture: category.image || null,
           status: category?.isActive || "N/A",
           // createdAt: new Date(category.createdAt).toLocaleDateString(),
         }));
