@@ -32,7 +32,7 @@ const OrderManagement = () => {
       const response = await axios.get(
         `${API_BASE_URL}/orders/admin/get-orders`
       );
-      console.log(response);
+      //console.log(response);
       if (response?.data?.status === 200) {
         const formattedData = response?.data?.data.map((order) => ({
             id: order?._id || "N/A",
@@ -148,7 +148,7 @@ const OrderManagement = () => {
   };
 
   const handleView = (order) => {
-    console.log(order, "order");
+    //console.log(order, "order");
     setSelectedOrder(order);
     setOpenOrderDialog(true);
   };

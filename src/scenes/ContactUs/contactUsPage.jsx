@@ -27,10 +27,10 @@ const ContactUsPage = () => {
     //   }
 
     const onReply = (row) => {
-        console.log(row, "row")
+        //console.log(row, "row")
 
         setSelectedContact(row);
-        console.log(row, "row")
+        //console.log(row, "row")
         setOpenReplyDialog(true);
     };
 

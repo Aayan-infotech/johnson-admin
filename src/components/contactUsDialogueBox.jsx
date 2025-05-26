@@ -7,9 +7,9 @@ const ContactUsDialog = ({ open, handleClose, contact }) => {
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle>Contact Query Details</DialogTitle>
       <DialogContent>
-        <Typography><strong>Query No:</strong> {contact?.queryNo}</Typography>
+        {/* <Typography><strong>Query No:</strong> {contact?.queryNo}</Typography> */}
         <Typography><strong>Email:</strong> {contact?.email}</Typography>
-        <Typography><strong>Phone:</strong> {contact?.phone}</Typography>
+        {/* <Typography><strong>Phone:</strong> {contact?.phone}</Typography> */}
         <Typography><strong>Message:</strong> {contact?.message}</Typography>
       </DialogContent>
       <DialogActions>

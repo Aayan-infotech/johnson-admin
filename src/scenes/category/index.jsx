@@ -31,6 +31,7 @@ const Category = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [categoryName, setCategoryName] = useState("");
+  const [categoryImage, setCategoryImage] = useState(null);
 
   const fetchAllCategoryDetails = async () => {
     try {
@@ -42,13 +43,12 @@ const Category = () => {
           id: category._id,
           categoryId: category.categoryId || "N/A",
           name: category.name.en || "N/A",
-          // slug: category.slug || "N/A",
+          picture: category.image || null,
           status: category?.isActive || "N/A",
           // createdAt: new Date(category.createdAt).toLocaleDateString(),
         }));
 
-        console.log(formattedData, "formattedData");
-
+        //console.log(formattedData, "formattedData");
 
         setAllCategoriesList(formattedData);
         setFilteredUsers(formattedData);
@@ -101,60 +101,60 @@ const Category = () => {
   };
 
   const handleToggleStatus = async (row) => {
-    console.log(row, "row");
+    //console.log(row, "row");
 
     const newStatus = row.status === "Active" ? "Blocked" : "Active";
 
     try {
-      await axios.put(`${API_BASE_URL}/category/admin/activate-category/${row}`, {
-        status: newStatus,
-      });
+      await axios.put(
+        `${API_BASE_URL}/category/admin/activate-category/${row}`,
+        {
+          status: newStatus,
+        }
+      );
 
-      await fetchAllCategoryDetails()
+      await fetchAllCategoryDetails();
     } catch (error) {
       console.error("Failed to update status", error);
     }
   };
 
-
-  const handleAddSubCategory = (id, name) => {
-    console.log("Opening Add Subcategory Dialog for:", id, name);
-    setSelectedParentId(id);
-    // setSelectedParentName(name);
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setTimeout(() => {
-      setOpenDialog(false);
-    }, 300);
-  };
-
   const handleDelete = async (id) => {
-    console.log(id)
-    const confirmDelete = window.confirm("Are you sure you want to delete this category?");
+    //console.log(id)
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this category?"
+    );
     if (!confirmDelete) return;
     try {
-      const response = await axios.delete(`${API_BASE_URL}/category/admin/delete-category/${id}`, {
-        headers: {
-          // Authorization: `Bearer ${token}`, // Sending token in headers
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.delete(
+        `${API_BASE_URL}/category/admin/delete-category/${id}`,
+        {
+          headers: {
+            // Authorization: `Bearer ${token}`, // Sending token in headers
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response?.data?.status === 200) {
-        showSuccessToast(response?.data?.message || "Category deleted successfully");
-        setAllCategoriesList((prevList) => prevList.filter(category => category.id !== id));
-        setFilteredUsers((prevList) => prevList.filter(category => category.id !== id));
+        showSuccessToast(
+          response?.data?.message || "Category deleted successfully"
+        );
+        setAllCategoriesList((prevList) =>
+          prevList.filter((category) => category.id !== id)
+        );
+        setFilteredUsers((prevList) =>
+          prevList.filter((category) => category.id !== id)
+        );
         fetchAllCategoryDetails();
-
       } else {
         showErrorToast("Failed to delete category.");
       }
     } catch (error) {
-      showErrorToast(error?.response?.data?.message || "An error occurred while deleting.");
+      showErrorToast(
+        error?.response?.data?.message || "An error occurred while deleting."
+      );
     }
   };
-
 
   const handleView = (row) => {
     setShowCategoryDetails(row);
@@ -165,7 +165,6 @@ const Category = () => {
 
   const columns = categoryTableColumns({
     handleToggleStatus,
-    handleAddSubCategory,
     handleDelete,
     handleView,
   });
@@ -226,12 +225,13 @@ const Category = () => {
         onStatusToggle={handleToggleStatus}
         checkboxSelection
       />
-      <AddSubCategoryDialog open={openDialog} parentId={selectedParentId} handleClose={handleCloseDialog} />
       <AddCategory
         open={openCategoryDialog}
         handleClose={handleCloseCategoryDialog}
         categoryName={categoryName}
         setCategoryName={setCategoryName}
+        categoryImage={categoryImage}
+        setCategoryImage={setCategoryImage}
         fetchAllCategoryDetails={fetchAllCategoryDetails}
         showCategoryDetails={showCategoryDetails}
       />

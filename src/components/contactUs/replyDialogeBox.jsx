@@ -43,7 +43,7 @@ const ReplyDialog = ({ open, handleClose, contact, refreshData }) => {
       <DialogContent>
         <Box mb={2}>
           <Typography variant="subtitle1">
-            <strong>Query No:</strong> {contact?.queryNo}
+            {/* <strong>Query No:</strong> {contact?.queryNo} */}
           </Typography>
           <Typography variant="subtitle1">
             <strong>Email:</strong> {contact?.email}

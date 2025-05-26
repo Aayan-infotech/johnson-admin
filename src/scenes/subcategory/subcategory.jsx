@@ -25,6 +25,7 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
     const [searchText, setSearchText] = useState("");
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedSubCategory, setSelectedSubCategory] = useState(null);
+    const [selectedSubCategoryDetails, setSelectedSubCategoryDetails] = useState(null);
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
   
@@ -33,7 +34,7 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
         const response = await axios.get(
           `${API_BASE_URL}/subcategory/admin/get-all-subcategories`
         );
-        console.log(response,"sub cat")
+        ////console.log(response,"sub cat")
         if (response?.data?.status === 200) {
           const formattedData = response.data.data.map((sub) => ({
             id: sub._id,
@@ -43,6 +44,7 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
             parentCategory: sub.categoryId.name.en || "N/A",
             slug: sub.slug || "N/A",
             status: sub?.isActive || "N/A",
+            picture: sub?.picture || "N/A",
             createdAt: new Date(sub.createdAt).toLocaleDateString(),
           }));
           setSubCategories(formattedData);
@@ -51,7 +53,7 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
           showErrorToast("Failed to fetch subcategories");
         }
       } catch (error) {
-        console.error(error);
+        //console.error(error);
         showErrorToast("Error fetching subcategories");
       } finally {
         setLoading(false);
@@ -87,7 +89,7 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
     };
 
     const handleToggleStatus = async (row) => {
-      console.log(row, "row");
+      ////console.log(row, "row");
       
       const newStatus = row.status === "Active" ? "Blocked" : "Active";
     
@@ -119,13 +121,14 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
           showErrorToast("Failed to delete subcategory");
         }
       } catch (error) {
-        console.error(error);
+        //console.error(error);
         showErrorToast("Error deleting subcategory");
       }
     };
   
     const handleView = (row) => {
-      setSelectedSubCategory(row);
+      ////console.log("I'm here")
+      setSelectedSubCategoryDetails(row);
       setOpenDialog(true);
     };
   
@@ -145,7 +148,7 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
             mb: 2,
           }}
         >
-          {/* <Header title="Subcategories" /> */}
+          <Header title="Subcategories" />
           <Box display="flex" alignItems="center" ml={2} gap={2}>
             <Box
               display="flex"
@@ -197,6 +200,7 @@ import AddSubCategoryDialog from "../../components/AddSubCategoryDialog";
           handleClose={handleCloseDialog}
           subCategory={selectedSubCategory}
           fetchAllSubCategories={fetchAllSubCategories}
+          showSubCategoryDetails ={selectedSubCategoryDetails}
         />
       </Container>
     );

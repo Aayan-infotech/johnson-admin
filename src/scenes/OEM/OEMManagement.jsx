@@ -110,7 +110,7 @@ const [modelCompany,setModelCompany]=useState(null)
       }
 
       if (modelForm._id) {
-        console.log(modelForm)
+        //console.log(modelForm)
         await axios.put(
           `${API_BASE_URL}/models/model/${modelForm._id}`,
           formData,
