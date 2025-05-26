@@ -12,7 +12,11 @@ import "react-quill/dist/quill.snow.css";
 
 const StaticPageForm = ({ page, pageTitle, onChange, onSave }) => {
   console.log(page);
+  const handleTitleChange = (e) => {
+    onChange("key", e.target.value);
+  }
   const capitalizeFirstLetter = (str) => {
+    console.log(str, "str");
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
@@ -28,9 +32,9 @@ const StaticPageForm = ({ page, pageTitle, onChange, onSave }) => {
           <Box sx={{ mb: 4 }}>
             <TextField
               fullWidth
-              // label="Page Title"
-              value={capitalizeFirstLetter(pageTitle)}
-              onChange={(e) => onChange("key", e.target.value)}
+              label="Page Title"
+              value={page.key || " "}
+              onChange={handleTitleChange}
               variant="outlined"
             />
           </Box>
