@@ -102,7 +102,6 @@ const Products = () => {
     setSelectedProduct((prev) => ({ ...prev, image: updatedImages }));
     setRemovedImages((prev) => [...prev, removed]);
   };
-
   const handleImageFileSelect = (e) => {
     const files = Array.from(e.target.files);
     setNewImageFiles((prev) => [...prev, ...files]);

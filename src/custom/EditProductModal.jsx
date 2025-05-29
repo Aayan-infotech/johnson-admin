@@ -24,6 +24,7 @@ const EditProductModal = ({
   setProduct,
   onSave,
   onImageSelect,
+  onRemoveImage,
   editLoading,
   yearInputs,
   setYearInputs,
@@ -35,7 +36,8 @@ const EditProductModal = ({
   };
   // const [categories, setCategories] = useState([]);
   // const [subCategories, setSubCategories] = useState([]);
-  // const [subSubCategories, setSubSubCategories] = useState([]);
+  // const [subSubCategories, setSubSubCategories] = useState([])
+
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -169,7 +171,7 @@ const EditProductModal = ({
               <Box display="flex" flexWrap="wrap" gap={2} mt={1}>
                 {product?.image?.map((imgUrl, index) => (
                   <Box key={index} position="relative">
-                    {/* <IconButton
+                    <IconButton
                       size="small"
                       onClick={() => onRemoveImage(index)}
                       sx={{
@@ -181,7 +183,7 @@ const EditProductModal = ({
                       }}
                     >
                       <CloseIcon fontSize="small" />
-                    </IconButton> */}
+                    </IconButton>
                     <img
                       src={imgUrl}
                       alt={`product-img-${index}`}
