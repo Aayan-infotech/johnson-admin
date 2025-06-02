@@ -11,6 +11,7 @@ import {
   Select,
   MenuItem,
   CircularProgress,
+  Grid,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { API_BASE_URL } from "../utils/apiConfig";
@@ -29,15 +30,36 @@ const EditProductModal = ({
   yearInputs,
   setYearInputs,
 }) => {
+  // === NEW: State to hold preview URLs for newly selected images ===
+  const [previewUrls, setPreviewUrls] = useState([]);
+
+  // === NEW: Clean up object URLs when component unmounts or previewUrls change ===
+  useEffect(() => {
+    return () => {
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [previewUrls]);
+
+  // === NEW: Local wrapper around onImageSelect prop ===
+  const handleLocalImageSelect = (e) => {
+    // First, generate previews for the selected files:
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      const fileArray = Array.from(files);
+      const urls = fileArray.map((file) => URL.createObjectURL(file));
+      // Revoke any previous URLs:
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+      setPreviewUrls(urls);
+    }
+
+    // Then call your existing prop to handle the files (upload, state update, etc.)
+    onImageSelect(e);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct((prev) => ({ ...prev, [name]: value }));
   };
-  // const [categories, setCategories] = useState([]);
-  // const [subCategories, setSubCategories] = useState([]);
-  // const [subSubCategories, setSubSubCategories] = useState([])
-
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -211,10 +233,33 @@ const EditProductModal = ({
                     multiple
                     hidden
                     accept="image/*"
-                    onChange={onImageSelect}
+                    onChange={handleLocalImageSelect} // <-- use local wrapper
                   />
                 </Button>
               </Box>
+
+              {/* ===== NEW: Preview of Newly Selected Files ===== */}
+              {previewUrls.length > 0 && (
+                <Grid container spacing={2} mt={2}>
+                  <Typography variant="h6">Product Images</Typography>
+                  {previewUrls.map((url, idx) => (
+                    <Grid item xs={3} key={idx}>
+                      <img
+                        src={url}
+                        alt={`preview-${idx}`}
+                        style={{
+                          width: "100%",
+                          height: 100,
+                          objectFit: "cover",
+                          borderRadius: 8,
+                          border: "1px solid #ccc",
+                        }}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
+              {/* ===== END NEW PREVIEWS ===== */}
             </Box>
           </Box>
         </Box>
@@ -331,7 +376,7 @@ const EditProductModal = ({
               >
                 + Add Model
               </Button>
-<br/>
+              <br />
               <Button
                 size="small"
                 color="error"
