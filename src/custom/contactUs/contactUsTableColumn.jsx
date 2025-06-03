@@ -65,7 +65,6 @@ const ContactUsTable = ({ onView, onReply }) => {
                             color="rgb(77 141 225)"
                             onClick={(e) => {
                                 e.stopPropagation(); // Prevent row click
-                                // //console.log(params.row.id, "params.row");
                                 onReply(params.row); // Trigger reply dialog
                             }}
                             label="Reply"

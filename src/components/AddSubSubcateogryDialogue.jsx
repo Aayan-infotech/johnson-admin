@@ -31,7 +31,6 @@ const AddSubSubCategoryDialog = ({
   const [categories, setCategories] = useState([]);
   const [subCategories, setSubCategories] = useState([]);
   const [imageFile, setImageFile] = useState(null);
-console.log(selectedSubSubCategory,"selectedSubSubCategory")
   useEffect(() => {
     fetchCategories();
   }, []);

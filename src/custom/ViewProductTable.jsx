@@ -3,7 +3,6 @@ import { Modal, Box, Typography, Grid, Button, Divider } from "@mui/material";
 import { Margin } from "@mui/icons-material";
 
 const ViewProductModal = ({ open, onClose, viewProduct }) => {
-  console.log(viewProduct, "viewProduct ro verify");
   return (
     <Modal open={open} onClose={onClose}>
       <Box

@@ -22,7 +22,6 @@ const UserDetails = () => {
         try {
             setLoading(true);
             const response = await axios.get(`${API_BASE_URL}/users/getAllUsers`);
-            //console.log(response.data.data)
             const formattedData = response?.data?.data.map((user) => ({
                 id: user.userId,
                 userId: user.userId || "N/A",
@@ -33,7 +32,7 @@ const UserDetails = () => {
             setAllUsers(formattedData);
             setFilteredUsers(formattedData);
         } catch (error) {
-            //console.log("Error fetching users:", error);
+            console.log("Error fetching users:", error);
         } finally {
             setLoading(false);
         }
@@ -61,9 +60,7 @@ const UserDetails = () => {
     const handleToggleStatus = async (id) => {
         try {
             const response = await axios.put(`${API_BASE_URL}/users/admin/blockUnblockUser/${id}`);
-           //console.log(response.data)
             const updatedStatus = response.data.data
-            //console.log(updatedStatus)
             setFilteredUsers((prevUsers) =>
                 prevUsers.map((user) =>
                     user.id === id ? { ...user, status: updatedStatus} : user
@@ -72,7 +69,7 @@ const UserDetails = () => {
             // fetchAllUsers();
         }
         catch (error) {
-            return //console.log(error);
+            return
         }
     };
 

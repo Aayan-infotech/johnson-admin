@@ -26,7 +26,6 @@ const AddCategory = ({
 }) => {
   const [loading, setLoading] = useState(false);
   const isViewMode = Boolean(showCategoryDetails);
-  console.log(showCategoryDetails, "showCategoryDetails");
   const handleAddCategory = async () => {
     if (!categoryName.trim()) {
       showCustomMessage("Category name is required!");

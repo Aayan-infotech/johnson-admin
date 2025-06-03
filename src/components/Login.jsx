@@ -34,7 +34,6 @@ const Login = () => {
                 { email, password }
             );
 
-            //console.log(response.data, "response");
             const token = response.data.token;
 
 
@@ -44,7 +43,7 @@ const Login = () => {
             navigate("/");
         }
         catch (error) {
-            return //console.log(error)
+            return
         }
         finally {
             setLoading(false);

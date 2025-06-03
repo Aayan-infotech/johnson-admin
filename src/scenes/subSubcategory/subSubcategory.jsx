@@ -31,7 +31,6 @@ const SubSubCategory = () => {
   const fetchAllSubSubCategories = async () => {
     try {
       const response = await axios.get(`${API_BASE_URL}/subsubcategory/admin/get-all-subsubcategories`);
-      //console.log(response.data.data, "response.data.data")
       if (response?.data?.status === 200) {
         const formattedData = response.data.data.map((sub) => ({
           id: sub._id,

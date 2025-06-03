@@ -59,7 +59,6 @@ const FAQ = () => {
   }, [fetchFAQs]);
 
   const onSubmit = async (data) => {
-    //console.log(API_BASE_URL);
     try {
       setLoading(true);
       if (editFAQ) {

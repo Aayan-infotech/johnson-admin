@@ -30,7 +30,6 @@ const AddSubCategoryDialog = ({
   const [loading, setLoading] = useState(false);
 
   const isViewMode = Boolean(showSubCategoryDetails);
-  console.log(showSubCategoryDetails, "showSubCategoryDetails");
   useEffect(() => {
     if (open && !isViewMode) {
       fetchCategories();

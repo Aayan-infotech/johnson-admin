@@ -83,7 +83,6 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
 
   useEffect(() => {
     if (selectedSubCategory) {
-      //console.log(selectedSubCategory);
       fetchSubSubCategories(selectedSubCategory);
     } else {
       setSubSubCategories([]);
@@ -121,7 +120,6 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
       const res = await axios.get(
         `${API_BASE_URL}/subsubcategory/get-subsubcategories/${subcategoryId}`
       );
-      //console.log(res.data);
       if (res.data.status === 200) {
         setSubSubCategories(res.data.data);
       }
@@ -220,12 +218,10 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
 
     setLoading(true);
     try {
-      //console.log("before sending");
       const res = await axios.post(
         `${API_BASE_URL}/product/admin/create-product`,
         formData
       );
-      //console.log(res, "after sending");
       if (res.data.success) {
         showSuccessToast("Product added successfully");
         fetchAllProducts();
