@@ -99,18 +99,14 @@ const MultipleTabs = () => {
     setCurrentTab(newValue);
   };
 
-  const breadcrumbMap = ["Categories", "Subcategories", "Sub-Subcategories","Regular-Service-Category"];
+  const breadcrumbMap = ["Categories", "Subcategories", "Sub-Subcategories", "Regular-Service-Category"];
 
   return (
-    <Paper elevation={3} sx={{ p: 2 }}>
-      {/* Breadcrumb Section */}
+    <Box elevation={3} sx={{ p: 2 }}>
       <Breadcrumbs aria-label="breadcrumb" sx={{ mb: 2 }}>
         <Link underline="hover" color="inherit" href="/">
           Home
         </Link>
-        {/* <Link underline="hover" color="inherit" href="/admin">
-          Admin
-        </Link> */}
         <Typography color="text.primary">
           {breadcrumbMap[currentTab]}
         </Typography>
@@ -137,7 +133,7 @@ const MultipleTabs = () => {
         {currentTab === 2 && <SubSubCategoryTable />}
         {currentTab === 3 && <RegularService />}
       </Box>
-    </Paper>
+    </Box>
   );
 };
 
