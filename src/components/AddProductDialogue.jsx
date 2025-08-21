@@ -54,7 +54,7 @@ const AddProductDialog = ({ open, handleClose, fetchAllProducts }) => {
       const fetchRegularServiceCategories = async () => {
         try {
           const { data } = await axios.get(
-            "http://18.209.91.97:5050/api/regular-services?lang=en"
+            `${API_BASE_URL}/regular-services?lang=en`
           );
           setRegularServiceCategories(data.data);
         } catch (err) {

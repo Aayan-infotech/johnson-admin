@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Eye, Pencil, PlusCircle, Trash2 } from "lucide-react";
 import CustomTable from "../../custom/Table";
-import { showSuccessToast } from "../../Toast";
+import { showErrorToast, showSuccessToast } from "../../Toast";
 import { API_BASE_URL } from "../../utils/apiConfig";
 
 const OEMManagement = () => {
@@ -41,7 +41,7 @@ const OEMManagement = () => {
 
   const [companyModalOpen, setCompanyModalOpen] = useState(false);
   const [modelModalOpen, setModelModalOpen] = useState(false);
-const [modelCompany,setModelCompany]=useState(null)
+  const [modelCompany, setModelCompany] = useState(null);
   const [loadingCompanies, setLoadingCompanies] = useState(true);
   const [loadingModels, setLoadingModels] = useState(false);
 
@@ -104,13 +104,13 @@ const [modelCompany,setModelCompany]=useState(null)
     try {
       const formData = new FormData();
       formData.append("modelName", modelForm.modelName);
-      formData.append("company", modelForm.company); // using selectedCompanyForModel here
+      formData.append("company", modelForm.company);
+
       if (modelForm.files) {
         formData.append("files", modelForm.files);
       }
 
       if (modelForm._id) {
-        //console.log(modelForm)
         await axios.put(
           `${API_BASE_URL}/models/model/${modelForm._id}`,
           formData,
@@ -126,8 +126,12 @@ const [modelCompany,setModelCompany]=useState(null)
         showSuccessToast("Model added");
       }
 
+      // ✅ Refresh the models list for the selected company
+      if (modelForm.company) {
+        await fetchModels(modelForm.company);
+      }
+
       setModelModalOpen(false);
-      fetchModels(selectedCompanyForModel);
     } catch (err) {
       console.error(err);
     }
@@ -136,16 +140,23 @@ const [modelCompany,setModelCompany]=useState(null)
   const handleCompanyDelete = async (id) => {
     if (window.confirm("Delete this company?")) {
       await axios.delete(`${API_BASE_URL}/companies/${id}`);
-      
+
       showSuccessToast("Company and its relevent models deleted successfully!");
       fetchCompanies();
     }
   };
 
   const handleModelDelete = async (id) => {
-    if (window.confirm("Delete this model?")) {
-      await axios.delete(`${API_BASE_URL}/models/model/${id}`);
-      fetchModels(selectedCompany._id);
+    try {
+      if (window.confirm("Delete this model?")) {
+        const res = await axios.delete(`${API_BASE_URL}/models/model/${id}`);
+        console.log("res", res);
+        showSuccessToast("Model deleted successfully");
+        fetchModels(selectedCompany._id);
+      }
+    } catch (error) {
+      showErrorToast("error while deleting category");
+      console.log(error);
     }
   };
 
@@ -282,7 +293,7 @@ const [modelCompany,setModelCompany]=useState(null)
               onClick={() => {
                 setModelForm({ name: "", modelImage: [], _id: null });
                 setModelModalOpen(true);
-              }}  
+              }}
               disabled={!selectedCompany}
             >
               Add Model
